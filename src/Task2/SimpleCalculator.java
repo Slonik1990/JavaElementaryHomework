@@ -11,16 +11,21 @@ public class SimpleCalculator {
         double second = inputSecond();
 
 
-
-
-        if(action.equals("/")){
-            System.out.println("Результат: " + first/second);
-        } else if(action.equals("*")){
-            System.out.println("Результат: " + first*second);
-        }else if(action.equals("-")){
+        //блок содержащий вычислительную логику на основе оператора if-else-if и выводящий результат на экран
+        if(action.equals("-")){
             System.out.println("Результат: " + (first - second));
         }else if(action.equals("+")){
             System.out.println("Результат: " + (first+second));
+        } else if(action.equals("*")){
+            System.out.println("Результат: " + first*second);
+        } else if(action.equals("/")){
+            //исправлен баг возникающий при делении на 0
+            if(second!=0) {
+                System.out.println("Результат: " + first / second);
+            }else{
+                System.out.println("Делить на ноль нельзя!!!");
+
+            }
         }
 
     }
