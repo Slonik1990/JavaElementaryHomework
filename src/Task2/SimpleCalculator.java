@@ -12,7 +12,7 @@ public class SimpleCalculator {
 
 
 
-        //
+
         if(action.equals("/")){
             System.out.println("Результат: " + first/second);
         } else if(action.equals("*")){
