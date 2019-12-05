@@ -24,8 +24,9 @@ public class SimpleCalculator {
                 System.out.println("Результат: " + first / second);
             }else{
                 System.out.println("Делить на ноль нельзя!!!");
-
             }
+        }else{
+            System.out.println("Неизвестная математическая операция");
         }
 
     }
