@@ -9,6 +9,10 @@ public class Main {
 //    Calculator.calculation();
 //    Mathematics.mediumNumber();
 //    Mathematics.mediumFromTwo();
+//        Graphic.rectangle();
+//        Graphic.chess();
+//        Graphic.postal();
+//        Mathematics.quantity();
 
 
     }
