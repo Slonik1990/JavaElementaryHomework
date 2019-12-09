@@ -4,7 +4,12 @@ import java.util.Scanner;
 
 public class SimpleCalculator {
     public static void main(String[] args) {
-        calculation();
+
+//        System.out.println("First number");
+//
+//        Scanner scanner = new Scanner(System.in);
+//        boolean b = scanner.hasNextDouble();
+//        System.out.println(b);
     }
 
 

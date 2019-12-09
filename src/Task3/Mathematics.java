@@ -5,11 +5,13 @@ import java.util.Scanner;
 public class Mathematics {
 
 
+
+
 //метод будет запрашивать и считывать числа, до момента пока не произойдет ввод другого типа данных, после чего посчитает
 // и выведет на экран среднее арифметическое введенных чисел
 //при вводе менее двух чисел, сообщит о неуместности данного мероприятия
-    public  static void mediumNumber(){
 
+    public  static void mediumNumber(){
         int numbers = 0;   //счетчик количества чисел
         double total = 0;  //сумма всех введенных чисел
 
@@ -25,7 +27,6 @@ public class Mathematics {
             System.out.println("Для расчета необходимо минимум 2 числа");
         }
     }
-
 
 
 

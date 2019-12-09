@@ -6,9 +6,9 @@ package Task3;
 
 public class Main {
     public static void main(String[] args) {
-//        Calculator.calculation();
-//       Mathematics.mediumNumber();
-//       Mathematics.mediumFromTwo();
+//    Calculator.calculation();
+//    Mathematics.mediumNumber();
+//    Mathematics.mediumFromTwo();
 
 
     }
