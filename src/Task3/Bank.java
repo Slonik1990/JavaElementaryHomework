@@ -15,14 +15,14 @@ public class Bank {
 
         for (int i = 1; i <= years; i++) {
             double prof = deposit*proc/100;
-            System.out.println("Прибыль за " +  i + " год: " + prof);
+            System.out.println("Прибыль за " +  i + " год: " + prof + " грн");
             deposit = deposit + prof;
         }
-        System.out.println("Сумма на вашем балансе: " + deposit);
+        System.out.println("\nСумма на вашем балансе: " + deposit + " грн");
 
         double totalProf = (deposit-firstMoney)/firstMoney*100;
 
-        System.out.println("За данный срок Ваш вклад вырос на " + totalProf + " %");
+        System.out.println("\nЗа данный срок Ваш вклад вырос на " + totalProf + " %");
 
 
 
