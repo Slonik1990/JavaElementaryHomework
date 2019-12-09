@@ -2,8 +2,6 @@ package Task3;
 
 public class Graphic {
 
-
-
     //метод вывод на консоль прямоугольник с указанными пользователем размерами
     public static void rectangle(){
         int w = Utils.inputSize("Введите ширину прямоугольника");
@@ -21,8 +19,6 @@ public class Graphic {
         }
     }
 
-
-
     //выводит * в шахматном порядке
     public static void chess() {
         int w = Utils.inputSize("Введите ширину шахматного поля");
@@ -39,7 +35,6 @@ public class Graphic {
             System.out.println();
         }
     }
-
 
 
     //метод вывод на консоль изображение конверта с указанным пользователем размером

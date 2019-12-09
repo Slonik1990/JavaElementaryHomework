@@ -13,6 +13,7 @@ public class Main {
 //        Graphic.chess();
 //        Graphic.postal();
 //        Mathematics.quantity();
+        Bank.deposit();
 
 
     }
