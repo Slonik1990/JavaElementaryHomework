@@ -37,22 +37,37 @@ public class Graphic {
     }
 
 
-    //метод вывод на консоль изображение конверта с указанным пользователем размером
-    public static void postal(){
-        int size = Utils.inputSize("Введите размер конверта");
+
+    //метод выводит на консоль изображение конверта с указанным пользователем размером
+    //принимает коэффициент погрешности, позволяющий избежать слабой прорисковки диагонали(рекомендован 0,5)
+    //для сохранения работоспособности программы при любых соотношениях сторон используется специальный коэффициент
+    //if else if разбит по элементам рисунка для гибкости и читабельности
+
+
+    public static void postal (double pix){
+        double h = Utils.inputSize("Введите высоту конверта");
+        double w = Utils.inputSize("Введите ширину конверта");
         System.out.println();
-        for (int i = 1; i <=size ; i++) {
-            for (int j = 1; j <=size; j++) {
-                if(i == 1||j==1||i==size||j==size||i==j||i+j==size+1){
+        double k = h/w;//коэффициент соотношения сторон
+
+        for (int i = 1; i <=h ; i++) {
+            for (int j = 1; j <=w; j++) {
+
+                if(i == 1||j==1||i==h||j==w ){//прямоугольник
                     System.out.print("\t*");
-                } else{
+
+                }else if(i-pix<=j*k && i+pix>=j*k){//диагональ
+                    System.out.print("\t*");
+
+                }else if(i-pix <=(w-j+1)*k && i+pix>=(w-j+1)*k){//вторая диагональ
+                    System.out.print("\t*");
+
+                }else{
                     System.out.print("\t ");
                 }
             }
             System.out.println();
         }
     }
-
-
 
 }
