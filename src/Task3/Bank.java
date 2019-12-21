@@ -1,5 +1,7 @@
 package Task3;
 
+import MyUtils.Utils;
+
 public class Bank {
 
     public static void deposit(){

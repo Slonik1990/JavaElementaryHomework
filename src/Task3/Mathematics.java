@@ -1,4 +1,7 @@
 package Task3;
+
+import MyUtils.Utils;
+
 import java.util.Scanner;
 
 //в данном классе представлены методы связанные с числами

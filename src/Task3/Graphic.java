@@ -1,5 +1,7 @@
 package Task3;
 
+import MyUtils.Utils;
+
 public class Graphic {
 
     //метод вывод на консоль прямоугольник с указанными пользователем размерами
