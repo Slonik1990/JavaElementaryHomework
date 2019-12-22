@@ -52,4 +52,10 @@ public class Utils {
         }
         return number;
     }
+
+    public static String inputWord(String message){
+        System.out.println(message);
+        Scanner text = new Scanner(System.in);
+        return text.next();
+    }
 }

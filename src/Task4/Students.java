@@ -8,8 +8,7 @@ package Task4;
 Присутствие на уроках не несет в себе оценочного критерия, чему вполне удовлетворяет массив Visits, реализованный
         как массив boolean переменных.
         **/
-
-public class Student {
+class Students {
 
     static String [] students = new String[5];
     static int [][] marks = new int[5][5];
@@ -34,6 +33,8 @@ public class Student {
         studentInfo("Солоник");
         groupInfo();
         goodBye("Иванов");
+        groupInfo();
+        addStudent("Сулецкий");
         groupInfo();
 
     }
