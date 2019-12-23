@@ -33,6 +33,7 @@ public class Main {
         Sidorov.studentInfo();
 
         java2019.groupInfo();
+        java2019.groupRating();
 
 
 

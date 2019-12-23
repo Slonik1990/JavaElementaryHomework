@@ -93,20 +93,34 @@ public class StudentGroup {
         }
         return x;
     }
-//рейтинг группы, пока что никак не получается, еще поборюсь
-//    public void groupRating(){
-//        String[] rating = new String[group.length];
-//        for (int i = 0; i < group.length; i++) {
-//            for (int j = i; j < rating.length-1; j++) {
-//                if(group[j].totalMark()>=group[j+1].totalMark()){
-//                    rating[i] = group[j].name + group[j].totalMark();
-//                }else{
-//                    rating[i] = group[j+1].name + group[j+1].totalMark();
-//                }
-//            }System.out.println(rating[i]);
-//
-//        }
-//    }
+//рейтинг группы
+    public void groupRating(){
+        System.out.println("\nРейтинг группы " + groupName);
+        Student[] rating = new Student[inGroup()];//создается массив с длинной равной количеству учеников зачисленных в группу
+        //все существующие ученики записываются в массив
+        int x = 0;//счетчик записей в rating
+        for (int i = 0; i < group.length; i++) {
+            if (group[i] != null){
+                rating[x]=group[i];
+                x++;} }
+
+        //сортировка студентов методом перебора по их суммарной оценке на убывание
+        for (int i = 0; i < rating.length; i++) {
+            for (int j = 0; j < rating.length-1; j++) {
+                if(rating[j+1].totalMark()>rating[j].totalMark()){
+                    Student buffer = rating[j];
+                    rating[j]= rating[j+1];
+                    rating[j+1]=buffer;
+                }
+            }
+        }
+        //вывод на экран отсортированного массива студентов
+        for (int i = 0; i < rating.length; i++) {
+            System.out.println(rating[i].name + ": " + rating[i].totalMark());
+        }
+
+    }
+
 
     public void groupInfo() {
         System.out.println();
