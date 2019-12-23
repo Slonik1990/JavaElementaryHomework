@@ -15,11 +15,17 @@ public class StudentGroup {
 
     public void addStud(Student name) {
         int record = 0;//индикатор записи студента
+        for (int j = 0; j < group.length; j++)
+            if(group[j] != null&&group[j].name.equals(name.name)){
+                System.out.println("Студент с такой фамилией уже есть в группе");
+                return;
+            }
         for (int i = 0; i < group.length; i++)
+
             if (group[i] == null) {
                 group[i] = name;
                 record++;//индикатор записи студента
-                System.out.println("Студент  добавлен в учебную группу");
+                System.out.println("Студент "+ name.name + " добавлен в учебную группу");
                 break;
             }
         if (record == 0) {
@@ -77,18 +83,26 @@ public class StudentGroup {
         }
     }
 
-    public void printGroup() {
+    //количество студентов обучающихся в группе
+    public int inGroup(){
+        int x = 0;
+        for (int i = 0; i < group.length; i++) {
+            if(group[i]!=null){
+                x++;
+            }
+        }
+        return x;
+    }
+
+    public void groupInfo() {
         System.out.println();
         System.out.println(groupName);
+        System.out.println("В группе обучается студентов: " + inGroup());
         for (int i = 0; i < group.length; i++) {
             if (group[i] == null) {
                 continue;
             }
-            System.out.print(group[i].name + ": ");
-            for (int j = 0; j < group[i].marks.length; j++) {
-                System.out.print(group[i].marks[j] + " ");
-            }
-            System.out.println(";");
+            group[i].studentMarks();
         }
     }
 }

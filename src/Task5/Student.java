@@ -1,5 +1,14 @@
 package Task5;
-
+/*Выбрал подход при котором студенты получают отметки за домашнее задание привязанное к уроку, что и хранит в себе поле
+        marks, реализованное как массив, благодаря данному подходу 0 обретает некий смысл и говорит о том,
+        что ДЗ не выполнено.
+        Присутствие на уроках не несет в себе оценочного критерия, чему вполне удовлетворяет поле visits, реализованный
+        как массив boolean переменных.
+        visits и marks не привязаны друг к другу, т.к например можно получить оценку за задание не присутствуя на уроке,
+        или наоборот - присутствовать на уроке и ничего не выполнить
+        но данные поля объединяет единый принимаемый конструкторами параметр, который символизирует размерность учебного
+        курса
+        **/
 
  public class Student {
 
@@ -38,7 +47,6 @@ package Task5;
             System.out.println("Данное занятие не предусмотрено курсом");
         } else{
             marks[lesson - 1] = mark;
-            visits[lesson - 1] = true;
         }
     }
 
@@ -60,5 +68,72 @@ package Task5;
             visits[i] = false;
         }
     }
+    //средняя оценка за выполненные задания
+     public double mediumMark(){
+         double medium = 0;
+         if(taskComplete()==0){
+             medium = 0;
+         }else {
+             medium = ((double)totalMark())/taskComplete();
+         }
+         return medium;
+     }
+
+     //общая оценка за все занятия, можно использовать для построения рейтинга группы
+     public int totalMark(){
+         int summ=0;
+         for (int i = 0; i < marks.length; i++) {
+                 summ = summ + marks[i];
+             }
+         return summ;
+     }
+
+     //количество выполненных заданий
+     public int taskComplete() {
+         int summ = 0;
+         for (int i = 0; i < marks.length; i++) {
+             if (marks[i] > 0) {
+                 summ++;
+             }
+         }return summ;
+     }
+
+     //количество посещений
+     public int totalVisits() {
+         int summ = 0;
+         for (int i = 0; i < visits.length; i++) {
+             if (visits[i]) {
+                 summ++;
+             }
+         }return summ;
+     }
+
+     //выводит на экран оценки студента, вспомогательный метод, используется в досье группы
+     public void studentMarks() {
+             System.out.print(name + ": ");
+             for (int i = 0; i < marks.length; i++) {
+                 System.out.print(" " + marks[i]);
+             }
+             System.out.println(";");
+         }
+
+
+
+     public  void studentInfo (){
+             System.out.println();
+             System.out.println("Студент: " + name);
+             System.out.println("Посетил занятий: " + totalVisits());
+             System.out.println("Выполнил заданий: " + taskComplete());
+             if(taskComplete()>0){
+                 System.out.println("За домашнюю работу получил следующие баллы");
+                 for (int i = 0; i < marks.length; i++) {
+                     if(marks[i]!=0){
+                         System.out.println("Задание " +(i+1)+":  " + marks[i]);
+                     }
+                 }
+             }
+             System.out.println("Средний балл за выполненные задания: " + mediumMark());
+         System.out.println(" ");
+         }
 
 }
