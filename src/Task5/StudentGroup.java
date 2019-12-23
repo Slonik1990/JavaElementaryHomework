@@ -93,6 +93,20 @@ public class StudentGroup {
         }
         return x;
     }
+//рейтинг группы, пока что никак не получается, еще поборюсь
+//    public void groupRating(){
+//        String[] rating = new String[group.length];
+//        for (int i = 0; i < group.length; i++) {
+//            for (int j = i; j < rating.length-1; j++) {
+//                if(group[j].totalMark()>=group[j+1].totalMark()){
+//                    rating[i] = group[j].name + group[j].totalMark();
+//                }else{
+//                    rating[i] = group[j+1].name + group[j+1].totalMark();
+//                }
+//            }System.out.println(rating[i]);
+//
+//        }
+//    }
 
     public void groupInfo() {
         System.out.println();
