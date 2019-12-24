@@ -1,4 +1,7 @@
 package Task6;
+
+import MyUtils.Utils;
+
 /**Одним из ключевых аспектов при выборе подхода к реализации данной задачи, является то, что 0 может означать как
  установленное значение, так и дефолтное. Рассмотрел несколько вариантов решения:
 
@@ -130,18 +133,33 @@ public class Collection {
         x=0;
     }
 
+
     //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавляет в коллекцию.
-    //Метод записывающий информацию с другой коллекции ценой потери данных основной коллекции разрабатывать не стал
-    //пусть настолько опасную операцию пользователь производит вручную методом remove
     public void addAll(Collection donor){
         if(donor.x>getEmptySize()){
             System.out.println("Недостаточно свободного места. Необходимо удалить элементов: " + (donor.x - getEmptySize()));
+            System.out.println("Удалите элементы вручную методом remove или используйте hardAdding");
+
         }else{
             for (int i = 0; i < donor.x; i++) {
                 add(donor.arr[i]);
             }
         }
     }
+
+    //добавление одной коллекции в конец другой при недостатке места
+    //часть элементов принимающей коллекции перезаписываются
+    public void hardAdding(Collection donor){
+        String control1 = Utils.inputWord("Для подтверждения опасной операции введите RECORD");
+        String control2 = "RECORD";
+        if(control1.equals(control2)) {
+            x = arr.length - donor.x;
+            addAll(donor);
+        }else{
+            System.out.println("Не подтверждено");
+        }
+    }
+
 
     //не строгое сравнение, при котором  сравнивается записанное содержимое
     public boolean valueEquals(Collection numbers){
