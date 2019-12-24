@@ -42,6 +42,7 @@ public class Main {
         first.downSort();
         first.print(); //[5] [4] [3] [2] [1]
 
+
         first.addAll(third);//Недостаточно свободного места. Необходимо удалить элементов: 2
         //Удалите элементы вручную методом remove или используйте hardAdding
 
