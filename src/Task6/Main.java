@@ -60,9 +60,7 @@ public class Main {
         third.print();//[2] [2] [3] [3] [3] [3] [4] [4] [5] [5]
         second.print();// [2] [3] [2] [3] [2] [3]
         third.softAdding(second);//4 элемента перенесено
-        second.print();
-        third.print();
-
+       
     }
 
 
