@@ -11,6 +11,7 @@ public class Main {
         first.add(1);
         first.add(4);
         first.add(2);
+
 //        first.remove(4);
 //        first.contains(4);
 //        System.out.println(first.isEmpty(4));
