@@ -17,7 +17,6 @@ package Task6;
  Я думаю что в backend данная реализация вполне может пригодиться. Например как очередь на запись в базу данных.
 
  */
-
 public class Collection {
     private int[]arr;
     private int x;// счетчик записанных элементов

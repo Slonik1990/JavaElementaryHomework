@@ -23,7 +23,6 @@ public class Main {
 //        first.hardClear();
 //        first.test();
 
-
         second.add(2);
         second.add(3);
         third.add(2);
