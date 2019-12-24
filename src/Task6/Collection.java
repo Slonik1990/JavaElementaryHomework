@@ -16,15 +16,28 @@ import MyUtils.Utils;
  Я выбрал иной подход, с использованием поля-счетчика:
  Система будет реализована по приницпу очереди, все свободные элементы массива будут располагаться в конце,
  а элементы с установленными значениями - в начале.
- Удаление элемента будет сдвигать очередь вперед, а добавление будет производиться в конец очереди.
- Я думаю что в backend данная реализация вполне может пригодиться. Например как очередь на запись в базу данных.
+ Способ реализации методов будет выбираться в аспекте, будто данная система ведет очередь пациентов на прием к доктору
+ по номеру мед.карточки, а размер коллекции символизирует число пациентов, которых готов принять доктор.
 
+ Методы будут проекцией реальных жизненных ситуаций: человек покинул очередь, человек пришел и стал в конец очереди,
+ пришел человек от Василия Петровича и встал в начало очереди, привели группу людей, которых нужно обязательно принять,
+ но это может быть либо срочно (метод hardAddToStart), либо их поставят в конец очереди вместо кого-то(метод hardAddingToEnd),
+
+ По этой причине представлен широкий спектр методов связанных с добавлением:
+ - добаление элемента в конец addToEnd
+ - вставка элемента в начало addToStart
+ - добавление коллекции в данную после записанных элементов addAllToEnd
+ - вставка элементов другой коллекции перед записанными addAllToStart
+ - методы дополнительно реализованы с пометкой Hard, для случаев когда недостаточно места  но принять данные важнее,
+ чем сохранить имеющиеся.
+ - коллекция перетягивает столько элементов, на сколько есть мест softAdding
+
+ Думаю что данный подход можно использовать так же в IT, например как очередь на запись в базу данных
  */
+
 public class Collection {
     private int[]arr;
     private int x;// счетчик записанных элементов
-
-
 
     //конструктор
     public Collection(int elements) {
@@ -32,9 +45,8 @@ public class Collection {
         x = 0;
     }
 
-
     //добавляет элемент следующим после всех объявленных
-    public void add(int element){
+    public void addToEnd(int element){
         if(x<arr.length){
             arr[x] = element;
             x++;
@@ -42,9 +54,91 @@ public class Collection {
             System.out.println("Недостаточно места");
             return;
         }
-
     }
 
+    //вставка в начало очереди
+    public void addToStart(int element){
+        if(x<arr.length){
+            for (int i = (x-1); i>= 0; i--) {
+                arr[i+1] = arr[i];
+            }
+            arr[0] = element;
+            x++;
+        }else{
+            System.out.println("Недостаточно места");
+            return;
+        }
+    }
+    //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавляет в начало,
+    //а все значения принимающей коллекции смещаются и распологаются за принимаемыми
+    public void addAlltoStart(Collection donor){
+        if(donor.arr.length>arr.length){
+            System.out.println("Принимаемая коллекция больше принимающей, операция невозможна!!!");
+            return;
+        }
+        if(donor.x>getEmptySize()){
+            System.out.println("Недостаточно свободного места. Необходимо удалить элементов: " + (donor.x - getEmptySize()));
+            System.out.println("Удалите элементы вручную методом remove или используйте hardAddingToEnd");
+        }else{
+            for (int i = x-1; i >=0; i--) {
+                arr[i+donor.x]=arr[i];
+            }
+            for (int i = 0; i < donor.x; i++) {
+                arr[i] = donor.arr[i];
+            }
+            x=x+donor.x;
+        }
+    }
+    //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавлются после имеющихся
+    public void addAllToEnd(Collection donor){
+        if(donor.arr.length>arr.length){
+            System.out.println("Принимаемая коллекция больше принимающей, операция невозможна!!!");
+            return;
+        }
+        if(donor.x>getEmptySize()){
+            System.out.println("Недостаточно свободного места. Необходимо удалить элементов: " + (donor.x - getEmptySize()));
+            System.out.println("Удалите элементы вручную методом remove или используйте hardAddingToEnd");
+        }else{
+            for (int i = 0; i < donor.x; i++) {
+                addToEnd(donor.arr[i]);
+            }
+        }
+    }
+    //добавление одной коллекции в конец другой при недостатке места
+    //часть элементов принимающей коллекции перезаписываются
+    public void hardAddingToEnd(Collection donor){
+        String control1 = Utils.inputWord("Для подтверждения опасной операции введите RECORD");
+        String control2 = "RECORD";
+        if(control1.equals(control2)) {
+            x = arr.length - donor.x;
+            addAllToEnd(donor);
+        }else{
+            System.out.println("Не подтверждено");
+        }
+    }
+    //добавление одной коллекции в конец другой при недостатке места
+    //часть элементов принимающей коллекции перезаписываются
+    public void hardAddToStart(Collection donor){
+        String control1 = Utils.inputWord("Для подтверждения опасной операции введите RECORD");
+        String control2 = "RECORD";
+        if(control1.equals(control2)) {
+            x=arr.length-donor.x;
+            addAlltoStart(donor);
+        }else{
+            System.out.println("Не подтверждено");
+        }
+    }
+
+    //переносит из начала принимаемой коллекции, столько элементов, на сколько есть свободных мест и выводит отчет
+    public void softAdding(Collection donor){
+        int elements=0;
+        while (getRecordingSize()<arr.length&&donor.getRecordingSize()>0){
+            addToEnd(donor.arr[0]);
+            donor.remove(0);
+            elements++;
+        }
+        System.out.println(elements);
+    }
 
 
     //все следующие элементы от принимаемого индекса смещаются на 1 в сторону начала массива, тем самым удаляемый элемент замещается
@@ -133,34 +227,6 @@ public class Collection {
         x=0;
     }
 
-
-    //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавляет в коллекцию.
-    public void addAll(Collection donor){
-        if(donor.x>getEmptySize()){
-            System.out.println("Недостаточно свободного места. Необходимо удалить элементов: " + (donor.x - getEmptySize()));
-            System.out.println("Удалите элементы вручную методом remove или используйте hardAdding");
-
-        }else{
-            for (int i = 0; i < donor.x; i++) {
-                add(donor.arr[i]);
-            }
-        }
-    }
-
-    //добавление одной коллекции в конец другой при недостатке места
-    //часть элементов принимающей коллекции перезаписываются
-    public void hardAdding(Collection donor){
-        String control1 = Utils.inputWord("Для подтверждения опасной операции введите RECORD");
-        String control2 = "RECORD";
-        if(control1.equals(control2)) {
-            x = arr.length - donor.x;
-            addAll(donor);
-        }else{
-            System.out.println("Не подтверждено");
-        }
-    }
-
-
     //не строгое сравнение, при котором  сравнивается записанное содержимое
     public boolean valueEquals(Collection numbers){
         boolean eq = false;
@@ -176,7 +242,6 @@ public class Collection {
         }
         return eq;
     }
-
     //строгое сравнение коллекций по содержимому и размеру
     public boolean equals(Collection numbers){
         boolean eq = false;
@@ -192,7 +257,6 @@ public class Collection {
         }
         return eq;
     }
-
     //выводит на печать объявленные элементы коллекции
     public void print(){
         if(x>0){
@@ -227,7 +291,6 @@ public class Collection {
             }
         }
     }
-
 
     //меняет элементы с принимаемыми индексами местами
     private   void swap (int ind1, int ind2){
