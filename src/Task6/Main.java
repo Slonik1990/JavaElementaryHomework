@@ -35,14 +35,15 @@ public class Main {
         second.print();// [2] [3] [2] [3]
         second.addAll(third);
         second.print();// [2] [3] [2] [3] [2] [3]
-        first.addAll(third);//Недостаточно свободного места. Необходимо удалить элементов: 2
-        //Удалите элементы вручную методом remove или используйте hardAdding
 
         first.print(); // [3] [5] [1] [4] [2]
         first.bubbleSort();
         first.print(); // [1] [2] [3] [4] [5]
         first.downSort();
         first.print(); //[5] [4] [3] [2] [1]
+
+        first.addAll(third);//Недостаточно свободного места. Необходимо удалить элементов: 2
+        //Удалите элементы вручную методом remove или используйте hardAdding
 
         first.hardAdding(third);//Для подтверждения опасной операции введите RECORD
         //RECORD
