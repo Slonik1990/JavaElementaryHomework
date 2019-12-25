@@ -24,7 +24,7 @@ import MyUtils.Utils;
  но это может быть либо срочно (метод hardAddToStart), либо их поставят в конец очереди вместо кого-то(метод hardAddingToEnd),
 
  По этой причине представлен широкий спектр методов связанных с добавлением:
- - добаление элемента в конец addToEnd
+ - добаление элемента в конец add
  - вставка элемента в начало addToStart
  - добавление коллекции в данную после записанных элементов addAllToEnd
  - вставка элементов другой коллекции перед записанными addAllToStart
@@ -46,39 +46,41 @@ public class Collection {
     }
 
     //добавляет элемент следующим после всех объявленных
-    public void addToEnd(int element){
-        if(x<arr.length){
-            arr[x] = element;
+    public void add(int size){
+        if(x < arr.length){
+            arr[x] = size;
             x++;
         }else{
-            System.out.println("Недостаточно места");
-            return;
+            System.out.println("Недостаточно места. Элемент не добавлен");
         }
     }
 
     //вставка в начало очереди
-    public void addToStart(int element){
-        if(x<arr.length){
+    public void addToStart(int size){
+        if( x < arr.length){
             for (int i = (x-1); i>= 0; i--) {
                 arr[i+1] = arr[i];
             }
-            arr[0] = element;
+            arr[0] = size;
             x++;
         }else{
-            System.out.println("Недостаточно места");
-            return;
+            System.out.println("Недостаточно места. Элемент не добавлен");
         }
     }
     //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавляет в начало,
     //а все значения принимающей коллекции смещаются и распологаются за принимаемыми
-    public void addAlltoStart(Collection donor){
+    public void addAllToStart(Collection donor){
         if(donor.arr.length>arr.length){
             System.out.println("Принимаемая коллекция больше принимающей, операция невозможна!!!");
             return;
         }
+        if(donor.getRecordingSize()==0){
+            System.out.println("Копируемая коллекция пуста.");
+            return;
+        }
         if(donor.x>getEmptySize()){
             System.out.println("Недостаточно свободного места. Необходимо удалить элементов: " + (donor.x - getEmptySize()));
-            System.out.println("Удалите элементы вручную методом remove или используйте hardAddingToEnd");
+            System.out.println("Добавление не выполнено");
         }else{
             for (int i = x-1; i >=0; i--) {
                 arr[i+donor.x]=arr[i];
@@ -95,12 +97,17 @@ public class Collection {
             System.out.println("Принимаемая коллекция больше принимающей, операция невозможна!!!");
             return;
         }
+        if(donor.getRecordingSize()==0){
+            System.out.println("Копируемая коллекция пуста.");
+            return;
+        }
         if(donor.x>getEmptySize()){
             System.out.println("Недостаточно свободного места. Необходимо удалить элементов: " + (donor.x - getEmptySize()));
-            System.out.println("Удалите элементы вручную методом remove или используйте hardAddingToEnd");
+            System.out.println("Добавление не выполнено");
         }else{
-            for (int i = 0; i < donor.x; i++) {
-                addToEnd(donor.arr[i]);
+            int assist = donor.x;
+            for (int i = 0; i < assist; i++) {
+                add(donor.arr[i]);
             }
         }
     }
@@ -123,21 +130,22 @@ public class Collection {
         String control2 = "RECORD";
         if(control1.equals(control2)) {
             x=arr.length-donor.x;
-            addAlltoStart(donor);
+            addAllToStart(donor);
         }else{
             System.out.println("Не подтверждено");
         }
     }
 
     //переносит из начала принимаемой коллекции, столько элементов, на сколько есть свободных мест и выводит отчет
+    //TODO при передаче саму в себя зацикливается, в отличии от остальных методов копирования
     public void softAdding(Collection donor){
         int elements=0;
         while (getRecordingSize()<arr.length&&donor.getRecordingSize()>0){
-            addToEnd(donor.arr[0]);
+            add(donor.arr[0]);
             donor.remove(0);
             elements++;
         }
-        System.out.println(elements);
+        System.out.println("Передано элементов: " + elements);
     }
 
 
@@ -263,10 +271,10 @@ public class Collection {
             for (int i = 0; i < x; i++) {
                 System.out.print("[" + arr[i]+ "] ");
             }
+            System.out.println();
         }else{
             System.out.println("Коллекция пуста");
         }
-        System.out.println();
     }
 
     //сортировка пузырьком основана на попарном сравнении элементов и смещении большего в конец списка
