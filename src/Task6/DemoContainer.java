@@ -35,12 +35,12 @@ import MyUtils.Utils;
  Думаю что данный подход можно использовать так же в IT, например как очередь на запись в базу данных
  */
 
-public class Collection {
+public class DemoContainer {
     private int[]arr;
     private int x;// счетчик записанных элементов
 
     //конструктор
-    public Collection(int elements) {
+    public DemoContainer(int elements) {
         this.arr = new int[elements];
         x = 0;
     }
@@ -56,12 +56,12 @@ public class Collection {
     }
 
     //вставка в начало очереди
-    public void addToStart(int size){
+    public void addToStart(int element){
         if( x < arr.length){
             for (int i = (x-1); i>= 0; i--) {
                 arr[i+1] = arr[i];
             }
-            arr[0] = size;
+            arr[0] = element;
             x++;
         }else{
             System.out.println("Недостаточно места. Элемент не добавлен");
@@ -69,7 +69,7 @@ public class Collection {
     }
     //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавляет в начало,
     //а все значения принимающей коллекции смещаются и распологаются за принимаемыми
-    public void addAllToStart(Collection donor){
+    public void addAllToStart(DemoContainer donor){
         if(donor.arr.length>arr.length){
             System.out.println("Принимаемая коллекция больше принимающей, операция невозможна!!!");
             return;
@@ -92,7 +92,7 @@ public class Collection {
         }
     }
     //если достаточно свободных ячеек, все установленные значения принимаемой коллекции добавлются после имеющихся
-    public void addAllToEnd(Collection donor){
+    public void addAllToEnd(DemoContainer donor){
         if(donor.arr.length>arr.length){
             System.out.println("Принимаемая коллекция больше принимающей, операция невозможна!!!");
             return;
@@ -113,7 +113,7 @@ public class Collection {
     }
     //добавление одной коллекции в конец другой при недостатке места
     //часть элементов принимающей коллекции перезаписываются
-    public void hardAddingToEnd(Collection donor){
+    public void hardAddingToEnd(DemoContainer donor){
         String control1 = Utils.inputWord("Для подтверждения опасной операции введите RECORD");
         String control2 = "RECORD";
         if(control1.equals(control2)) {
@@ -125,7 +125,7 @@ public class Collection {
     }
     //добавление одной коллекции в конец другой при недостатке места
     //часть элементов принимающей коллекции перезаписываются
-    public void hardAddToStart(Collection donor){
+    public void hardAddToStart(DemoContainer donor){
         String control1 = Utils.inputWord("Для подтверждения опасной операции введите RECORD");
         String control2 = "RECORD";
         if(control1.equals(control2)) {
@@ -138,7 +138,7 @@ public class Collection {
 
     //переносит из начала принимаемой коллекции, столько элементов, на сколько есть свободных мест и выводит отчет
     //TODO при передаче саму в себя зацикливается, в отличии от остальных методов копирования
-    public void softAdding(Collection donor){
+    public void softAdding(DemoContainer donor){
         int elements=0;
         while (getRecordingSize()<arr.length&&donor.getRecordingSize()>0){
             add(donor.arr[0]);
@@ -155,6 +155,10 @@ public class Collection {
     public void remove(int index){
         if(index>=arr.length){
             System.out.println("Выход за рамки коллекции");
+            return;
+        }
+        if(index>x-1){
+            System.out.println("Удалять нечего");
             return;
         }
         for (int i = index; i < arr.length-1; i++) {
@@ -236,7 +240,7 @@ public class Collection {
     }
 
     //не строгое сравнение, при котором  сравнивается записанное содержимое
-    public boolean valueEquals(Collection numbers){
+    public boolean valueEquals(DemoContainer numbers){
         boolean eq = false;
         if(getRecordingSize() == numbers.getRecordingSize()){
             for (int i = 0; i < x; i++) {
@@ -251,7 +255,7 @@ public class Collection {
         return eq;
     }
     //строгое сравнение коллекций по содержимому и размеру
-    public boolean equals(Collection numbers){
+    public boolean equals(DemoContainer numbers){
         boolean eq = false;
         if(getRecordingSize() == numbers.getRecordingSize()&&arr.length==numbers.arr.length){
             for (int i = 0; i < x; i++) {

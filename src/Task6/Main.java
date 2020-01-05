@@ -2,88 +2,33 @@ package Task6;
 
 public class Main {
     public static void main(String[] args) {
-        
-        Collection nano = new Collection(3);
-        Collection small = new Collection(5);
-        Collection medium = new Collection(10);
-        Collection big = new Collection(20);
+        IntContainer first = new IntContainer();
+
+        first.add(1);
+        first.add(2);
+        first.add(3);
+        first.add(4);
+        first.add(5);
+        first.add(6);
+        first.add(7);
+        first.add(8);
+        first.print();//List: 1, 2, 3, 4, 5, 6, 7, 8,
+        int[]donor = {9,9,9};
+        first.addAll(donor);//добавление массива в коллекцию
+        first.print();//List: 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9,
+        first.addAll(first);//добавление коллекции саму в себя
+        first.print();//List: 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9, 9,
+
+        first.bubbleSort();
+        first.print();//List: 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 9, 9, 9,
+
+        first.downSort();
+        first.print();//List: 9, 9, 9, 9, 9, 9, 8, 8, 7, 7, 6, 6, 5, 5, 4, 4, 3, 3, 2, 2, 1, 1,
 
 
-        small.add(1);
-        small.add(2);
-        small.add(3);
-        small.add(4);
-
-        nano.add(5);
-        nano.add(9);
-
-        big.add(1);
-        testPrint(nano, small, medium, big);
-        big.hardAddingToEnd(small);
-        big.hardAddingToEnd(nano);
-
-//        small.hardAddingToEnd(nano);
-//        small.hardAddingToEnd(nano);
-//        small.bubbleSort();
-//        small.downSort();
-//
-//        small.addAllToStart(nano);
-//        small.addAllToStart(nano);
-//        big.addAllToStart(medium);
-//        big.hardAddingToEnd(medium);
-//        medium.addAllToStart(small);
-//        medium.addAllToStart(small);
-
-
-
-
-
-
-        testPrint(nano, small, medium, big);
-      
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        System.out.println(first.findIndex(0));//-1
+        first.clear();//Контейнер очицен
+        System.out.println(first.getSize());//0
     }
-    public static void testPrint(Collection a, Collection b, Collection c, Collection d ){
-        System.out.println();
-        System.out.println("*******CONTROL*******");
-        a.print();
-        b.print();
-        c.print();
-        d.print();
-    }
-    
-    
-    
 
 }
