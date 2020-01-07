@@ -43,8 +43,7 @@ public class IntContainer {
         System.out.println();
     }
 
-    public boolean contains(int value){
-        int count = 0;
+    public boolean contains(int value){ int count = 0;
         boolean y = false;
         for (int el : arr) {
             if(el==value){
@@ -60,6 +59,7 @@ public class IntContainer {
 
     //возвращает величину контейнера
     public int getSize() {
+
         return size;
     }
 

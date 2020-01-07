@@ -11,9 +11,10 @@ public class Main {
 //    Mathematics.mediumFromTwo();
 //        Graphic.rectangle();
 //        Graphic.chess();
-        Graphic.postal(0.5);
+//        Graphic.postal(0.5);
 //        Mathematics.quantity();
 //        Bank.deposit();
+        Mathematics.simplity();
 
 
     }
