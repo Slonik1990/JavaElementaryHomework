@@ -12,5 +12,9 @@ public class Lion extends Wild {
         System.out.print("RRRRRRRRRR");
     }
 
+    @Override
+    public void food() {
+        System.out.print("\n" + "I eat another animals");
+    }
 
 }

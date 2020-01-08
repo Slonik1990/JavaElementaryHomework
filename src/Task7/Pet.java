@@ -16,6 +16,10 @@ public abstract class Pet extends Animal{
         System.out.print("My name is " + name + ". ");
     }
 
+    @Override
+    public void food() {
+        System.out.print("\n" + "I eat what the owner gives me");
+    }
 
 
     public boolean isVaccinated() {

@@ -1,23 +1,32 @@
 package Task7;
 
 public abstract class Animal {
+
+    //счетчик созданных животных, который будет по совместительству источником уникального id для каждого животного
     private static int count;
 
-    final private  int id;
+    final private  int ID;
+
     private int age;
     private int weight;
     private String color;
 
+    //
     public Animal(){
-        count++;
-        this.id = count;
+        this.ID = ++count;
     }
 
 
-    //абстрактный метод say() ничего не реализует, но обязывает своих наслендников к переопределению
+    //не является абстрактным и может вообще не переопределяться, а нести свой функционал
     public  void say(){
         System.out.print("\nHello!!! ");
     }
+
+
+    //создан сугубо для практики работы с абстрактными методами, является обязательным для переопределения
+    //у домашних животных реализован в классе питомец и наследуется его классами наследниками
+    //у диких минуя абстрактный класс дикое реализован в конкретных классах
+    public abstract void food();
 
 
     public int getAge() {
@@ -46,10 +55,18 @@ public abstract class Animal {
 
 
     public int getId() {
-        return id;
+        return ID;
     }
 
     public static int getCount() {
         return count;
     }
+
+    //
+    public void setInfo(int age, String color, int weight){
+        this.age = age;
+        this.color = color;
+        this.weight = weight;
+    }
+
 }

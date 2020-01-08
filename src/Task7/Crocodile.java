@@ -11,4 +11,10 @@ public class Crocodile extends Wild {
         super.say();
         System.out.print("Let's swim)))");
     }
+
+
+    @Override
+    public void food() {
+        System.out.print("\n" + "I eat another animals");
+    }
 }
