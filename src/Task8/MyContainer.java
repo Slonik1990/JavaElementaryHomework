@@ -56,8 +56,6 @@ public class MyContainer implements Collection {
     @Override
     public boolean remove(Object o) {
         int index=0;
-        //false будет означать что элемент не обнаружен
-        if(!contains(o))return false;
         //вычисление индекса элемента, который необходимо удалить
         //не использовал метод getElement для сохранения полиморфизма, т.к данного метода нет в интерфейсе Collection
         for (int i = 0; i < objects.length; i++) {
@@ -93,11 +91,48 @@ public class MyContainer implements Collection {
     }
 
     @Override
-    public boolean removeAll(Collection c) {
+    //удаляет из вызывающей коллекции все элементы, которые есть в принимаемой
+    public boolean removeAll(Collection rem) {
+        int count=0;
+        Object[] arr = new Object[objects.length];
+        //каждый элемент масива object проверяется на отсутствие в rem и переносится во вспомогательный массив
+        for (int i = 0; i < objects.length; i++) {
+            if(!rem.contains(objects[i])){
+                arr[count] = objects[i];
+                count++;
+            }
+        }
+        //перенос без пустого хвоста
+        Object[] assist = new Object[count];
+        for (int i = 0; i < count; i++) {
+            assist[i]=arr[i];
+        }
+        objects=assist;
 
-        return false;
+        return true;
     }
 
+    //сохраняет в вызывающей коллекции только те элементы, которые есть в принимаемой
+    @Override
+    public boolean retainAll(Collection rem) {
+        int count=0;
+        Object[] arr = new Object[objects.length];
+        //каждый элемент масива object проверяется на наличие в rem и переносится во вспомогательный массив
+        for (int i = 0; i < objects.length; i++) {
+            if(rem.contains(objects[i])){
+                arr[count] = objects[i];
+                count++;
+            }
+        }
+        //перенос без пустого хвоста
+        Object[] assist = new Object[count];
+        for (int i = 0; i < count; i++) {
+            assist[i]=arr[i];
+        }
+        objects=assist;
+
+        return true;
+    }
 
     @Override
     public int size() {
@@ -179,6 +214,8 @@ public class MyContainer implements Collection {
         }
 
 
+
+        //метод принимает условие и удаляет все все соответствующие ему элементы
     @Override
     public boolean removeIf(Predicate filter) {
         return false;
@@ -206,9 +243,6 @@ public class MyContainer implements Collection {
     }
 
 
-    @Override
-    public boolean retainAll(Collection c) {
-        return false;
-    }
+
 
 }
