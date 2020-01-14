@@ -1,0 +1,214 @@
+package Task8;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Spliterator;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
+
+public class MyContainer implements Collection {
+
+    private Object[] objects = new Object[0];
+
+
+    @Override
+    public String toString() {
+        if(this.size()==0) return "\nContainer is empty";
+        StringBuilder text = new StringBuilder("\nContainer content: ");
+        for (Object o : objects) {
+            text.append("[").append(o).append("] ");
+        }
+        return text.toString();
+    }
+
+    @Override
+    public boolean add(Object o) {
+        Object[] newArr = new Object[objects.length + 1];
+        for (int i = 0; i < objects.length; i++) {
+            newArr[i] = objects[i];
+        }
+        newArr[objects.length] = o;
+        objects = newArr;
+        return true;
+    }
+
+    //с целью оптимизации коллекция добавляется не по одному элементу, а преобразуется в массив и происходит слияние массивов
+    @Override
+    public boolean addAll(Collection donor) {
+        //даже без проверки принимаемой коллекции на пустоту все работает корректно, но это приводит к бессмысленному
+        //перекладыванию массива objects в такой же массив, поэтому проверка добавлена для оптимизации
+        if(donor.size()==0)return false;
+
+        Object [] newArr = new Object[objects.length+donor.size()];
+        Object[] donorArr = donor.toArray();
+
+        for (int i = 0; i < objects.length; i++) {
+            newArr[i] = objects[i];
+        }
+        for (int i = objects.length; i < newArr.length; i++) {
+            newArr[i]=donorArr[i-objects.length];
+        }
+        objects = newArr;
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        int index=0;
+        //false будет означать что элемент не обнаружен
+        if(!contains(o))return false;
+        //вычисление индекса элемента, который необходимо удалить
+        //не использовал метод getElement для сохранения полиморфизма, т.к данного метода нет в интерфейсе Collection
+        for (int i = 0; i < objects.length; i++) {
+            if(objects[i].equals(o)){
+                index=i;
+                break;
+            }
+        }
+        //удаление элемента
+        Object[] newArr = new Object[objects.length - 1];
+        for(int i = 0;i<index;i++){
+            newArr[i]=objects[i];
+        }
+        for (int i = index; i < newArr.length; i++) {
+            newArr[i]=objects[i+1];
+        }
+        objects = newArr;
+        return true;
+    }
+
+    //в отличии от метода remove данный метод удаляет все  объекты соответствующие принимаемому, а не первый обнаруженный
+    //реализован рекурсией, а не циклом для практики работы с рекурсией
+    public void removeEvery(Object o) {
+        //условие продолжения рекурсии
+        if(contains(o)) {
+            //шаг
+            remove(o);
+            //рекурсия
+            removeEvery(o);
+        }
+        //условие выхода из рекурсии -
+        else return;
+    }
+
+    @Override
+    public boolean removeAll(Collection c) {
+
+        return false;
+    }
+
+
+    @Override
+    public int size() {
+        return objects.length;
+    }
+
+
+    @Override
+    public boolean isEmpty() {
+        if(objects.length==0)return true;
+        return false;
+    }
+
+
+    //создается новый массив с размерностью коллекции и принимает все ее данные
+    @Override
+    public Object[] toArray() {
+        Object[]arr = new Object[objects.length];
+        if(objects.length==0)return arr;
+        int i =0;
+        for (Object o: objects) {
+            arr[i]=o;
+            i++;
+        }
+        return arr;
+    }
+
+    //записывает коллекцию в принимаемый массив аналогично реализации других коллекций, например ArrayList
+    @Override
+    public Object[] toArray(Object[] arr) {
+        //если массив меньше коллекции, ничего не происходит
+        if(objects.length>arr.length)return arr;
+        //если массив равен коллекции все содержимое дублируется в массив и перезаписывает его
+        if (objects.length==arr.length){
+            for (int i = 0; i < objects.length; i++) {
+                arr[i] = objects[i];
+            }
+        }else {
+            //если массив больше коллекции, информация записывается в начало массива
+            // следующая за ней ячейка перезаписывается как null, а последующие ячейки массива сохраняют данные
+            for (int i = 0; i < objects.length; i++) {
+                arr[i] = objects[i];
+            }
+            arr[objects.length]=null;
+        }
+        return arr;
+    }
+
+    //возвращает элемент по индексу ячейки
+    public Object getElement(int index) {
+        if(index<objects.length && index>=0)return this.objects[index];
+        else throw new IndexOutOfBoundsException();
+
+    }
+
+    @Override
+    public void clear() {
+        objects = new Object[0];
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        for (Object element :this.objects) {
+            if(element.equals(o))return true;
+        }
+        return false;
+    }
+
+    @Override
+    //принимаемая коллекция преобразуется в массив, каждый элемент которого проверяется на наличие в вызывающей коллекции
+    //при обнаружении элемента, которого нет в вызывающей коллекции метод возвращает false и дальнейшую проверку не производит
+    public boolean containsAll(Collection c) {
+        if(c.size()==0)return true;
+        Object[] arr = c.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            if(!contains(arr[i]))return false;
+        }
+        return true;
+        }
+
+
+    @Override
+    public boolean removeIf(Predicate filter) {
+        return false;
+    }
+
+    @Override
+    public Spliterator spliterator() {
+        return null;
+    }
+
+    @Override
+    public Stream stream() {
+        return null;
+    }
+
+    @Override
+    public Stream parallelStream() {
+        return null;
+    }
+
+
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+
+    @Override
+    public boolean retainAll(Collection c) {
+        return false;
+    }
+
+}
