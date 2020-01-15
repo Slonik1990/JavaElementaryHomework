@@ -188,6 +188,14 @@ public class MyContainer implements Collection {
 
     }
 
+    //возвращает объект
+    public Object getObject(Object o) {
+        for (Object element :this.objects) {
+            if(element.equals(o))return o;
+        }
+        return false;
+    }
+
     @Override
     public void clear() {
         objects = new Object[0];
@@ -212,30 +220,6 @@ public class MyContainer implements Collection {
         }
         return true;
         }
-
-
-
-        //метод принимает условие и удаляет все все соответствующие ему элементы
-    @Override
-    public boolean removeIf(Predicate filter) {
-        return false;
-    }
-
-    @Override
-    public Spliterator spliterator() {
-        return null;
-    }
-
-    @Override
-    public Stream stream() {
-        return null;
-    }
-
-    @Override
-    public Stream parallelStream() {
-        return null;
-    }
-
 
     @Override
     public Iterator iterator() {

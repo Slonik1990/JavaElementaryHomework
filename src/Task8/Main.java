@@ -8,6 +8,20 @@ import java.util.Collection;
 public class Main {
     public static void main(String[] args) {
 
+        Collection z = new MyContainer();
+        String aaa = new String("priver");
+        String bbb = new String("zdarova");
+        z.add(aaa);
+        z.add(bbb);
+        System.out.println(((MyContainer) z).getObject(aaa));
+        System.out.println(aaa);
+        aaa = bbb;
+        System.out.println(((MyContainer) z).getObject(aaa));
+        System.out.println(aaa);
+        System.out.println(((MyContainer) z).getElement(0));
+
+
+
         Collection x = new MyContainer();
         x.add(0);
         x.add(20);
@@ -84,7 +98,7 @@ public class Main {
 
 
     //remove и retane являются противоположными операциями, и совместно должны полностью очистить коллекцию
-    private static boolean test(Collection a, Collection b){
+    public static boolean test(Collection a, Collection b){
         a.removeAll(b);
         a.retainAll(b);
         return a.isEmpty();
