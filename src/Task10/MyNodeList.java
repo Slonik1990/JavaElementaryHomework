@@ -285,10 +285,6 @@ public class MyNodeList implements Collection {
         return new Object[0];
     }
 
-    @Override
-    public Iterator iterator() {
-        return null;
-    }
 
     public Node getHead() {
         return head;
@@ -296,6 +292,26 @@ public class MyNodeList implements Collection {
 
     public Node getTail() {
         return tail;
+    }
+
+    @Override
+    public Iterator iterator() {
+        return new NodeIterator();
+    }
+
+    public class NodeIterator implements Iterator<Node> {
+        Node present = head;
+
+        @Override
+        public boolean hasNext() {
+            if(present==null)return false;
+            return present.getNext()!=null;
+        }
+        @Override
+        public Node next() {
+            return present;
+
+        }
     }
 }
 

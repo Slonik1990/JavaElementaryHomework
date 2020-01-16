@@ -1,5 +1,6 @@
 package Task10;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Main {
@@ -29,7 +30,13 @@ public class Main {
         System.out.println(first);//NodeList content: HEAD-> [cccc] <- TAIL
 
         first.remove("cccc");
+
         System.out.println(first);//NodeList is empty
+
+
+        Iterator itFirst = first.iterator();
+        System.out.println(itFirst.next());//null
+        System.out.println(itFirst.hasNext());//false
 
         MyNodeList second = new MyNodeList();
         second.add(1);
@@ -47,6 +54,11 @@ public class Main {
         System.out.println(second);//NodeList content: HEAD-> [1] [2] <- TAIL
         second.addAll(third);
         System.out.println(second);//NodeList content: HEAD-> [1] [2] [3] [4] [5] [6] <- TAIL
+
+        Iterator itSecond = second.iterator();
+        System.out.println(itSecond.next());//Task10.Node@1b6d3586
+        System.out.println(itSecond.hasNext());//true
+
 
         second.retainAll(third);
         System.out.println(second);//NodeList content: HEAD-> [1] [2] <- TAIL

@@ -36,20 +36,7 @@ public class Node{
      }
 
 
-//    public class NodeIterator implements Iterator {
-//        private Node node;
-//
-//        public NodeIterator(Node n){
-//            this.node = n;
-//        }
-//        public boolean hasNext(){
-//            return node.getNext()==null;
-//        }
-//
-//        public Node next(){
-//            return node.getNext();
-//        }
-//    }
+
 
 }
 
