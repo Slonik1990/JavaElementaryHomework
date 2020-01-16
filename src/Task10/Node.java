@@ -1,6 +1,9 @@
 package Task10;
 
- class Node {
+import javax.swing.text.html.HTMLDocument;
+import java.util.Iterator;
+
+public class Node{
     private Object data;
     private Node next;
 //    private Node prev;
@@ -31,4 +34,25 @@ package Task10;
      public void setData(Object data) {
          this.data = data;
      }
- }
+
+
+//    public class NodeIterator implements Iterator {
+//        private Node node;
+//
+//        public NodeIterator(Node n){
+//            this.node = n;
+//        }
+//        public boolean hasNext(){
+//            return node.getNext()==null;
+//        }
+//
+//        public Node next(){
+//            return node.getNext();
+//        }
+//    }
+
+}
+
+
+
+

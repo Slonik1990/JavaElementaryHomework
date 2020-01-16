@@ -22,6 +22,14 @@ public class MyNodeList implements Collection {
         return text.toString();
     }
 
+    //возвращает содержимое ноды в виде строки
+    public String nodeToString(Node n){
+        if(n==null)return "null";
+        StringBuilder text = new StringBuilder();
+        text.append("[").append(n.getData()).append("] ");
+        return text.toString();
+    }
+
 
     @Override
     public int size() {
@@ -90,7 +98,82 @@ public class MyNodeList implements Collection {
 
     @Override
     public boolean remove(Object o) {
-        return false;
+
+        //ситуация с пустым списком
+        if(size==0){
+            return false;
+
+        //списком из 1 ноды
+        } else if(size == 1 ){
+            if(head.getData().equals(o)){
+                clear();
+            }else {
+                return false;
+            }
+
+        //список из 2 или более нод
+        } else {
+            if (o.equals(head.getData())) {
+                head = head.getNext();
+                size--;
+            } else if (o.equals(tail.getData())) {
+                tail = getPrevious(tail);
+                tail.setNext(null);
+                size--;
+            } else {
+                for (Node current = head; current != null; current = current.getNext()) {
+                    if (o.equals(current.getData())) removeNode(current);
+                }
+                return false;
+            }
+        }
+        return  true;
+    }
+
+    //если у текущей ноды следующая соответствует принимаемой - возвращает текущую
+    public Node getPrevious(Node pres){
+        if(pres.equals(head)&&size==0)return null;
+        for (Node n = head; n!= null; n = n.getNext()) {
+            if(n.getNext()==pres){
+                return n;
+            }
+        }
+        return null;
+    }
+
+    public boolean removeNode(Node goodBye){
+        //ситуация с пустым списком
+        if(size==0){
+            return false;
+
+        //если в списке одна нода
+        }else if(size == 1 ){
+            //и она соответствует принимаемой - список очищается
+            if(head.equals(goodBye)){
+                clear();
+            //не соответствует
+            }else {
+                return false;
+            }
+
+        //если в списке 2 и более нод
+        }else {
+            //удаляемая нода является головой, хвостом либо телом списка
+            if (goodBye.equals(head)) {
+                head = head.getNext();
+                size--;
+            } else if (goodBye.equals(tail)) {
+                tail = getPrevious(tail);
+                tail.setNext(null);
+                size--;
+            } else {
+                //предыдущая нода для удаляемой связывается со следующей
+                getPrevious(goodBye).setNext(goodBye.getNext());
+                size--;
+            }
+        }
+        return  true;
+
     }
 
     public boolean removeFirst() {
@@ -137,8 +220,11 @@ public class MyNodeList implements Collection {
 
     @Override
     public boolean addAll(Collection c) {
-        for (Object obj: c) {
-            add(obj);
+
+        Object [] assist = c.toArray();
+
+        for (int i = 0; i < assist.length; i++) {
+                add(assist[i]);
         }
         return true;
     }
@@ -160,17 +246,38 @@ public class MyNodeList implements Collection {
 
     @Override
     public boolean retainAll(Collection c) {
-        return false;
+        Object [] assist = c.toArray();
+        for (int i = 0; i < assist.length; i++) {
+            if(!contains(assist[i])) {
+                remove(assist[i]);
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean removeAll(Collection c) {
-        return false;
+        Object [] assist = c.toArray();
+        for (int i = 0; i < assist.length; i++) {
+            if(contains(assist[i])) {
+                remove(assist[i]);
+            }
+        }
+
+        return true;
     }
 
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        Object [] assist = c.toArray();
+        for (int i = 0; i < assist.length; i++) {
+            if(!contains(assist[i])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
@@ -180,10 +287,15 @@ public class MyNodeList implements Collection {
 
     @Override
     public Iterator iterator() {
-        return iterator();
+        return null;
     }
 
+    public Node getHead() {
+        return head;
+    }
 
-
-
+    public Node getTail() {
+        return tail;
+    }
 }
+
