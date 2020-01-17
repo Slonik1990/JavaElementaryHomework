@@ -106,6 +106,17 @@ public class Main {
         System.out.println(emptyColl.hasNext());//false
         System.out.println(emptyColl.next());//null
 
+        second.add("b");
+        System.out.println(emptyColl.hasNext());//true
+        System.out.println(emptyColl.next());//b
+
+        second.remove("b");
+        System.out.println(emptyColl.hasNext());//false
+        System.out.println(emptyColl.next());//null
+
+
+
+
 
 
     }
