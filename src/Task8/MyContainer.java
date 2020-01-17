@@ -1,5 +1,7 @@
 package Task8;
 
+import Task10.MyNodeList;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
@@ -218,7 +220,31 @@ public class MyContainer implements Collection {
 
     @Override
     public Iterator iterator() {
-        return null;
+        return new ArrIterator();
+    }
+
+
+
+    class ArrIterator implements Iterator {
+            int current = 0;
+            int last = -1;
+
+
+        @Override
+        public boolean hasNext() {
+            return (current<size());
+        }
+
+        @Override
+        public Object next() {
+            if(current>=size()){
+                return null;
+            } else {
+                last = current;
+                current = ++current;
+                return objects[last];
+            }
+        }
     }
 
 

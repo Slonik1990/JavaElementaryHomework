@@ -4,6 +4,7 @@ package Task8;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) {
@@ -92,6 +93,19 @@ public class Main {
         System.out.println(first);//Container content:  [3] [A] [3] [A]
       ((MyContainer) first).removeEvery(3);
         System.out.println(first);//Container content:  [A] [A]
+
+        Iterator iter = first.iterator();
+        System.out.println(iter.hasNext());//true
+        System.out.println(iter.next());//A
+        System.out.println(iter.hasNext());//true
+        System.out.println(iter.next());//A
+        System.out.println(iter.hasNext());//false
+        System.out.println(iter.next());//null
+
+        Iterator emptyColl = second.iterator();
+        System.out.println(emptyColl.hasNext());//false
+        System.out.println(emptyColl.next());//null
+
 
 
     }
