@@ -163,13 +163,8 @@ public class MyContainer implements Collection {
     //записывает коллекцию в принимаемый массив аналогично реализации других коллекций, например ArrayList
     @Override
     public Object[] toArray(Object[] arr) {
-        //если массив меньше коллекции, ничего не происходит
-        if(objects.length>arr.length)return arr;
-        //если массив равен коллекции все содержимое дублируется в массив и перезаписывает его
-        if (objects.length==arr.length){
-            for (int i = 0; i < objects.length; i++) {
-                arr[i] = objects[i];
-            }
+        if(objects.length>=arr.length){
+            toArray();
         }else {
             //если массив больше коллекции, информация записывается в начало массива
             // следующая за ней ячейка перезаписывается как null, а последующие ячейки массива сохраняют данные
@@ -177,7 +172,7 @@ public class MyContainer implements Collection {
                 arr[i] = objects[i];
             }
             arr[objects.length]=null;
-        }
+    }
         return arr;
     }
 

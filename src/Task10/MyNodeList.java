@@ -43,10 +43,12 @@ public class MyNodeList implements Collection {
 
     @Override
     public boolean contains(Object o) {
-        Object currant = head;
+        Node currant = head;
         while (currant!=null){
-            if(((Node) currant).getData().equals(o))return true;
-            currant = ((Node) currant).getNext();
+            if( currant.getData().equals(o)){
+                return true;
+            }
+            currant = currant.getNext();
         }
         return false;
     }
@@ -55,11 +57,11 @@ public class MyNodeList implements Collection {
     @Override
     public Object[] toArray() {
         Object [] obj = new Object[size];
-        Object currant = head;
+        Node currant = head;
         int i =0;
         while (currant!=null){
-            obj[i] = ((Node) currant).getData();
-            currant = ((Node) currant).getNext();
+            obj[i] =  currant.getData();
+            currant = currant.getNext();
             i++;
         }
         return obj;
@@ -281,16 +283,27 @@ public class MyNodeList implements Collection {
     }
 
     @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
+    public Object[] toArray(Object[] arr) {
+        if(size>=arr.length){
+            toArray();
+        }else {
+            //если массив больше списка, информация записывается в начало массива
+            // следующая за ней ячейка перезаписывается как null, а последующие ячейки массива сохраняют данные
+            int i = 0;
+            for ( Node n = head; n != null; n = n.getNext()) {
+                arr[i] = n.getData();
+            }
+            arr[size]=null;
+        }
+        return arr;
     }
 
 
-    public Node getHead() {
+    public Node getFirst() {
         return head;
     }
 
-    public Node getTail() {
+    public Node getLast() {
         return tail;
     }
 
@@ -299,19 +312,58 @@ public class MyNodeList implements Collection {
         return new NodeIterator();
     }
 
-    public class NodeIterator implements Iterator<Node> {
-        Node present = head;
+
+
+       class NodeIterator implements Iterator {
+        Node last;//индикатор последней ноды которая возвращалась методом Next
+        Node current = head;//текущая нода на которую перешел итератор
 
         @Override
         public boolean hasNext() {
-            if(present==null)return false;
-            return present.getNext()!=null;
+            if(current==null){
+                return false;
+            }
+            return current.getNext()!=null;
         }
+
         @Override
         public Node next() {
-            return present;
-
+            if(current==null){
+                return null;
+            } else {
+                last = current;
+                current = current.getNext();
+                return last;
+            }
         }
     }
+
+     class Node{
+        private Object data;
+        private Node next;
+
+        public Node(Object data) {
+            this.data = data;
+        }
+        public Node(Object data, Node next) {
+            this.data = data;
+            this.next = next;
+        }
+        public Node getNext() {
+            return next;
+        }
+
+        public void setNext(Node next) {
+            this.next = next;
+        }
+
+        public Object getData() {
+            return data;
+        }
+        public void setData(Object data) {
+            this.data = data;
+        }
+    }
+
 }
 
