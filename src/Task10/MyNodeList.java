@@ -2,7 +2,6 @@ package Task10;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class MyNodeList implements Collection {
     private Node head;
@@ -23,10 +22,11 @@ public class MyNodeList implements Collection {
     }
 
     //возвращает содержимое ноды в виде строки
-    public String nodeToString(Node n){
+    public static String nodeToString(Object n){
+        Node node = (Node)n;
         if(n==null)return "null";
         StringBuilder text = new StringBuilder();
-        text.append("[").append(n.getData()).append("] ");
+        text.append("[").append(node.getData()).append("] ");
         return text.toString();
     }
 
@@ -315,15 +315,12 @@ public class MyNodeList implements Collection {
 
 
        class NodeIterator implements Iterator {
-        Node last;//индикатор последней ноды которая возвращалась методом Next
+        Node prev;//индикатор последней ноды которая возвращалась методом Next
         Node current = head;//текущая нода на которую перешел итератор
 
         @Override
         public boolean hasNext() {
-            if(current==null){
-                return false;
-            }
-            return current.getNext()!=null;
+            return current!=null;
         }
 
         @Override
@@ -331,9 +328,9 @@ public class MyNodeList implements Collection {
             if(current==null){
                 return null;
             } else {
-                last = current;
+                prev = current;
                 current = current.getNext();
-                return last;
+                return prev;
             }
         }
     }

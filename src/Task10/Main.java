@@ -57,7 +57,13 @@ public class Main {
         second.addAll(third);
         System.out.println(second);//NodeList content: HEAD-> [1] [2] [3] [4] [5] [6] <- TAIL
 
-        second.retainAll(third);
+
+
+        for (Object n: second) {
+            System.out.print(MyNodeList.nodeToString(n)); //[1] [2] [3] [4] [5] [6]
+        }
+
+
         System.out.println(second);//NodeList content: HEAD-> [1] [2] <- TAIL
 
 

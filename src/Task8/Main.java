@@ -9,20 +9,6 @@ import java.util.Iterator;
 public class Main {
     public static void main(String[] args) {
 
-        Collection z = new MyContainer();
-        String aaa = new String("priver");
-        String bbb = new String("zdarova");
-        z.add(aaa);
-        z.add(bbb);
-        System.out.println(((MyContainer) z).getObject(aaa));
-        System.out.println(aaa);
-        aaa = bbb;
-        System.out.println(((MyContainer) z).getObject(aaa));
-        System.out.println(aaa);
-        System.out.println(((MyContainer) z).getElement(0));
-
-
-
         Collection x = new MyContainer();
         x.add(0);
         x.add(20);
@@ -34,6 +20,12 @@ public class Main {
         y.add(20);
         y.add(0);
         y.add(40);
+
+        for (Object o: y) {
+            System.out.print(o + " "); //20 0 40
+
+        }
+
 
         System.out.println(test(x, y));//true
 
@@ -106,13 +98,7 @@ public class Main {
         System.out.println(emptyColl.hasNext());//false
         System.out.println(emptyColl.next());//null
 
-        second.add("b");
-        System.out.println(emptyColl.hasNext());//true
-        System.out.println(emptyColl.next());//b
 
-        second.remove("b");
-        System.out.println(emptyColl.hasNext());//false
-        System.out.println(emptyColl.next());//null
 
 
 
@@ -124,6 +110,8 @@ public class Main {
 
     //remove и retane являются противоположными операциями, и совместно должны полностью очистить коллекцию
     public static boolean test(Collection a, Collection b){
+        System.out.println("\nTest result:");
+
         a.removeAll(b);
         a.retainAll(b);
         return a.isEmpty();
