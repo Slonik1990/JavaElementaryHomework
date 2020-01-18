@@ -12,33 +12,11 @@ public class Main {
         ArrList x = new ArrList();
 
         x.add(1);
-        x.add(2);
-        x.add(3);
-        x.add(4);
-        x.add(5);
-
-
-        ListIterator itX = x.listIterator();
-
-
-        System.out.println(itX.next());
-        System.out.println(itX.next());
-
-        System.out.println(itX.hasNext());
-        itX.remove();
-        System.out.println(itX.next());
-        System.out.println(itX.previous());
-        System.out.println(itX.next());
-
-
-
+       x.remove((Object) 100);
         System.out.println(x);
 
-        ArrList y = new ArrList();
-        y.add(1);
-        y.add(2);
-        y.add(3);
-        y.add(4);
+
+
 
 
     }

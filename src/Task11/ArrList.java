@@ -466,8 +466,15 @@ public class ArrList implements List {
             status = false;
         }
 
+        //добавляет элемент на место курсора
         @Override
         public void add(Object o) {
+            if(size()==0){
+                data = new Object[1];
+                data[0] = o;
+            }else {
+
+            }
 
         }
     }

@@ -57,6 +57,8 @@ public class MyContainer implements Collection {
 
     @Override
     public boolean remove(Object o) {
+        //проверка на наличие
+        if (!contains(o)) return false;
         int index=0;
         //вычисление индекса элемента, который необходимо удалить
         //не использовал метод getElement для сохранения полиморфизма, т.к данного метода нет в интерфейсе Collection
@@ -190,7 +192,7 @@ public class MyContainer implements Collection {
         for (Object element :this.objects) {
             if(element.equals(o))return o;
         }
-        return false;
+        return null;
     }
 
     @Override
