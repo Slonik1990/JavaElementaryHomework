@@ -1,6 +1,5 @@
 package Task11;
 
-import Task10.MyNodeList;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -13,33 +12,36 @@ public class NodeList implements List {
     private Node tail;
     private int size;
 
-    public NodeList(){
+    //конструкторы:
+
+    //дефолтный
+    public NodeList() {
     }
 
-    public NodeList(Collection coll){
-        Object[] obj = coll.toArray();
-        for (Object o: obj) {
+    //принимающий массив
+    public NodeList(Object[] obj) {
+        for (Object o : obj) {
             add(o);
         }
-
     }
 
-
-
-
-    public NodeList(NodeList nList){
-
+    //принимающий коллекцию
+    public NodeList(Collection coll) {
+        Object[] obj = coll.toArray();
+        for (Object o : obj) {
+            add(o);
+        }
     }
 
 
     @Override
     public String toString() {
-        if(this.size()==0) return "NodeList is empty";
+        if (this.size() == 0) return "NodeList is empty";
         StringBuilder text = new StringBuilder("NodeList content: HEAD-> ");
         Node present = head;
-        while (present!=null) {
+        while (present != null) {
             text.append("[").append(present.getData()).append("] ");
-            present=present.getNext();
+            present = present.getNext();
         }
         text.append("<- TAIL");
         return text.toString();
@@ -52,35 +54,61 @@ public class NodeList implements List {
 
     @Override
     public boolean isEmpty() {
-        return this.size==0;
+        return this.size == 0;
     }
 
     @Override
     public boolean contains(Object o) {
+        Node currant = head;
+        while (currant != null) {
+            if (currant.getData().equals(o)) {
+                return true;
+            }
+            currant = currant.getNext();
+        }
         return false;
-    }
 
+    }
 
 
     @Override
     public Object[] toArray() {
-        return new Object[0];
+        Object[] obj = new Object[size];
+        Node currant = head;
+        int i = 0;
+        while (currant != null) {
+            obj[i] = currant.getData();
+            currant = currant.getNext();
+            i++;
+        }
+        return obj;
     }
 
     @Override
-    public Object[] toArray(Object[] a) {
-        return new Object[0];
+    public Object[] toArray(Object[] arr) {
+        if(size>=arr.length){
+            toArray();
+        }else {
+            //если массив больше списка, информация записывается в начало массива
+            // следующая за ней ячейка перезаписывается как null, а последующие ячейки массива сохраняют данные
+            int i = 0;
+            for ( Node n = head; n != null; n = n.getNext()) {
+                arr[i] = n.getData();
+            }
+            arr[size]=null;
+        }
+        return arr;
     }
 
     @Override
     public boolean add(Object o) {
         Node created = new Node(o);
-        if(isEmpty()){
+        if (isEmpty()) {
             this.head = created;
             this.tail = created;
             this.size++;
             return true;
-        }else{
+        } else {
             this.tail.setNext(created);
             created.setPrev(tail);
             this.tail = created;
@@ -175,9 +203,7 @@ public class NodeList implements List {
     }
 
 
-
-
-   private class Node{
+    class Node {
 
         private Object data;
         private Node next;
@@ -191,18 +217,23 @@ public class NodeList implements List {
         public Node getNext() {
             return next;
         }
+
         public void setNext(Node next) {
             this.next = next;
         }
-       public Node getPrev() {
-           return prev;
-       }
-       public void setPrev(Node prev) {
-           this.prev = prev;
-       }
-       public Object getData() {
+
+        public Node getPrev() {
+            return prev;
+        }
+
+        public void setPrev(Node prev) {
+            this.prev = prev;
+        }
+
+        public Object getData() {
             return data;
         }
+
         public void setData(Object data) {
             this.data = data;
         }

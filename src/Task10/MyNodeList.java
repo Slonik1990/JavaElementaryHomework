@@ -110,7 +110,7 @@ public class MyNodeList implements Collection {
             if(head.getData().equals(o)){
                 clear();
             }else {
-                return false;
+                return true;
             }
 
         //список из 2 или более нод
