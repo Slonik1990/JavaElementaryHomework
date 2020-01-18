@@ -467,16 +467,32 @@ public class ArrList implements List {
         }
 
         //добавляет элемент на место курсора
+        //метод next() после данного метода вернет следующий после добавленного элемент
+        //метод previous() после данного метода вернет добавленный элемент
         @Override
         public void add(Object o) {
-            if(size()==0){
-                data = new Object[1];
-                data[0] = o;
-            }else {
 
+            if(!status){
+                throw new IllegalStateException("Please use next() or previous() before called this method");
             }
+            Object[] assist = new Object[data.length+1];
 
+            //переносится часть исходного массива до ячейки вставки
+            for (int i = 0; i <current; i++) {
+                assist[i] = data[i];
+            }
+            //вставка
+            assist[current] = o;
+
+            //дозапись исходных данных после вставки
+            for (int i = current; i < data.length; i++) {
+                assist[i + 1] = data[i];
+            }
+            data = assist;
+            current++;
+            status=false;
         }
+
     }
 
 
