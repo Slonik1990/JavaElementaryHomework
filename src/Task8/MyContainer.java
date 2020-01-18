@@ -95,7 +95,7 @@ public class MyContainer implements Collection {
     @Override
     //удаляет из вызывающей коллекции все элементы, которые есть в принимаемой
     public boolean removeAll(Collection rem) {
-        int count=0;
+        int count = 0;
         Object[] arr = new Object[objects.length];
         //каждый элемент масива object проверяется на отсутствие в rem и переносится во вспомогательный массив
         for (int i = 0; i < objects.length; i++) {
