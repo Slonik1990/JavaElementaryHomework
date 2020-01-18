@@ -225,7 +225,7 @@ public class MyContainer implements Collection {
 
 
 
-    class ArrIterator implements Iterator {
+    private class ArrIterator implements Iterator {
             int current = 0;
             int last = -1;
 
