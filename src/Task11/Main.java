@@ -2,37 +2,37 @@ package Task11;
 
 
 import javax.swing.text.html.HTMLDocument;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 public class Main {
 
     public static void main(String[] args) {
 
-        Object[] arr = new Object[4];
         ArrList x = new ArrList();
 
         x.add(1);
         x.add(2);
         x.add(3);
         x.add(4);
+        x.add(5);
 
 
-        Iterator itX = x.iterator();
-        System.out.println(itX.hasNext());
+        ListIterator itX = x.listIterator();
+
+
         System.out.println(itX.next());
-        System.out.println(itX.hasNext());
-        System.out.println(itX.next());
-        System.out.println(itX.hasNext());
-        System.out.println(itX.next());
-        System.out.println(itX.hasNext());
-        System.out.println(itX.next());
-        System.out.println(itX.hasNext());
         System.out.println(itX.next());
 
+        System.out.println(itX.hasNext());
+        itX.remove();
+        System.out.println(itX.next());
+        System.out.println(itX.previous());
+        System.out.println(itX.next());
+
+
+
+        System.out.println(x);
 
         ArrList y = new ArrList();
         y.add(1);

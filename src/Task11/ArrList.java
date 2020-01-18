@@ -367,9 +367,13 @@ public class ArrList implements List {
     }
 
 
+
+
+
     private class ArrIterator implements Iterator {
         int current = 0;//элемент на который указывает итератор
         int lastCalled = -1;//
+        boolean  status = false;//индикатор возможности вызвать remove
 
 
         @Override
@@ -384,11 +388,11 @@ public class ArrList implements List {
             } else {
                 lastCalled = current;
                 current = ++current;
+                status=true;
                 return data[lastCalled];
             }
         }
     }
-
 
     private class ArrListIterator extends ArrIterator implements ListIterator {
 
@@ -396,36 +400,60 @@ public class ArrList implements List {
         public ArrListIterator() {
             super();
         }
-
         public ArrListIterator(int index) {
             super();
             this.current = index;
-
         }
-
 
         @Override
         public boolean hasPrevious() {
-            return false;
+            return current>0;
         }
 
+        //возвращает элемент находящийся перед курсором
+        //если вызвать next и previous подряд, вернет тот же элемент
         @Override
         public Object previous() {
-            return null;
+            if (current <= 0) {
+                throw new NoSuchElementException("NO_ELEMENTS_BEFORE");
+            } else {
+                lastCalled = current-1;
+                current = --current;
+                status=true;
+                return data[lastCalled];
+            }
         }
 
+        //возвращает индекс элемента который будет вызван методом next, если находится в конце коллекции вернет ее размер
         @Override
         public int nextIndex() {
-            return 0;
+            return current;
         }
 
+        //возвращает индекс элемента который будет вызван методом previous, если находится в начале коллекции вернет -1
         @Override
         public int previousIndex() {
-            return 0;
+            return current-1;
         }
 
+
+        //метод удаляет из коллекции элемент, который был вызван последним вызовом next() или  previous()
+        //не может вызываться если вызывался полсе последнего вызова next/previous
         @Override
         public void remove() {
+            if(!status){
+                throw new IllegalStateException("Please use next() or previous() before called this method");
+            }
+            Object[] assist = new Object[data.length - 1];
+            for (int i = 0; i < lastCalled; i++) {
+                assist[i] = data[i];
+            }
+            for (int i = lastCalled; i < assist.length; i++) {
+                assist[i] = data[i + 1];
+            }
+            current--;
+            data = assist;
+            status=false;
 
         }
 
