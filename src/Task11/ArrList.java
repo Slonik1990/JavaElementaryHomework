@@ -373,7 +373,7 @@ public class ArrList implements List {
     private class ArrIterator implements Iterator {
         int current = 0;//элемент на который указывает итератор
         int lastCalled = -1;//
-        boolean  status = false;//индикатор возможности вызвать remove
+        boolean  status = false;//индикатор возможности вызвать remove, set, add (modification operation)
 
 
         @Override
@@ -459,7 +459,11 @@ public class ArrList implements List {
 
         @Override
         public void set(Object o) {
-
+            if(!status){
+                throw new IllegalStateException("Please use next() or previous() before called this method");
+            }
+            data[lastCalled] = o;
+            status = false;
         }
 
         @Override
