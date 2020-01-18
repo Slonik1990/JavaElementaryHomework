@@ -9,20 +9,50 @@ import java.util.ListIterator;
 
 public class NodeList implements List {
 
+    private Node head;
+    private Node tail;
+    private int size;
+
+    public NodeList(){
+    }
+
+    public NodeList(Collection coll){
+        Object[] obj = coll.toArray();
+        for (Object o: obj) {
+            add(o);
+        }
+
+    }
+
+
+
+
+    public NodeList(NodeList nList){
+
+    }
+
 
     @Override
     public String toString() {
-        return "NodeList{}";
+        if(this.size()==0) return "NodeList is empty";
+        StringBuilder text = new StringBuilder("NodeList content: HEAD-> ");
+        Node present = head;
+        while (present!=null) {
+            text.append("[").append(present.getData()).append("] ");
+            present=present.getNext();
+        }
+        text.append("<- TAIL");
+        return text.toString();
     }
 
     @Override
     public int size() {
-        return 0;
+        return this.size;
     }
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return this.size==0;
     }
 
     @Override
@@ -30,10 +60,7 @@ public class NodeList implements List {
         return false;
     }
 
-    @Override
-    public Iterator iterator() {
-        return null;
-    }
+
 
     @Override
     public Object[] toArray() {
@@ -47,7 +74,19 @@ public class NodeList implements List {
 
     @Override
     public boolean add(Object o) {
-        return false;
+        Node created = new Node(o);
+        if(isEmpty()){
+            this.head = created;
+            this.tail = created;
+            this.size++;
+            return true;
+        }else{
+            this.tail.setNext(created);
+            created.setPrev(tail);
+            this.tail = created;
+            this.size++;
+        }
+        return true;
     }
 
     @Override
@@ -121,6 +160,11 @@ public class NodeList implements List {
     }
 
     @Override
+    public Iterator iterator() {
+        return null;
+    }
+
+    @Override
     public ListIterator listIterator() {
         return null;
     }
@@ -130,26 +174,33 @@ public class NodeList implements List {
         return null;
     }
 
+
+
+
    private class Node{
+
         private Object data;
         private Node next;
+        private Node prev;
 
         public Node(Object data) {
             this.data = data;
         }
-        public Node(Object data, MyNodeList.Node next) {
-            this.data = data;
-            this.next = next;
-        }
-        public MyNodeList.Node getNext() {
+
+
+        public Node getNext() {
             return next;
         }
-
-        public void setNext(MyNodeList.Node next) {
+        public void setNext(Node next) {
             this.next = next;
         }
-
-        public Object getData() {
+       public Node getPrev() {
+           return prev;
+       }
+       public void setPrev(Node prev) {
+           this.prev = prev;
+       }
+       public Object getData() {
             return data;
         }
         public void setData(Object data) {

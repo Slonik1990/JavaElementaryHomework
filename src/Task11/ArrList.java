@@ -59,7 +59,11 @@ public class ArrList implements List {
     //невероятная оптимизация)))
     @Override
     public Object[] toArray() {
-        return Arrays.copyOf(data, size());
+        Object[] obj = new Object[size()];
+        for (int i = 0; i < size(); i++) {
+            obj[i] = data[i];
+        }
+        return obj;
     }
 
     @Override

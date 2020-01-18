@@ -192,7 +192,7 @@ public class MyContainer implements Collection {
         for (Object element :this.objects) {
             if(element.equals(o))return o;
         }
-        throw new IllegalArgumentException();
+        return null;
     }
 
     @Override

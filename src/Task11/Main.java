@@ -9,25 +9,14 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ArrList x = new ArrList();
+        ArrList arrList = new ArrList();
+        arrList.add(1);
+        arrList.add(1);
+        arrList.add(1);
+        arrList.add(1);
 
-        x.add(1);
-        x.add(2);
-        x.add(3);
-        x.add(4);
-        ListIterator xIt = x.listIterator();
-        System.out.println(xIt.next());
-        System.out.println(xIt.next());
-        xIt.add(9);
-        xIt.add(9);
-        System.out.println(x);
-        System.out.println(xIt.previous());
-
-
-
-
-
-
+        NodeList nL = new NodeList(arrList);
+        System.out.println(nL);
 
 
     }
