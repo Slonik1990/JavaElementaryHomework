@@ -238,27 +238,39 @@ public class NodeList implements List {
         if (c.size() == 0){
             return false;
         }
-        int removes = 0;
+
+        boolean changing = false;
         Object [] assist = c.toArray();
         for (int i = 0; i < assist.length; i++) {
             if(contains(assist[i])) {
                 remove(assist[i]);
-                removes++;
+                changing = true;
             }
         }
 
-        return removes!=0;
+        return changing;
     }
 
-    //TODO не работает
     @Override
     public boolean retainAll(Collection c) {
-        Object [] assist = c.toArray();
-        for (int i = 0; i < assist.length; i++) {
-            if(!contains(assist[i])) {
-                remove(assist[i]);
+        if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
+        if (c.size() == 0){
+            return false;
+        }
+        Object [] input = c.toArray();
+        NodeList  assist = new NodeList();
+        int count = 0;//счетчик совпадений
+        for (int i = 0; i < input.length; i++) {
+            if((contains(input[i]))) {
+                assist.add(input[i]);
+                count++;
             }
         }
+        if(count==size){
+            return false;
+        }
+        clear();
+        addAll(assist);
         return true;
     }
 
