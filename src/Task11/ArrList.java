@@ -176,6 +176,7 @@ public class ArrList implements List {
         if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("WRONG INDEX");
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) return false;
+
         Object[] assist = new Object[data.length + c.size()];
         Object[] input = c.toArray();
 
@@ -189,7 +190,7 @@ public class ArrList implements List {
         }
         //дозапись исходных данных после вставки
         for (int i = index; i < data.length; i++) {
-            assist[index + input.length] = data[i];
+            assist[i + input.length] = data[i];
         }
         data = assist;
         return true;

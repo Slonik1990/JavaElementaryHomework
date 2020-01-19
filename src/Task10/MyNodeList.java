@@ -110,7 +110,7 @@ public class MyNodeList implements Collection {
             if(head.getData().equals(o)){
                 clear();
             }else {
-                return true;
+                return false;
             }
 
         //список из 2 или более нод
@@ -285,7 +285,7 @@ public class MyNodeList implements Collection {
     @Override
     public Object[] toArray(Object[] arr) {
         if(size>=arr.length){
-            toArray();
+            arr = toArray();
         }else {
             //если массив больше списка, информация записывается в начало массива
             // следующая за ней ячейка перезаписывается как null, а последующие ячейки массива сохраняют данные

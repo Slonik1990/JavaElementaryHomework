@@ -8,7 +8,7 @@ import java.util.ListIterator;
 
 public class NodeList implements List {
 
-    private Node head;
+    private Node head = null;
     private Node tail;
     private int size;
 
@@ -86,16 +86,16 @@ public class NodeList implements List {
 
     @Override
     public Object[] toArray(Object[] arr) {
-        if(size>=arr.length){
-            toArray();
-        }else {
+        if (size >= arr.length) {
+            arr = toArray();
+        } else {
             //если массив больше списка, информация записывается в начало массива
             // следующая за ней ячейка перезаписывается как null, а последующие ячейки массива сохраняют данные
             int i = 0;
-            for ( Node n = head; n != null; n = n.getNext()) {
+            for (Node n = head; n != null; n = n.getNext()) {
                 arr[i] = n.getData();
             }
-            arr[size]=null;
+            arr[size] = null;
         }
         return arr;
     }
@@ -117,40 +117,166 @@ public class NodeList implements List {
         return true;
     }
 
+    //true если коллекция изменилась
     @Override
     public boolean remove(Object o) {
+        //проверка на наличие, сразу определяет стоит ли производить дальнейшие операции
+        if (!contains(o)) {
+            return false;
+        }
+        //списком из 1 ноды (если метод прошел прошлый блок, эта нода соответствует принимаемому объекту)
+        if (size == 1) {
+            clear();
+            return true;
+        }
+
+        //список из 2 или более нод
+        if (o.equals(head.getData())) {
+            head = head.getNext();
+            head.setPrev(null);
+            size--;
+            return true;
+        } else if (o.equals(tail.getData())) {
+            tail = tail.getPrev();
+            tail.setNext(null);
+            size--;
+            return true;
+        } else {
+            for (Node n = head.getNext(); n != tail; n = n.getNext()) {
+                if (n.getData().equals(o)) {
+                    n.getPrev().setNext(n.getNext());//от прошлой ноды ссылка устанавливается на следующую
+                    n.getNext().setPrev(n.getPrev());//от следующей ноды ссылка устанавливается на прошлую
+                    size--;
+                    return true;
+                }
+            }
+
+        }
         return false;
     }
 
+    //true если все элементы принимаемой коллекции присутствуют в вызывающей
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        //принимаемая коллекция преобразуется в массив, каждый элемент которого проверяется на наличие в вызывающей коллекции
+        //при обнаружении элемента, которого нет в вызывающей коллекции метод возвращает false и дальнейшую проверку не производит
+
+        if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
+        if (c.size() == 0) {
+            return false;
+        }
+        Object[] arr = c.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            if (!contains(arr[i])) return false;
+        }
+        return true;
     }
 
+    //true если коллекция изменилась
     @Override
     public boolean addAll(Collection c) {
-        return false;
+        if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
+        if (c.size() == 0) {
+            return false;
+        }
+        Object[] assist = c.toArray();
+        for (int i = 0; i < assist.length; i++) {
+            add(assist[i]);
+        }
+
+        return true;
     }
 
+
+    //вызывающая и принимаемая коллекции преобразуются в массивы, которые объединяются в необходимом порядке в массив
+    //коллекция затирается и перезаполняется из массива содержащего обе коллекции
+    //метод допускает добавление после всех элементов если в качестве индекса передать размерность текущей коллекции
     @Override
     public boolean addAll(int index, Collection c) {
-        return false;
+        //проверки индексов и принимаемой коллекции
+        if (index < 0 || index > size()) throw new IndexOutOfBoundsException("WRONG INDEX");
+        if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
+        if (c.size() == 0) {
+            return false;
+        }
+        //вспомогательные массивы
+        Object[] input = c.toArray();//принимаемая коллекция
+        Object[] data = toArray();//текущая
+        Object[] assist = new Object[input.length + data.length];//объединяющий массив
+
+        //переносится часть исходной коллекции до индекса
+        for (int i = 0; i < index; i++) {
+            assist[i] = data[i];
+        }
+        //вставка
+        for (int i = 0; i < input.length; i++) {
+            assist[i + index] = input[i];
+        }
+        //дозапись исходных данных после вставки
+        for (int i = index; i < data.length; i++) {
+            assist[i + input.length] = data[i];
+        }
+
+        //очистка
+        clear();
+
+        //перезапись
+        for (int i = 0; i < assist.length; i++) {
+            add(assist[i]);
+        }
+
+        return true;
+
     }
 
+    //удаляет из  коллекции все элементы содержащиеся в принимаемой
+    //если в  коллекции несколько элементов соответствуют одному из элементов вызывающей - удаляет все
+    //метод возвращает true если коллекция изменилась
     @Override
     public boolean removeAll(Collection c) {
-        return false;
+        if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
+        if (c.size() == 0){
+            return false;
+        }
+        int removes = 0;
+        Object [] assist = c.toArray();
+        for (int i = 0; i < assist.length; i++) {
+            if(contains(assist[i])) {
+                remove(assist[i]);
+                removes++;
+            }
+        }
+
+        return removes!=0;
     }
 
+    //TODO не работает
     @Override
     public boolean retainAll(Collection c) {
-        return false;
+        Object [] assist = c.toArray();
+        for (int i = 0; i < assist.length; i++) {
+            if(!contains(assist[i])) {
+                remove(assist[i]);
+            }
+        }
+        return true;
     }
 
     @Override
     public void clear() {
-
+        Node current = head;
+        Node prev;
+        while (current != null) {
+            prev = current;
+            current = current.getNext();
+            prev.setPrev(null);
+            prev.setNext(null);
+        }
+        size = 0;
+        head = null;
+        tail = null;
     }
+
 
     @Override
     public Object get(int index) {
