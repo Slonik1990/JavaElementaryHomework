@@ -202,7 +202,9 @@ public class ArrList implements List {
     @Override
     public boolean removeAll(Collection c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
-        if (c.size() == 0) return false;
+        if (c.size() == 0){
+            return false;//не с чем сравнивать для удаления
+        }
         int count = 0;
         Object[] arr = new Object[data.length];
         //каждый элемент масива data проверяется на отсутствие в c и переносится во вспомогательный массив

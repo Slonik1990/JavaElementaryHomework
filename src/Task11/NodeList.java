@@ -59,6 +59,9 @@ public class NodeList implements List {
 
     @Override
     public boolean contains(Object o) {
+        if (size == 0) {
+            return false;
+        }
         Node currant = head;
         while (currant != null) {
             if (currant.getData().equals(o)) {
@@ -100,6 +103,7 @@ public class NodeList implements List {
         return arr;
     }
 
+    //добавляет элемент в конец списка
     @Override
     public boolean add(Object o) {
         Node created = new Node(o);
@@ -115,6 +119,21 @@ public class NodeList implements List {
             this.size++;
         }
         return true;
+    }
+
+    //добавляет в начало
+    public void push(Object o) {
+        Node created = new Node(o);
+        if (isEmpty()) {
+            this.head = created;
+            this.tail = created;
+            this.size++;
+        } else {
+            created.setNext(head);
+            head.setPrev(created);
+            this.head = created;
+            this.size++;
+        }
     }
 
     //true если коллекция изменилась
@@ -150,7 +169,50 @@ public class NodeList implements List {
                     return true;
                 }
             }
+        }
+        return false;
+    }
 
+
+    public boolean removeNode(Node goodBye) {
+        //ситуация с пустым списком
+        if (size == 0) {
+            return false;
+
+            //если в списке одна нода
+        } else if (size == 1) {
+            //и она соответствует принимаемой - список очищается
+            if (head.equals(goodBye)) {
+                clear();
+                //не соответствует
+            } else {
+                return false;
+            }
+
+            //если в списке 2 и более нод
+        } else {
+            //удаляемая нода является головой, хвостом либо телом списка
+            if (goodBye.equals(head)) {
+                head = head.getNext();
+                head.setPrev(null);
+                size--;
+                return true;
+            } else if (goodBye.equals(tail)) {
+                tail = tail.getPrev();
+                tail.setNext(null);
+                size--;
+                return true;
+            } else {
+                for (Node n = head.getNext(); n != tail; n = n.getNext()) {
+                    if (n.equals(goodBye)) {
+                        n.getPrev().setNext(n.getNext());//от прошлой ноды ссылка устанавливается на следующую
+                        n.getNext().setPrev(n.getPrev());//от следующей ноды ссылка устанавливается на прошлую
+                        size--;
+                        return true;
+                    }
+                }
+
+            }
         }
         return false;
     }
@@ -179,9 +241,9 @@ public class NodeList implements List {
         if (c.size() == 0) {
             return false;
         }
-        Object[] assist = c.toArray();
-        for (int i = 0; i < assist.length; i++) {
-            add(assist[i]);
+        Object[] buffer = c.toArray();
+        for (int i = 0; i < buffer.length; i++) {
+            add(buffer[i]);
         }
 
         return true;
@@ -202,27 +264,28 @@ public class NodeList implements List {
         //вспомогательные массивы
         Object[] input = c.toArray();//принимаемая коллекция
         Object[] data = toArray();//текущая
-        Object[] assist = new Object[input.length + data.length];//объединяющий массив
+        Object[] buffer = new Object[input.length + data.length];//объединяющий массив
 
         //переносится часть исходной коллекции до индекса
         for (int i = 0; i < index; i++) {
-            assist[i] = data[i];
+            buffer[i] = data[i];
         }
         //вставка
         for (int i = 0; i < input.length; i++) {
-            assist[i + index] = input[i];
+            buffer[i + index] = input[i];
         }
+
         //дозапись исходных данных после вставки
         for (int i = index; i < data.length; i++) {
-            assist[i + input.length] = data[i];
+            buffer[i + input.length] = data[i];
         }
 
         //очистка
         clear();
 
         //перезапись
-        for (int i = 0; i < assist.length; i++) {
-            add(assist[i]);
+        for (int i = 0; i < buffer.length; i++) {
+            add(buffer[i]);
         }
 
         return true;
@@ -235,43 +298,39 @@ public class NodeList implements List {
     @Override
     public boolean removeAll(Collection c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
-        if (c.size() == 0){
-            return false;
+        if (c.size() == 0) {
+            return false;//не с чем сравнивать для удаления
         }
 
         boolean changing = false;
-        Object [] assist = c.toArray();
-        for (int i = 0; i < assist.length; i++) {
-            if(contains(assist[i])) {
-                remove(assist[i]);
-                changing = true;
+        for (Node n = head; n != null; n = n.getNext()) {
+            if (c.contains(n.getData())) {
+                removeNode(n);
+                changing = true;//если хоть одна нода удалена - коллекция изменилась
             }
         }
-
         return changing;
     }
 
+    //метод сохраняет в принимаемой коллекции элементы присутствующие в вызываемой
+    //если в  коллекции несколько элементов соответствуют одному из элементов вызывающей - сохраняет все
+    //метод возвращает true если коллекция изменилась
     @Override
     public boolean retainAll(Collection c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
-        if (c.size() == 0){
-            return false;
+        //если принимаемая коллекция пуста, то и вызывающая опустеет
+        if (c.size() == 0) {
+            clear();
+            return true;
         }
-        Object [] input = c.toArray();
-        NodeList  assist = new NodeList();
-        int count = 0;//счетчик совпадений
-        for (int i = 0; i < input.length; i++) {
-            if((contains(input[i]))) {
-                assist.add(input[i]);
-                count++;
+        boolean changing = false;
+        for (Node n = head; n != null; n = n.getNext()) {
+            if (!c.contains(n.getData())) {
+                removeNode(n);
+                changing = true;//если хоть одна нода удалена - коллекция изменилась
             }
         }
-        if(count==size){
-            return false;
-        }
-        clear();
-        addAll(assist);
-        return true;
+        return changing;
     }
 
     @Override
@@ -289,45 +348,151 @@ public class NodeList implements List {
         tail = null;
     }
 
+    //возвращает ноду по индексу
+    public Node getNode(int index) {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1) + "; Index:" + index);
+        }
+        if (index == 0) {
+            return head;
+        }
+        if (index == size - 1) {
+            return tail;
+        }
+        Node current = head;
+        for (int i = 0; i != index; i++) {
+            current = current.getNext();
+        }
+        return current;
+
+    }
+
 
     @Override
     public Object get(int index) {
-        return null;
+        return getNode(index).getData();
     }
 
+    //перезаписывает данные в ноде с указанным индексом, возвращает исходные данные
     @Override
     public Object set(int index, Object element) {
-        return null;
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1) + "; Index:" + index);
+        }
+
+        Node current = getNode(index);//необходимая нода
+        Object buffer = current.getData();//сохранение данных
+        current.setData(element);//перезапись
+        return buffer;
+
     }
 
+    //преобразует принимаемы объект в ноду и вставляет по указанному индексу
+    //если в качестве индекса предать размер списка - элемент прибавится в конце
     @Override
     public void add(int index, Object element) {
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size()) + "; Index:" + index);
+        }
+
+        if (index == size) {
+            add(element);
+        } else if (index == 0) {
+            push(element);
+        } else {
+            Node added = new Node(element);//генерация ноды
+            Node after = getNode(index);//нода по указанному индексу, которая станет следующей для добавляемой
+            Node before = getNode(index - 1);//нода перед указанным индексом, которая станет предыдущей для добавляемой
+            //перенаправление ссылок
+            after.setPrev(added);
+            added.setNext(after);
+            before.setNext(added);
+            added.setPrev(before);
+            size++;
+        }
 
     }
 
     @Override
     public Object remove(int index) {
-        return null;
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1) + "; Index:" + index);
+        }
+        Object buffer = getNode(index).getData();
+        Node lost = getNode(index);
+        Node before = lost.getPrev();
+        Node after = lost.getNext();
+
+
+        if (index == size) {
+            tail = tail.getPrev();
+            tail.setNext(null);
+            size--;
+        } else if (index == 0) {
+            head = head.getNext();
+            head.setPrev(null);
+            size--;
+        } else {
+            before.setNext(after);
+            after.setPrev(before);
+            size--;
+        }
+
+        return buffer;
     }
 
     @Override
     public int indexOf(Object o) {
-        return 0;
+        //проверка на наличие, сразу определяет стоит ли производить дальнейшие операции
+        if (!contains(o)) {
+            return -1;
+        }
+
+        int index = 0;
+        for (Node n = head; !o.equals(n.getData()); n = n.getNext()) {
+            index++;
+        }
+        return index;
     }
+
 
     @Override
     public int lastIndexOf(Object o) {
-        return 0;
+        //проверка на наличие, сразу определяет стоит ли производить дальнейшие операции
+        if (!contains(o)) {
+            return -1;
+        }
+        int index = size - 1;
+        for (Node n = tail; !o.equals(n.getData()); n = n.getPrev()) {
+            index--;
+        }
+        return index;
     }
 
+    //создает новую коллекцию содержащую элементы от первого аргумента(включительно), до второго (не включительно)
     @Override
     public List subList(int fromIndex, int toIndex) {
-        return null;
+        //проверка индексов
+        if (fromIndex < 0 || fromIndex >= size() || toIndex < 0 || toIndex >= size()) {
+            throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1));
+        }
+
+
+        List sub = new NodeList();//пустой лист для заполнения и последующего возврата методом
+        int index = 0;//индекс элемента растущий параллельно с перебором листа
+        for (Node n = head; n != null; n = n.getNext()) {
+            if (index >= fromIndex && index < toIndex) {
+                sub.add(n.getData());
+            }
+            index++;
+        }
+
+        return sub;
     }
 
     @Override
     public Iterator iterator() {
-        return null;
+        return new NodeIterator();
     }
 
     @Override
@@ -341,11 +506,87 @@ public class NodeList implements List {
     }
 
 
+    class NodeIterator implements Iterator {
+        //нода на которую не имеют ссылок элементы списка
+        //как шпион постоянно находится между элементами списка
+        Node cursor = new Node();
+
+        public NodeIterator(){
+            cursor.setNext(head);
+            cursor.setPrev(null);
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor.getNext()!=null;
+        }
+
+        @Override
+        public Node next() {
+            if(cursor.getNext()==null){
+                return null;
+            } else {
+                cursor.setPrev(cursor.getNext());
+                cursor.setNext(cursor.getNext().getNext());
+                return cursor.getPrev();
+            }
+        }
+    }
+
+    class NodeListIterator  extends NodeIterator implements ListIterator {
+        @Override
+        public boolean hasNext() {
+            return super.hasNext();
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return false;
+        }
+
+        @Override
+        public Object previous() {
+            return null;
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+
+        }
+
+        @Override
+        public void set(Object o) {
+
+        }
+
+        @Override
+        public void add(Object o) {
+
+        }
+    }
+
+
+
+
     class Node {
 
         private Object data;
         private Node next;
         private Node prev;
+
+
+        public Node() {
+        }
 
         public Node(Object data) {
             this.data = data;
