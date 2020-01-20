@@ -172,8 +172,6 @@ public class NodeList implements List {
     }
 
 
-
-
     //true если все элементы принимаемой коллекции присутствуют в вызывающей
     @Override
     public boolean containsAll(Collection c) {
@@ -308,7 +306,7 @@ public class NodeList implements List {
 
     @Override
     public Object get(int index) {
-        return getNode(index).getData();
+        return getNodeData(getNode(index));
     }
 
     //перезаписывает данные в ноде с указанным индексом, возвращает исходные данные
@@ -446,9 +444,9 @@ public class NodeList implements List {
     //дополнительные методы для работы с нодами
 
     //возвращает содержимое ноды в виде строки
-    public static String nodeToString(Object n){
-        Node node = (Node)n;
-        if(n==null)return "null";
+    public static String nodeToString(Object n) {
+        Node node = (Node) n;
+        if (n == null) return "null";
         StringBuilder text = new StringBuilder();
         text.append("[").append(node.getData()).append("] ");
         return text.toString();
@@ -516,25 +514,24 @@ public class NodeList implements List {
     }
 
 
-//    public int getNodeIndex (Node n){
-//        int index = 0;
-//        if(n==null){
-//            return -1;
-//        }
-//        for (Node curr = head; curr!=null ; curr = curr.getNext()) {
-//            if(curr.equals(n)){
-//
-//            }
-//        }
-//        return index;
-//    }
-//
-//    public Object getData(Node n){
-//        return n.getData();
-//    }
-//
+    public int getNodeIndex(Node n) {
+        int index = 0;
+        if (n == null) {
+            return -1;
+        }
+        for (Node curr = head; curr != null; curr = curr.getNext()) {
+            if (curr.equals(n)) {
+                return index;
+            }
+            index++;
+        }
+        return index;
+    }
 
-
+    public Object getNodeData(Node n) {
+        return n.getData();
+    }
+//
 
 
     //итератор реализующий интерфейс Iterator
@@ -547,10 +544,9 @@ public class NodeList implements List {
         Node lastCalled;//последняя вызывавшаяся нода
 
 
-
         @Override
         public boolean hasNext() {
-            return current!= null;
+            return current != null;
         }
 
         @Override
@@ -561,7 +557,7 @@ public class NodeList implements List {
                 previous = current;
                 current = current.getNext();
                 cursorIndex++;
-                status=true;
+                status = true;
                 lastCalled = previous;
                 return lastCalled;
             }
@@ -571,7 +567,6 @@ public class NodeList implements List {
             return cursorIndex;
         }
     }
-
 
 
 //    реализация итератора при которой курсой занимает промежуточное положение между нодами списка, и не имеет входящих ссылок
@@ -605,28 +600,29 @@ public class NodeList implements List {
     class NodeListIterator extends NodeIterator implements ListIterator {
 
 
-        public NodeListIterator(){
+        public NodeListIterator() {
         }
 
-        public NodeListIterator(int index){
-            current = getNode(index);
+        public NodeListIterator(int index) {
+            this.current = getNode(index);
+            this.previous = current.getPrev();
         }
 
         //методы возвращающие данные
         @Override
         public boolean hasPrevious() {
-            return current.getPrev()!=null;
+            return current.getPrev() != null;
         }
 
         @Override
         public Object previous() {
-            if (previous==null) {
+            if (previous == null) {
                 throw new NoSuchElementException("END_OF_LIST");
             } else {
                 current = previous;
                 previous = current.getPrev();
                 cursorIndex--;
-                status=true;
+                status = true;
                 lastCalled = current;
                 return lastCalled;
             }
@@ -635,7 +631,7 @@ public class NodeList implements List {
 
         @Override
         public int nextIndex() {
-            if(cursorIndex==size()){
+            if (cursorIndex == size()) {
                 System.out.println("Курсор вне листа, вызов метода next() приведет к ошибке");
             }
 
@@ -644,10 +640,10 @@ public class NodeList implements List {
 
         @Override
         public int previousIndex() {
-            if(cursorIndex==-1){
+            if (cursorIndex == -1) {
                 System.out.println("Курсор вне листа, вызов метода previous() приведет к ошибке");
             }
-            return cursorIndex -1;
+            return cursorIndex - 1;
         }
 
         //методы итератора изменяющие коллекцию
@@ -656,7 +652,7 @@ public class NodeList implements List {
         //не может вызываться если вызывался полсе последнего вызова next/previous
         @Override
         public void remove() {
-            if(!status){
+            if (!status) {
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
             current = current.getNext();
@@ -668,17 +664,17 @@ public class NodeList implements List {
         //устанавливает значение для поля данных последней вызывавшейся ноды
         @Override
         public void set(Object o) {
-            if(!status){
+            if (!status) {
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
             lastCalled.setData(o);
-            status=false;
+            status = false;
         }
 
         //добавляет на позицию курсора новую ноду, смещая последующие
         @Override
         public void add(Object o) {
-            if(!status){
+            if (!status) {
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
             Node added = new Node(o);
@@ -688,7 +684,7 @@ public class NodeList implements List {
             current.setNext(lastCalled);
             size++;
             cursorIndex++;
-            status=false;
+            status = false;
 
         }
     }
@@ -732,5 +728,5 @@ public class NodeList implements List {
         public void setData(Object data) {
             this.data = data;
         }
-     }
+    }
 }
