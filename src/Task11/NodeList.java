@@ -688,6 +688,7 @@ public class NodeList implements List {
             current.setNext(lastCalled);
             size++;
             cursorIndex++;
+            status=false;
 
         }
     }
