@@ -19,11 +19,7 @@ public class Main {
         NodeList n = new NodeList();
         n.add(0);
         n.add(1);
-        n.add(2);
-        n.add(3);
-        n.add(4);
-        n.add(5);
-        n.add(6);
+
         n.add(7);
         n.add(8);
         n.add(9);
