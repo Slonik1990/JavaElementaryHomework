@@ -539,7 +539,6 @@ public class NodeList implements List {
 
         Node current = head;//текущая нода на которую перешел итератор
         Node previous;
-        int cursorIndex = 0;
         boolean status = false;//индикатор вызова next или previous
         Node lastCalled;//последняя вызывавшаяся нода
 
@@ -554,17 +553,12 @@ public class NodeList implements List {
             if (current == null) {
                 throw new NoSuchElementException("END_OF_LIST");
             } else {
-                previous = current;
                 current = current.getNext();
-                cursorIndex++;
+                previous = current.getPrev();
                 status = true;
                 lastCalled = previous;
                 return lastCalled;
             }
-        }
-
-        public int getCursorIndex() {
-            return cursorIndex;
         }
     }
 
@@ -619,9 +613,9 @@ public class NodeList implements List {
             if (previous == null) {
                 throw new NoSuchElementException("END_OF_LIST");
             } else {
-                current = previous;
+                current = current.getPrev();
                 previous = current.getPrev();
-                cursorIndex--;
+
                 status = true;
                 lastCalled = current;
                 return lastCalled;
@@ -631,19 +625,13 @@ public class NodeList implements List {
 
         @Override
         public int nextIndex() {
-            if (cursorIndex == size()) {
-                System.out.println("Курсор вне листа, вызов метода next() приведет к ошибке");
-            }
-
-            return cursorIndex;
+            return getNodeIndex(current);
         }
 
         @Override
         public int previousIndex() {
-            if (cursorIndex == -1) {
-                System.out.println("Курсор вне листа, вызов метода previous() приведет к ошибке");
-            }
-            return cursorIndex - 1;
+
+            return getNodeIndex(previous);
         }
 
         //методы итератора изменяющие коллекцию
@@ -655,9 +643,9 @@ public class NodeList implements List {
             if (!status) {
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
-            current = current.getNext();
             removeNode(lastCalled);
             status = false;
+
         }
 
 
@@ -683,7 +671,7 @@ public class NodeList implements List {
             previous.setNext(lastCalled);
             current.setNext(lastCalled);
             size++;
-            cursorIndex++;
+//            cursorIndex++;
             status = false;
 
         }
