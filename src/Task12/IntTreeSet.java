@@ -208,7 +208,7 @@ public class IntTreeSet implements Set {
 
         @Override
         public boolean hasNext() {
-            return current!=null;
+            return lastCalled!=null;
         }
 
 
