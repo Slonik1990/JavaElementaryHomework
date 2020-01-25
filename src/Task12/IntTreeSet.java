@@ -193,7 +193,7 @@ public class IntTreeSet implements Set {
     class TreeIterator implements Iterator {
 
         IntTreeNode current = root;
-        IntTreeNode lastCalled;
+        IntTreeNode lastCalled = root;
 
 
         public TreeIterator() {
@@ -208,7 +208,7 @@ public class IntTreeSet implements Set {
 
         @Override
         public boolean hasNext() {
-            return lastCalled!=null;
+            return current!=null;
         }
 
 
@@ -230,10 +230,10 @@ public class IntTreeSet implements Set {
                 //делается минимум один откат к родителю, а далее проверяется не вызывалась ли данная нода ранее
                 //и если вызывалась, то делаются еще запросы к родителям
                 do{
-                    current = current.getParent();
                     //родителя нет только у корня, если нода попыталась сослаться на родителя корня, значит дерево закончилось
+                    current = current.getParent();
                     if(current == null){
-                        return null;
+                        break;
                     }
                 }
                 while (current.getData()<lastCalled.getData());

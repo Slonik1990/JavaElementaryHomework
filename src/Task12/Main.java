@@ -19,18 +19,19 @@ public class Main {
         my.add(40);
         my.add(60);
         my.add(80);
-        my.add(15);
-        my.add(35);
-        my.add(13);
-        my.add(55);
-        my.add(65);
-        my.add(75);
+
+        my.add(1000);
 
         System.out.println(my);
         System.out.println();
         Iterator iter = my.iterator();
 
+        System.out.println(iter.hasNext());
+        System.out.println(iter.hasNext());
+        System.out.println(iter.hasNext());
+
         for (Object i: my){
+
             System.out.println(i);
 
         }
