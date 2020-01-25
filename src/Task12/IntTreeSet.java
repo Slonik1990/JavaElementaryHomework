@@ -14,27 +14,37 @@ public class IntTreeSet implements Set {
 
     //выводит на экран часть древа, исходящую от принимаемой ноды
     //реализован с использованием рекурсивного обхода
-    public void partToString(IntTreeNode parent) {
+    public String partToString(IntTreeNode prev) {
+
+
+        if (size==0){
+            return "Tree is empty";
+        }
+
+        String res = "";
 
         //обход левой ветки
-        if (parent.getLeft() != null) {
-            partToString(parent.getLeft());
+        if (prev.getLeft() != null) {
+            res += partToString(prev.getLeft());
         }
 
         //вывод на экран содержимого самой ноды
-        System.out.print("[" + parent.getData() + "] ");
+        res += "[" + prev.getData() + "] ";
 
-        //вывод правой ветки
-        if (parent.getRight() != null) {
-            partToString(parent.getRight());
+        //обход правой ветки
+        if (prev.getRight() != null) {
+            res += partToString(prev.getRight());
         }
+
+
+        return res;
     }
 
     //передача в проршлый метод корня всего древа в качестве аргумента, что выводит на экран все элементы множества
     @Override
     public String toString() {
-        partToString(root);
-        return null;
+        System.out.print("TreeSet content: ");
+        return partToString(root);
     }
 
 
@@ -54,20 +64,20 @@ public class IntTreeSet implements Set {
             }
 
             IntTreeNode current = root; //указатель который будет перемещаться по дереву и искать свободное место для созданной ноды
-            IntTreeNode parent = root;//нода из которой перешел указатель по правильному направлению
+            IntTreeNode prev = root;//нода из которой перешел указатель по правильному направлению
 
             //цикл продвигает указатель по древу с учетом предусмотренной логики данной структуры данных
-            //определяет ноду, которая станет родительской(parent) для добавляемой(created)
+            //определяет ноду, которая станет родительской(prev) для добавляемой(created)
             while (current != null) {
                 //условие продвижения влево
                 if (current.getData() > created.getData()) {
-                    parent = current;
-                    current = parent.getLeft();
+                    prev = current;
+                    current = prev.getLeft();
 
                     //условие продвижения вправо
                 } else if (current.getData() < created.getData()) {
-                    parent = current;
-                    current = parent.getRight();
+                    prev = current;
+                    current = prev.getRight();
 
                     //встреча с таким же значением
                     //по сути благодаря следующему блоку можно отказаться от вызова contains, либо убрать следующий блок и ограничиться проверкой
@@ -78,10 +88,13 @@ public class IntTreeSet implements Set {
             }
 
             //добавление ноды в правильном направлении
-            if (created.getData() < parent.getData()) {
-                parent.setLeft(created);
+            if (created.getData() < prev.getData()) {
+                prev.setLeft(created);
+                created.setParent(prev);
             } else {
-                parent.setRight(created);
+                prev.setRight(created);
+                created.setParent(prev);
+
             }
             size++;
 
@@ -130,14 +143,13 @@ public class IntTreeSet implements Set {
 
     @Override
     public Iterator iterator() {
-        return null;
+        return new TreeIterator();
     }
 
     @Override
     public Object[] toArray() {
         return new Object[0];
     }
-
 
     @Override
     public boolean remove(Object o) {
@@ -175,43 +187,112 @@ public class IntTreeSet implements Set {
     }
 
 
-}
 
-//класс описывающий структурную единицу нашего дерева
-class IntTreeNode {
-    private IntTreeNode left;
-    private IntTreeNode right;
-    private int data;
 
-    //конструктор
-    public IntTreeNode(int o) {
-        this.data = o;
+    //итератор
+    class TreeIterator implements Iterator {
+
+        IntTreeNode current = root;
+        IntTreeNode lastCalled;
+
+
+        public TreeIterator() {
+            if(size==0){
+                System.out.println("Нельзя создать итератор для пустого дерева");
+                return;
+            }
+            while (current.getLeft()!=null){
+                current = current.getLeft();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return current!=null;
+        }
+
+
+        @Override
+        public Object next() {
+            lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
+
+            //если у текущей ноды есть правый потомок, курсор направляется туда и располагается в минимальном элементе ветви
+            if(current.hasRight()){
+                current = current.getRight();
+                while (current.getLeft()!=null){
+                    current = current.getLeft();
+                }
+
+            //если у текущей ноды нет правой ветки, а в левой мы уже были, указатель возвращается к родителю
+            }else {
+
+
+                //делается минимум один откат к родителю, а далее проверяется не вызывалась ли данная нода ранее
+                //и если вызывалась, то делаются еще запросы к родителям
+                do{
+                    current = current.getParent();
+                    //родителя нет только у корня, если нода попыталась сослаться на родителя корня, значит дерево закончилось
+                    if(current == null){
+                        return null;
+                    }
+                }
+                while (current.getData()<lastCalled.getData());
+            }
+
+            return lastCalled.getData();
+        }
+
     }
 
 
-    public IntTreeNode getLeft() {
-        return left;
+    //класс описывающий структурную единицу нашего дерева
+    class IntTreeNode {
+        private IntTreeNode left;
+        private IntTreeNode right;
+        private IntTreeNode parent;
+        private int data;
+
+        //конструктор
+        public IntTreeNode(int o) {
+            this.data = o;
+        }
+
+
+        public IntTreeNode getLeft() {
+            return left;
+        }
+
+        public void setLeft(IntTreeNode left) {
+            this.left = left;
+        }
+
+        public IntTreeNode getRight() {
+            return right;
+        }
+
+        public void setRight(IntTreeNode right) {
+            this.right = right;
+        }
+
+        public int getData() {
+            return data;
+        }
+
+        public void setData(int data) {
+            this.data = data;
+        }
+
+
+        public IntTreeNode getParent() {
+            return parent;
+        }
+
+        public void setParent(IntTreeNode parent) {
+            this.parent = parent;
+        }
+
+        public boolean hasRight(){
+            return getRight()!=null;
+        }
     }
-
-    public void setLeft(IntTreeNode left) {
-        this.left = left;
-    }
-
-    public IntTreeNode getRight() {
-        return right;
-    }
-
-    public void setRight(IntTreeNode right) {
-        this.right = right;
-    }
-
-    public int getData() {
-        return data;
-    }
-
-    public void setData(int data) {
-        this.data = data;
-    }
-
-
 }
