@@ -241,6 +241,7 @@ public class BankDataBase implements Set {
         return false;
     }
 
+    //методы работы с другой коллекцией для данного случая еще не продумал
     @Override
     public boolean containsAll(Collection c) {
         return false;
