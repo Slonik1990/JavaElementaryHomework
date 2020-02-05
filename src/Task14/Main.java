@@ -24,7 +24,8 @@ public class Main {
         privat.add(new Investor("Борис", 3000, 11));
         privat.add(new Investor("Дарья", 1000000, 50));
         privat.add(new Investor("Илья", 10203, 11));
-        System.out.println(privat.size());
+
+        System.out.println(privat.size());//7
 
         System.out.println(privat);
 

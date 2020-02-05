@@ -2,6 +2,7 @@ package Task14;
 
 
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -11,6 +12,7 @@ public class BankDataBase implements Set {
 
     private Account root;
     private int size;
+    private Comparator comparator;
     private Situation bankChange;//при разных изменениях в экономике, банк реагирует по разному. поведение описано в данном поле
 
 
@@ -20,8 +22,8 @@ public class BankDataBase implements Set {
         this.bankChange = bankChange;
         //в сеттере сразу же происходят реакции для всех вкладчиков
         //методы принимаеют действующие значения полей вкладчика, возвращают и устанавливают измененное
-        for(Object o: this){
-            Investor inv = (Investor)o;
+        for (Object o : this) {
+            Investor inv = (Investor) o;
             inv.setMoney(bankChange.moneyChange(inv.getMoney()));
             inv.setPercent(bankChange.percentChange(inv.getPercent()));
         }
@@ -35,7 +37,7 @@ public class BankDataBase implements Set {
 
 
     public String printSubTree(Account node) {
-        if (size==0){
+        if (size == 0) {
             return "Database is empty";
         }
         String res = "";
@@ -45,7 +47,7 @@ public class BankDataBase implements Set {
         }
 
         //вывод на экран содержимого самой ноды
-        res +=   node.getInvestor().toString() + "\n";
+        res += node.getInvestor().toString() + "\n";
 
         //обход правой ветки
         if (node.getRight() != null) {
@@ -54,6 +56,63 @@ public class BankDataBase implements Set {
         return res;
     }
 
+
+    //добавление
+    @Override
+    public boolean add(Object o) {
+        Account created = new Account((Investor) o);//оборачивание добавляемого объекта
+        if(size == 0){
+            root = created;
+            size++;
+            return true;
+        } else {
+            return addRecursivly(root, created);
+        }
+    }
+
+
+    //метод добавляет ноду в дерево в правильное место
+    public boolean addRecursivly(Account current, Account added) {
+
+        //переменная принимающая в себя результаты сравнений
+        int compRes;
+
+        //вычисление переменной сравнения на основе натурального сравнения либо принимаемого компаратора
+        if (comparator != null) {
+            compRes = 0;
+        } else {
+            compRes = current.compareTo(added);
+        }
+
+        //запись либо рекурсивное продвижение в нужном направлении до обнаружения свободного места
+        if (compRes > 0) {
+            if (current.left == null) {
+                current.setLeft(added);
+                added.setParent(current);
+                size++;
+                return true;
+            } else {
+                addRecursivly(current.getLeft(), added);
+            }
+        } else if (compRes < 0) {
+            if (current.right == null) {
+                current.setRight(added);
+                added.setParent(current);
+                size++;
+                return true;
+            } else {
+                addRecursivly(current.getRight(), added);
+            }
+        }
+        else{
+            System.out.println("Данный ключ уже занят");
+            return false;
+        }
+        return false;
+    }
+
+
+
     @Override
     public int size() {
         return size;
@@ -61,7 +120,7 @@ public class BankDataBase implements Set {
 
     @Override
     public boolean isEmpty() {
-        return size==0;
+        return size == 0;
     }
 
     //проверяет наличие вкладчика по ключу
@@ -70,7 +129,7 @@ public class BankDataBase implements Set {
         if (size == 0 || o == null) {
             return false;
         } else {
-            String name = (String)o;
+            String name = (String) o;
             Account current = root; //указатель который будет перемещаться по дереву
 
             while (current != null) {
@@ -131,7 +190,7 @@ public class BankDataBase implements Set {
     }
 
     //возвращает объект по ключу
-    public Investor get (String key){
+    public Investor get(String key) {
         Investor inv = null;
         if (size == 0 || key == null) {
             return null;
@@ -144,7 +203,7 @@ public class BankDataBase implements Set {
                 } else if (current.getKey().compareTo(key) < 0) {
                     current = current.getRight();
                 } else {
-                    inv =  current.getInvestor();
+                    inv = current.getInvestor();
                     return inv;
                 }
             }
@@ -159,13 +218,13 @@ public class BankDataBase implements Set {
 
     @Override
     public Object[] toArray() {
-        Object [] arr = new Investor[size];
+        Object[] arr = new Investor[size];
         int count = 0;
-        for(Object o: this){
+        for (Object o : this) {
             arr[count] = o;
             count++;
         }
-        return  arr;
+        return arr;
     }
 
     @Override
@@ -184,52 +243,6 @@ public class BankDataBase implements Set {
             return a;
         }
     }
-
-    //добавление
-    @Override
-    public boolean add(Object o) {
-        Account created = new Account((Investor) o);//полученные данные заворачиваются в новую ноду
-        //если дерево не содержит элементов, новая нода становится его корнем
-        if (size == 0) {
-            this.root = created;
-            this.size++;
-            return true;
-
-        } else {
-            Account current = root; //указатель который будет перемещаться по дереву и искать свободное место для созданной ноды
-            Account parent = root;//нода из которой перешел указатель по правильному направлению
-
-            //определяет ноду, которая станет родительской(prev) для добавляемой(created)
-            while (current != null) {
-
-                if (current.getKey().compareTo(created.getKey()) > 0 ) {
-                    parent = current;
-                    current = parent.getLeft();
-
-
-                } else if (current.getKey().compareTo(created.getKey()) < 0 ) {
-                    parent = current;
-                    current = parent.getRight();
-
-                } else {
-                    System.out.println("Данный ключ уже занят");
-                    return false;
-                }
-            }
-
-            //добавление ноды в правильном направлении
-            if (parent.getKey().compareTo(created.getKey()) > 0 ) {
-                parent.setLeft(created);
-                created.setParent(parent);
-            } else {
-                parent.setRight(created);
-                created.setParent(parent);
-            }
-            size++;
-        }
-        return true;
-    }
-
 
 
     //на потом
@@ -266,112 +279,116 @@ public class BankDataBase implements Set {
     }
 
 
-    //итератор
-    class BankDataIterator implements Iterator {
+//итератор
+class BankDataIterator implements Iterator {
 
-        Account current = root;
-        Account lastCalled = root;
+    Account current = root;
+    Account lastCalled = root;
 
 
-        public BankDataIterator() {
-            if(size==0){
-                System.out.println("Нельзя создать итератор для пустого дерева");
-                return;
-            }
-            while (current.getLeft()!=null){
+    public BankDataIterator() {
+        if (size == 0) {
+            System.out.println("Нельзя создать итератор для пустого дерева");
+            return;
+        }
+        while (current.getLeft() != null) {
+            current = current.getLeft();
+        }
+    }
+
+    @Override
+    public boolean hasNext() {
+        return current != null;
+    }
+
+
+    //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом
+    @Override
+    public Object next() {
+        if (!hasNext()) {
+            return null;
+        }
+
+        lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
+        if (current.hasRight()) {
+            current = current.getRight();
+            while (current.getLeft() != null) {
                 current = current.getLeft();
             }
-        }
 
-        @Override
-        public boolean hasNext() {
-            return current!=null;
-        }
+        } else {
 
-
-        //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом
-        @Override
-        public Object next() {
-            if(!hasNext()){
-                return null;
-            }
-
-            lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
-            if(current.hasRight()){
-                current = current.getRight();
-                while (current.getLeft()!=null){
-                    current = current.getLeft();
+            do {
+                current = current.getParent();
+                if (current == null) {
+                    break;
                 }
-
-            }else {
-
-                do{
-                    current = current.getParent();
-                    if(current == null){
-                        break;
-                    }
-                }
-                while (lastCalled.getKey().compareTo(current.getKey())>0);
-
             }
-            return lastCalled.getInvestor();
+            while (lastCalled.getKey().compareTo(current.getKey()) > 0);
+
         }
-
-
+        return lastCalled.getInvestor();
     }
 
 
+}
 
 
-    //класс оборачивающий вкладчика в ноду, содержащую непосредственно объект Investor, а также отдельно его имя в качестве ключа
-   public static class Account{
-        private Account left;
-        private Account right;
-        private Account parent;
-        private String key;
-        private Investor investor;
+//класс оборачивающий вкладчика в ноду, содержащую непосредственно объект Investor, а также отдельно его имя в качестве ключа
+public static class Account implements Comparable {
+    private Account left;
+    private Account right;
+    private Account parent;
+    private String key;
+    private Investor investor;
 
-        //конструктор
-        public Account(Investor inv) {
-            this.key = inv.getName();
-            this.investor = inv;
-        }
-
-        //геттеры, сеттеры
-        public Account getLeft() {
-            return left;
-        }
-
-        public void setLeft(Account left) {
-            this.left = left;
-        }
-
-        public Account getRight() {
-            return right;
-        }
-
-        public void setRight(Account right) {
-            this.right = right;
-        }
-
-        public Account getParent() {
-            return parent;
-        }
-
-        public void setParent(Account parent) {
-            this.parent = parent;
-        }
-
-        public String getKey() {
-            return key;
-        }
-
-        public Investor getInvestor() {
-            return investor;
-        }
-
-        public boolean hasRight(){
-            return getRight()!=null;
-        }
+    //конструктор
+    public Account(Investor inv) {
+        this.key = inv.getName();
+        this.investor = inv;
     }
+
+    @Override
+    public int compareTo(Object o) {
+        Account a = (Account) o;
+        return getKey().compareTo(((Account) o).getKey());
+    }
+
+    //геттеры, сеттеры
+    public Account getLeft() {
+        return left;
+    }
+
+    public void setLeft(Account left) {
+        this.left = left;
+    }
+
+    public Account getRight() {
+        return right;
+    }
+
+    public void setRight(Account right) {
+        this.right = right;
+    }
+
+    public Account getParent() {
+        return parent;
+    }
+
+    public void setParent(Account parent) {
+        this.parent = parent;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public Investor getInvestor() {
+        return investor;
+    }
+
+    public boolean hasRight() {
+        return getRight() != null;
+    }
+}
 }
