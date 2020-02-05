@@ -61,18 +61,18 @@ public class BankDataBase implements Set {
     @Override
     public boolean add(Object o) {
         Account created = new Account((Investor) o);//оборачивание добавляемого объекта
-        if(size == 0){
+        if(isEmpty()){
             root = created;
             size++;
             return true;
         } else {
-            return addRecursivly(root, created);
+            return addRecursively(root, created);
         }
     }
 
 
     //метод добавляет ноду в дерево в правильное место
-    public boolean addRecursivly(Account current, Account added) {
+    private boolean addRecursively(Account current, Account added) {
 
         //переменная принимающая в себя результаты сравнений
         int compRes;
@@ -92,7 +92,7 @@ public class BankDataBase implements Set {
                 size++;
                 return true;
             } else {
-                addRecursivly(current.getLeft(), added);
+                addRecursively(current.getLeft(), added);
             }
         } else if (compRes < 0) {
             if (current.right == null) {
@@ -101,7 +101,7 @@ public class BankDataBase implements Set {
                 size++;
                 return true;
             } else {
-                addRecursivly(current.getRight(), added);
+                addRecursively(current.getRight(), added);
             }
         }
         else{
@@ -146,48 +146,6 @@ public class BankDataBase implements Set {
     }
 
 
-    //проверяет наличие в дереве ранее созданного вкладчика
-    public boolean containsInvestor(Investor inv) {
-        if (size == 0 || inv == null) {
-            return false;
-        } else {
-            Account current = root; //указатель который будет перемещаться по дереву
-
-            while (current != null) {
-
-                if (current.getKey().compareTo(inv.getName()) > 0) {
-                    current = current.getLeft();
-
-                } else if (current.getKey().compareTo(inv.getName()) < 0) {
-                    current = current.getRight();
-
-                } else {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    //возвращает ноду содержащую данного вкладчика
-    public Account getNode(Investor inv) {
-        if (size == 0 || inv == null) {
-            return null;
-        } else {
-            Account current = root; //указатель который будет перемещаться по дереву
-
-            while (current != null) {
-                if (current.getKey().compareTo(inv.getName()) > 0) {
-                    current = current.getLeft();
-                } else if (current.getKey().compareTo(inv.getName()) < 0) {
-                    current = current.getRight();
-                } else {
-                    return current;
-                }
-            }
-        }
-        return null;
-    }
 
     //возвращает объект по ключу
     public Investor get(String key) {

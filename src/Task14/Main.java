@@ -31,23 +31,23 @@ public class Main {
 
         System.out.println(privat.contains("дарья"));//false
         System.out.println(privat.contains("Дарья"));//true
-        System.out.println(privat.containsInvestor(inv1));//false
-        System.out.println(privat.containsInvestor(inv2));//true
 
         Object[] arr = privat.toArray();
 
+        System.out.println();
         for (Object o: arr){
-            System.out.println((Investor)o);
+            System.out.println(o);
         }
 
         Investor ivan = privat.get("Иван");
+        System.out.println();
         System.out.println(ivan);//[ Вкладчик: Иван; Вклад: 1000; Ставка: 10% ]
 
         ivan.setPercent(15);
         System.out.println(ivan);//[ Вкладчик: Иван; Вклад: 1000; Ставка: 15% ]
 
         privat.setBankChange(new Collapse());
-
+        System.out.println();
         System.out.println(privat);//все обнулилось
 
 
