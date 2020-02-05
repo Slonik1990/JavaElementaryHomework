@@ -12,9 +12,17 @@ public class BankDataBase implements Set {
 
     private Account root;
     private int size;
-    private Comparator comparator;
+    private Comparator myComparator;
     private Situation bankChange;//при разных изменениях в экономике, банк реагирует по разному. поведение описано в данном поле
 
+    //дефолтный конструктор
+    public BankDataBase() {
+    }
+
+    //конструктор устанавливающий компаратор
+    public BankDataBase(Comparator comparator) {
+        this.myComparator = comparator;
+    }
 
     //когда произошла некоторая ситуация и банк готов на нее реагировать, она передается в сеттер
     //в сеттере сразу же происходят реакции для всех вкладчиков
@@ -78,8 +86,8 @@ public class BankDataBase implements Set {
         int compRes;
 
         //вычисление переменной сравнения на основе натурального сравнения либо принимаемого компаратора
-        if (comparator != null) {
-            compRes = 0;
+        if (myComparator != null) {
+            compRes = myComparator.compare(current, added);
         } else {
             compRes = current.compareTo(added);
         }
@@ -263,26 +271,36 @@ class BankDataIterator implements Iterator {
     //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом
     @Override
     public Object next() {
+        //если после прошлого выполнения курсор перешел за рамки древа, итератор прекращает работу
         if (!hasNext()) {
             return null;
         }
-
         lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
+
+        //элемент обработает себя и попытается найти минимальное значение правой ветки, если она есть
         if (current.hasRight()) {
             current = current.getRight();
             while (current.getLeft() != null) {
                 current = current.getLeft();
             }
 
+        //если правой ветки нет, нужно переходить к родителю, но иногда родитель, к которому перейдет курсор уже обработан
+        // в такой ситуации происходит поиск прародителя, который еще не был обработан
         } else {
-
+            int compRes;//переменная задающая логику сравнения, которую получает от компаратора
             do {
-                current = current.getParent();
-                if (current == null) {
-                    break;
+                current = current.getParent();//переход к родителю
+                if (current == null) {//такая ситуация говорит о том, что все дерево пройдено и курсор перешел к родителю корня
+                    break; //поиск следующего элемента прекращается
+                }
+
+                if(myComparator !=null){
+                    compRes = myComparator.compare(lastCalled, current);
+                }else {
+                    compRes = lastCalled.compareTo(current);
                 }
             }
-            while (lastCalled.getKey().compareTo(current.getKey()) > 0);
+            while (compRes > 0);//
 
         }
         return lastCalled.getInvestor();

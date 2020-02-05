@@ -1,5 +1,6 @@
 package Task14;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -7,7 +8,9 @@ public class Main {
     public static void main(String[] args) {
 
 
-        BankDataBase privat = new BankDataBase();
+        Comparator reverseName = new Reverse();
+        Comparator money = new MoneyComparator();
+        BankDataBase privat = new BankDataBase(money);
 
 
         Investor inv1 = new Investor("Иван", 1000, 10);
