@@ -129,6 +129,7 @@ public class BankDataBase implements Set {
         }
         return null;
     }
+
     //возвращает объект по ключу
     public Investor get (String key){
         Investor inv = null;
@@ -184,7 +185,7 @@ public class BankDataBase implements Set {
         }
     }
 
-    //добавление вклада при придварительно имеющемся вкладчике
+    //добавление
     @Override
     public boolean add(Object o) {
         Account created = new Account((Investor) o);//полученные данные заворачиваются в новую ноду
@@ -229,11 +230,7 @@ public class BankDataBase implements Set {
         return true;
     }
 
-    //добавление вклада без предварительного создания вкладчика
-    public boolean addNew(String name, int money, int percent){
-        Investor newInv = new Investor(name, money, percent);
-        return  add(newInv);
-    }
+
 
     //на потом
     @Override
@@ -334,7 +331,7 @@ public class BankDataBase implements Set {
         private String key;
         private Investor investor;
 
-        //конструктор создающий ноду на основе существующего вкладчика
+        //конструктор
         public Account(Investor inv) {
             this.key = inv.getName();
             this.investor = inv;
@@ -369,16 +366,8 @@ public class BankDataBase implements Set {
             return key;
         }
 
-        public void setKey(String key) {
-            this.key = key;
-        }
-
         public Investor getInvestor() {
             return investor;
-        }
-
-        public void setInvestor(Investor investor) {
-            this.investor = investor;
         }
 
         public boolean hasRight(){

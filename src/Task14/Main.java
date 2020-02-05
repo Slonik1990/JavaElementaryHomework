@@ -21,10 +21,11 @@ public class Main {
         privat.add(inv3);
         privat.add(inv4);
 
-        privat.addNew("Борис", 3000, 11);
-        privat.addNew("Дарья", 1000000, 50);
+        privat.add(new Investor("Борис", 3000, 11));
+        privat.add(new Investor("Дарья", 1000000, 50));
+        privat.add(new Investor("Илья", 10203, 11));
         System.out.println(privat.size());
-//
+
         System.out.println(privat);
 
         System.out.println(privat.contains("дарья"));//false
