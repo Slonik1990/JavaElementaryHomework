@@ -68,8 +68,10 @@ public class BankDataBase implements Set {
     //добавление
     @Override
     public boolean add(Object o) {
+
+
         Account created = new Account((Investor) o);//оборачивание добавляемого объекта
-        if(isEmpty()){
+        if (isEmpty()) {
             root = created;
             size++;
             return true;
@@ -111,14 +113,12 @@ public class BankDataBase implements Set {
             } else {
                 addRecursively(current.getRight(), added);
             }
-        }
-        else{
+        } else {
             System.out.println("Данный ключ уже занят");
             return false;
         }
         return false;
     }
-
 
 
     @Override
@@ -143,9 +143,9 @@ public class BankDataBase implements Set {
 
             while (current != null) {
 
-                if(myComparator !=null){
+                if (myComparator != null) {
                     compRes = myComparator.compare(current.getKey(), name);
-                }else {
+                } else {
                     compRes = current.getKey().compareTo(name);
                 }
 
@@ -160,7 +160,6 @@ public class BankDataBase implements Set {
         }
         return false;
     }
-
 
 
     //возвращает объект по ключу
@@ -219,21 +218,39 @@ public class BankDataBase implements Set {
     }
 
 
-    //на потом
     @Override
     public boolean remove(Object o) {
         return false;
     }
 
-    //методы работы с другой коллекцией для данного случая еще не продумал
     @Override
     public boolean containsAll(Collection c) {
-        return false;
+        if (c == null || this.getClass() != c.getClass()) {
+            return false;
+        } else {
+            int cSize = c.size();
+            int count = 0;
+            for(Object o : c){
+                Investor i = (Investor)o;
+                if(this.contains(i.getName())){
+                    count++;
+                }
+            }
+
+        return cSize == count;
+        }
     }
 
     @Override
     public boolean addAll(Collection c) {
-        return false;
+        if (c == null || this.getClass() != c.getClass()) {
+            return false;
+        } else {
+            for(Object o : c){
+                this.add(o);
+            }
+            return true;
+        }
     }
 
     @Override
@@ -253,126 +270,126 @@ public class BankDataBase implements Set {
     }
 
 
-//итератор
-class BankDataIterator implements Iterator {
+    //итератор
+    class BankDataIterator implements Iterator {
 
-    Account current = root;
-    Account lastCalled = root;
-
-
-    public BankDataIterator() {
-        if (size == 0) {
-            System.out.println("Нельзя создать итератор для пустого дерева");
-            return;
-        }
-        while (current.getLeft() != null) {
-            current = current.getLeft();
-        }
-    }
-
-    @Override
-    public boolean hasNext() {
-        return current != null;
-    }
+        Account current = root;
+        Account lastCalled = root;
 
 
-    //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом
-    @Override
-    public Object next() {
-        //если после прошлого выполнения курсор перешел за рамки древа, итератор прекращает работу
-        if (!hasNext()) {
-            return null;
-        }
-        lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
-
-        //элемент обработает себя и попытается найти минимальное значение правой ветки, если она есть
-        if (current.hasRight()) {
-            current = current.getRight();
+        public BankDataIterator() {
+            if (size == 0) {
+                System.out.println("Нельзя создать итератор для пустого дерева");
+                return;
+            }
             while (current.getLeft() != null) {
                 current = current.getLeft();
             }
-
-        //если правой ветки нет, нужно переходить к родителю, но иногда родитель, к которому перейдет курсор уже обработан
-        // в такой ситуации происходит поиск прародителя, который еще не был обработан
-        } else {
-            int compRes;//переменная задающая логику сравнения, которую получает от компаратора
-            do {
-                current = current.getParent();//переход к родителю
-                if (current == null) {//такая ситуация говорит о том, что все дерево пройдено и курсор перешел к родителю корня
-                    break; //поиск следующего элемента прекращается
-                }
-
-                if(myComparator !=null){
-                    compRes = myComparator.compare(lastCalled.getKey(), current.getKey());
-                }else {
-                    compRes = lastCalled.getKey().compareTo(current.getKey());
-                }
-            }
-            while (compRes > 0);//
-
         }
-        return lastCalled.getInvestor();
+
+        @Override
+        public boolean hasNext() {
+            return current != null;
+        }
+
+
+        //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом
+        @Override
+        public Object next() {
+            //если после прошлого выполнения курсор перешел за рамки древа, итератор прекращает работу
+            if (!hasNext()) {
+                return null;
+            }
+            lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
+
+            //элемент обработает себя и попытается найти минимальное значение правой ветки, если она есть
+            if (current.hasRight()) {
+                current = current.getRight();
+                while (current.getLeft() != null) {
+                    current = current.getLeft();
+                }
+
+                //если правой ветки нет, нужно переходить к родителю, но иногда родитель, к которому перейдет курсор уже обработан
+                // в такой ситуации происходит поиск прародителя, который еще не был обработан
+            } else {
+                int compRes;//переменная задающая логику сравнения, которую получает от компаратора
+                do {
+                    current = current.getParent();//переход к родителю
+                    if (current == null) {//такая ситуация говорит о том, что все дерево пройдено и курсор перешел к родителю корня
+                        break; //поиск следующего элемента прекращается
+                    }
+
+                    if (myComparator != null) {
+                        compRes = myComparator.compare(lastCalled.getKey(), current.getKey());
+                    } else {
+                        compRes = lastCalled.getKey().compareTo(current.getKey());
+                    }
+                }
+                while (compRes > 0);//
+
+            }
+            return lastCalled.getInvestor();
+        }
+
+
     }
 
 
-}
+    //класс оборачивающий вкладчика в ноду, содержащую непосредственно объект Investor, а также отдельно его имя в качестве ключа
+    public static class Account implements Comparable {
+        private Account left;
+        private Account right;
+        private Account parent;
+        private String key;
+        private Investor investor;
 
+        //конструктор
+        public Account(Investor inv) {
+            this.key = inv.getName();
+            this.investor = inv;
+        }
 
-//класс оборачивающий вкладчика в ноду, содержащую непосредственно объект Investor, а также отдельно его имя в качестве ключа
-public static class Account implements Comparable {
-    private Account left;
-    private Account right;
-    private Account parent;
-    private String key;
-    private Investor investor;
+        @Override
+        public int compareTo(Object o) {
+            Account a = (Account) o;
+            return getKey().compareTo(((Account) o).getKey());
+        }
 
-    //конструктор
-    public Account(Investor inv) {
-        this.key = inv.getName();
-        this.investor = inv;
+        //геттеры, сеттеры
+        public Account getLeft() {
+            return left;
+        }
+
+        public void setLeft(Account left) {
+            this.left = left;
+        }
+
+        public Account getRight() {
+            return right;
+        }
+
+        public void setRight(Account right) {
+            this.right = right;
+        }
+
+        public Account getParent() {
+            return parent;
+        }
+
+        public void setParent(Account parent) {
+            this.parent = parent;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public Investor getInvestor() {
+            return investor;
+        }
+
+        public boolean hasRight() {
+            return getRight() != null;
+        }
     }
-
-    @Override
-    public int compareTo(Object o) {
-        Account a = (Account) o;
-        return getKey().compareTo(((Account) o).getKey());
-    }
-
-    //геттеры, сеттеры
-    public Account getLeft() {
-        return left;
-    }
-
-    public void setLeft(Account left) {
-        this.left = left;
-    }
-
-    public Account getRight() {
-        return right;
-    }
-
-    public void setRight(Account right) {
-        this.right = right;
-    }
-
-    public Account getParent() {
-        return parent;
-    }
-
-    public void setParent(Account parent) {
-        this.parent = parent;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public Investor getInvestor() {
-        return investor;
-    }
-
-    public boolean hasRight() {
-        return getRight() != null;
-    }
-}
 }

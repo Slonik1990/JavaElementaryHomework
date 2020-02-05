@@ -1,8 +1,6 @@
 package Task14;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -10,6 +8,7 @@ public class Main {
 
         Comparator reverseName = new Reverse();
         BankDataBase privat = new BankDataBase();
+        BankDataBase ukrsib = new BankDataBase();
 
 
         Investor inv1 = new Investor("Иван", 1000, 10);
@@ -48,9 +47,23 @@ public class Main {
         ivan.setPercent(15);
         System.out.println(ivan);//[ Вкладчик: Иван; Вклад: 1000; Ставка: 15% ]
 
+        ukrsib.add(new Investor("Кирилл", 30000,7 ));
+        ukrsib.add(new Investor("Вадим", 43443,18 ));
+        System.out.println(ukrsib);
+
+        privat.addAll(ukrsib);
+        System.out.println(privat);
+
+
+        System.out.println(privat.containsAll(ukrsib));
+
         privat.setBankChange(new Collapse());
         System.out.println();
         System.out.println(privat);//все обнулилось
+        System.out.println(privat.size());
+
+
+
 
 
 
