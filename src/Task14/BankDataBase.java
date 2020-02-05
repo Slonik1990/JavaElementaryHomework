@@ -87,9 +87,9 @@ public class BankDataBase implements Set {
 
         //вычисление переменной сравнения на основе натурального сравнения либо принимаемого компаратора
         if (myComparator != null) {
-            compRes = myComparator.compare(current, added);
+            compRes = myComparator.compare(current.getKey(), added.getKey());
         } else {
-            compRes = current.compareTo(added);
+            compRes = current.getKey().compareTo(added.getKey());
         }
 
         //запись либо рекурсивное продвижение в нужном направлении до обнаружения свободного места
@@ -137,13 +137,21 @@ public class BankDataBase implements Set {
         if (size == 0 || o == null) {
             return false;
         } else {
+            int compRes;
             String name = (String) o;
             Account current = root; //указатель который будет перемещаться по дереву
 
             while (current != null) {
-                if (current.getKey().compareTo(name) > 0) {
+
+                if(myComparator !=null){
+                    compRes = myComparator.compare(current.getKey(), name);
+                }else {
+                    compRes = current.getKey().compareTo(name);
+                }
+
+                if (compRes > 0) {
                     current = current.getLeft();
-                } else if (current.getKey().compareTo(name) < 0) {
+                } else if (compRes < 0) {
                     current = current.getRight();
                 } else {
                     return true;
@@ -295,9 +303,9 @@ class BankDataIterator implements Iterator {
                 }
 
                 if(myComparator !=null){
-                    compRes = myComparator.compare(lastCalled, current);
+                    compRes = myComparator.compare(lastCalled.getKey(), current.getKey());
                 }else {
-                    compRes = lastCalled.compareTo(current);
+                    compRes = lastCalled.getKey().compareTo(current.getKey());
                 }
             }
             while (compRes > 0);//

@@ -9,8 +9,7 @@ public class Main {
 
 
         Comparator reverseName = new Reverse();
-        Comparator money = new MoneyComparator();
-        BankDataBase privat = new BankDataBase(money);
+        BankDataBase privat = new BankDataBase();
 
 
         Investor inv1 = new Investor("Иван", 1000, 10);
