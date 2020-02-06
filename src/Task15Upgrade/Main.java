@@ -1,6 +1,4 @@
-package Task15Again;
-
-import java.util.Iterator;
+package Task15Upgrade;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,5 +20,17 @@ public class Main {
 //        [tree - дерево]
 //        [mouse - мышь]
 
+        System.out.println(slovar.size());//3
+        slovar.remove("mouse");
+        System.out.println(slovar.size());//2
+
+        for(Object o: slovar){
+            Dictionary.Entry e = (Dictionary.Entry)o;
+            System.out.println(e.toString());
+        }
+//        [pencil - карандаш]
+//        [tree - дерево]
+
     }
+
 }

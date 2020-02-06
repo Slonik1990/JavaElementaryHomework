@@ -1,4 +1,4 @@
-package Task15Again;
+package Task15Upgrade;
 
 import java.util.Iterator;
 
@@ -95,12 +95,15 @@ public class Dictionary implements HashTableDictionary {
         //ситуация, при которой искомый ключ является первым элементом списка
         if (current.getEng().equalsIgnoreCase(key)) {
             table[index] = current.getNext();
+            size--;
             return true;
         //не первым элементом
         } else {
             while (current.getNext()!=null){
                 if(current.getNext().getEng().equalsIgnoreCase(key)){
                     current.setNext(current.getNext().getNext());
+                    size--;
+                    return true;
                 } else{
                     current = current.getNext();
                 }

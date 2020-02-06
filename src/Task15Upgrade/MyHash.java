@@ -1,4 +1,4 @@
-package Task15Again;
+package Task15Upgrade;
 
 
 public class MyHash implements Hasher{
