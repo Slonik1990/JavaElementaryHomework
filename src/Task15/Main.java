@@ -26,6 +26,8 @@ public class Main {
 
         Set ts = slovar.keySet();
         System.out.println(ts);
+        Collection coll = slovar.values();
+        System.out.println(coll);
 
 
 
