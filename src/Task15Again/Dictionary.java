@@ -70,7 +70,7 @@ public class Dictionary implements HashTableDictionary {
                 current = current.getNext();
             }
 
-            //перезапись значения при встрече такого же ключа
+            //перезапись значения при встрече такого же ключа либо добавление в список
             if (created.eng.equalsIgnoreCase(current.eng)) {
                 String lost = current.getRus();
                 current.setRus(created.getRus());
