@@ -1,9 +1,6 @@
 package Task15;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.NavigableMap;
-import java.util.TreeMap;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,6 +23,9 @@ public class Main {
         System.out.println(b.getEng());
 
         System.out.println(slovar.containsValue("Дам"));
+
+        Set ts = slovar.keySet();
+        System.out.println(ts);
 
 
 

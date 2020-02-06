@@ -210,7 +210,7 @@ public class Vocabluary implements Map, Iterable {
 
     @Override
     public Set keySet() {
-        TreeSet<String> ts = new TreeSet<>();
+        Set<String> ts = new TreeSet<>();
         Iterator iter = iterator();
         Entry current;
         while(iter.hasNext()){
@@ -222,7 +222,7 @@ public class Vocabluary implements Map, Iterable {
 
     @Override
     public Collection values() {
-        ArrayList<String> ts = new ArrayList<>();
+        Collection <String> ts = new ArrayList<>();
         Iterator iter = iterator();
         Entry current;
         while(iter.hasNext()){
@@ -234,7 +234,7 @@ public class Vocabluary implements Map, Iterable {
 
     @Override
     public Set<Entry> entrySet() {
-        HashSet<Entry> s = new HashSet<>();
+        Set <Entry> s = new HashSet<>();
         Iterator iter = iterator();
         Entry current;
         while (iter.hasNext()) {
