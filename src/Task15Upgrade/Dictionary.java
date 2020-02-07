@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 //доработанная версия, в отличии от предыдушей может принимать разные алгоритмы хэширования
 //поддерживает цикл foreach
+//возможно в чем - то данная гибкость является излишней, но мне захотелось поработать с гибкой реализацией
 
 public class Dictionary implements HashTableDictionary {
 
@@ -144,8 +145,7 @@ public class Dictionary implements HashTableDictionary {
         return false;
     }
 
-    @Override
-    public void tableIncrease(int capacity) {
+    private void tableIncrease(int capacity) {
         Entry[] arr = new Entry[capacity + 1];
         for (int i = 0; i < table.length; i++) {
             arr[i] = table[i];

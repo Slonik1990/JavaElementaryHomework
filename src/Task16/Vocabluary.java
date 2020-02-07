@@ -1,4 +1,4 @@
-package Task15;
+package Task16;
 
 import java.util.*;
 
@@ -25,7 +25,7 @@ import java.util.*;
  */
 
 
-public class Vocabluary implements Map, Iterable {
+public class Vocabluary implements Map {
 
     private int size;
     private Entry[] table = new Entry[0];//размер по умолчанию
@@ -39,7 +39,7 @@ public class Vocabluary implements Map, Iterable {
         this.table = new Entry[capacity];
     }
 
-    @Override
+
     public Iterator iterator() {
         return new VocabluaryIterator();
     }

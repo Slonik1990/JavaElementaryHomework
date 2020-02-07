@@ -232,7 +232,7 @@ public class BankDataBase implements Set {
             int count = 0;
             for(Object o : c){
                 Investor i = (Investor)o;
-                if(this.contains(i.getName())){
+                if(this.contains(i)){
                     count++;
                 }
             }

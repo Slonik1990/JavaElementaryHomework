@@ -18,8 +18,6 @@ public interface HashTableDictionary <E> extends Iterable <E>{
 
     boolean containsValue(String value);
 
-    void tableIncrease(int capacity);
-
     void clear();
 
     int getHashCode(String key);

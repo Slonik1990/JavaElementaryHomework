@@ -1,7 +1,9 @@
 package Task15Upgrade;
 
 
-public class MyHash implements Hasher{
+import Task15Upgrade.Hasher;
+
+public class MyHash implements Hasher {
 
     /**
      * Hash вычисляется по следующему принципу:
