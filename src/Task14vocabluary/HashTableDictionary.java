@@ -1,4 +1,4 @@
-package Task15Upgrade;
+package Task14vocabluary;
 
 //интерфейс определяет методы, необходимые для подобных словарей и попутно приплетает итератор и for each
 

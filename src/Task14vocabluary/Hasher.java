@@ -1,4 +1,4 @@
-package Task15Upgrade;
+package Task14vocabluary;
 
 //данный интерфейс внесет гибкость в хэширование ключей
 public interface Hasher {

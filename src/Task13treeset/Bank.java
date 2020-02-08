@@ -1,4 +1,4 @@
-package Task14Update;
+package Task13treeset;
 
 public class Bank {
     private String name;
@@ -20,18 +20,7 @@ public class Bank {
 
     //удаление по имени
     public void removeInvestor(String name){
-        DataBase buffer = new DataBase();
-
-        for(Object elem : accounts){
-           Investor inv = (Investor)elem;
-           if(!inv.getName().equals(name)){
-               buffer.add(inv);
-           }else{
-               System.out.println("Вклад удален");
-           }
-        }
-        accounts = buffer;
-        System.out.println();
+        accounts.remove(name);
 
     }
 

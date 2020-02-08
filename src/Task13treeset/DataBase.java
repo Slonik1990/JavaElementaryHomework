@@ -1,6 +1,5 @@
-package Task14Update;
+package Task13treeset;
 
-import java.sql.SQLOutput;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -212,107 +211,23 @@ public class DataBase implements Set {
         return false;
     }
 
+    //выполняет свою задачу хорошо, но превращает дерево в связный список из за упорядоченности добавления
+    //Todo подумать над самобалансировкой дерева и оптимизацией этого метода
     @Override
-      public boolean remove(Object o) {
-        return false;
+    public boolean remove(Object o) {
+        String name = (String)o;
+        DataBase buffer = new DataBase();
+        Iterator iter = new BankIterator();
+        while (iter.hasNext()) {
+            Investor inv = (Investor) iter.next();
+            if (!inv.getName().equals(name)) {
+                buffer.add(inv);
+            }
+        }
+        clear();
+        addAll(buffer);
+        return true;
     }
-
-//    //TODO удаление корня и вообще работает некорректно
-//    @Override
-//    public boolean remove(Object o) {
-//        Account bye = recurFindingNode(root, (String) o);
-//        if (bye == null) {
-//            return false;
-//        }
-//
-//        //удаление корня
-//        if (bye.getInvestor().getName().equals(root.getInvestor().getName())) {
-//            return false;
-//        }
-//
-//        //нет потомков
-//        if (bye.getLeft() == null && bye.getRight() == null) {
-//            if (bye.getParent().getLeft() == bye) {
-//                bye.getParent().setLeft(null);
-//            } else {
-//                bye.getParent().setRight(null);
-//            }
-//            size--;
-//            return true;
-//        }
-//
-//        //один правый потомок
-//        if (bye.getLeft() == null && bye.getRight() != null) {
-//            if (bye.getParent().getLeft() == bye) {
-//                bye.getParent().setLeft(bye.getRight());
-//                bye.getRight().setParent(bye.getParent());
-//            } else {
-//                bye.getParent().setRight(bye.getRight());
-//                bye.getRight().setParent(bye.getParent());
-//
-//            }
-//            size--;
-//            return true;
-//        }
-//        //один левый потомок
-//        if (bye.getLeft() != null && bye.getRight() == null) {
-//            if (bye.getParent().getRight() == bye) {
-//                bye.getParent().setLeft(bye.getLeft());
-//                bye.getLeft().setParent(bye.getParent());
-//            } else {
-//                bye.getParent().setRight(bye.getLeft());
-//                bye.getLeft().setParent(bye.getParent());
-//            }
-//            size--;
-//            return true;
-//        }
-//
-//        //два потомка. максимальный элемент правой ветки подставляется на место удаляемого
-//        if (bye.getLeft() != null && bye.getRight() != null) {
-//
-//            Account current = bye.getLeft();
-//            while (current.getRight() != null) {
-//                current = current.getRight();
-//            }
-//
-//            //левая ветка максимального элемента крепится к прошлому
-//            current.getParent().setRight(current.getLeft());
-//            if (current.getLeft() != null) {
-//                current.getLeft().setParent(current.getParent());
-//            }
-//            bye.setInvestor(current.getInvestor());
-//            size--;
-//            return true;
-//        }
-//
-//
-//        return false;
-//    }
-//
-//
-//    //возвращает ноду по имени инвестора
-//    private Account recurFindingNode(Account node, String name) {
-//
-//        if (node.getInvestor().getName().equals(name)) {
-//            return node;
-//        }
-//
-//        //обход левой ветки
-//        if (node.getLeft() != null) {
-//            Account r = recurFindingNode(node.getLeft(), name);
-//            if (r != null) {
-//                return r;
-//            }
-//        }
-//        //обход правой ветки
-//        if (node.getRight() != null) {
-//            Account r = recurFindingNode(node.getRight(), name);
-//            if (r != null) {
-//                return r;
-//            }
-//        }
-//        return null;
-//    }
 
 
     @Override
@@ -320,7 +235,7 @@ public class DataBase implements Set {
         if (c == null || this.getClass() != c.getClass()) {
             return false;
         } else {
-            int cSize = c.size();
+
             int count = 0;
             for (Object o : c) {
                 Investor i = (Investor) o;
@@ -328,8 +243,7 @@ public class DataBase implements Set {
                     count++;
                 }
             }
-
-            return cSize == count;
+            return c.size() == count;
         }
     }
 
@@ -345,21 +259,42 @@ public class DataBase implements Set {
         }
     }
 
+    //методы removeAll и retainAll основаны на неоптимальном методе remove
+    //эти методы обладают сложностью минимум n^2 из за вложенных циклов, что очень плохо
     @Override
     public boolean retainAll(Collection c) {
-        System.out.println("IN THE NEXT UPGRADE");
-        return false;
+        if (c == null || this.getClass() != c.getClass()) {
+            return false;
+        }
+        Iterator iter = new BankIterator();
+        while (iter.hasNext()) {
+            Investor inv = (Investor) iter.next();
+            if (!c.contains(inv)) {
+                remove(inv.getName());
+            }
+        }
+        return true;
     }
-
     @Override
     public boolean removeAll(Collection c) {
-        System.out.println("IN THE NEXT UPGRADE");
-        return false;
+        if (c == null || this.getClass() != c.getClass()) {
+            return false;
+        }
+        Iterator iter = new BankIterator();
+        while (iter.hasNext()) {
+            Investor inv = (Investor) iter.next();
+            if (c.contains(inv)) {
+                remove(inv.getName());
+            }
+        }
+        return true;
     }
+
 
     @Override
     public void clear() {
         root = null;
+        size = 0;
     }
 
     //сумма всех вкладов
@@ -441,52 +376,18 @@ public class DataBase implements Set {
             }
         }
 
+
         @Override
         public boolean hasNext() {
             return current != null;
         }
 
 
+
         //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом
         @Override
         public Object next() {
-            //если после прошлого выполнения курсор перешел за рамки древа, итератор прекращает работу
-            if (!hasNext()) {
-                return null;
-            }
-            lastCalled = current;//сохраняется действующее положение для возврата и начинается поиск следующего элемента
 
-            //элемент обработает себя и попытается найти минимальное значение правой ветки, если она есть
-            if (current.hasRight()) {
-                current = current.getRight();
-                while (current.getLeft() != null) {
-                    current = current.getLeft();
-                }
-
-                //если правой ветки нет, нужно переходить к родителю, но иногда родитель, к которому перейдет курсор уже обработан
-                // в такой ситуации происходит поиск прародителя, который еще не был обработан
-            } else {
-                int compRes;//переменная задающая логику сравнения, которую получает от компаратора
-                do {
-                    current = current.getParent();//переход к родителю
-                    if (current == null) {//такая ситуация говорит о том, что все дерево пройдено и курсор перешел к родителю корня
-                        break; //поиск следующего элемента прекращается
-                    }
-
-                    if (comparator != null) {
-                        compRes = comparator.compare(lastCalled.getInvestor(), current.getInvestor());
-                    } else {
-                        compRes = lastCalled.getInvestor().compareTo(current.getInvestor());
-                    }
-                }
-                while (compRes > 0);//
-
-            }
-            return lastCalled.getInvestor();
-        }
-
-
-        public Account nextNode() {
             if (!hasNext()) {
                 return null;
             }
@@ -496,6 +397,7 @@ public class DataBase implements Set {
                 while (current.getLeft() != null) {
                     current = current.getLeft();
                 }
+
             } else {
                 int compRes;
                 do {
@@ -509,10 +411,12 @@ public class DataBase implements Set {
                         compRes = lastCalled.getInvestor().compareTo(current.getInvestor());
                     }
                 }
-                while (compRes > 0);//
+                while (compRes > 0);
 
             }
-            return lastCalled;
+            return lastCalled.getInvestor();
         }
+
+
     }
 }

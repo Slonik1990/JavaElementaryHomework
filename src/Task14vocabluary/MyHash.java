@@ -1,7 +1,5 @@
-package Task15Upgrade;
+package Task14vocabluary;
 
-
-import Task15Upgrade.Hasher;
 
 public class MyHash implements Hasher {
 
