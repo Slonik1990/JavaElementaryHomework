@@ -51,8 +51,6 @@ public class Input {
                     default:
                         System.out.println("Команда не поддерживается");
             }
-
-
         }
     }
 

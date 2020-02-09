@@ -215,7 +215,7 @@ public class DataBase implements Set {
     //Todo подумать над самобалансировкой дерева и оптимизацией этого метода
     @Override
     public boolean remove(Object o) {
-        String name = (String)o;
+        String name = (String) o;
         DataBase buffer = new DataBase();
         Iterator iter = new BankIterator();
         while (iter.hasNext()) {
@@ -275,6 +275,7 @@ public class DataBase implements Set {
         }
         return true;
     }
+
     @Override
     public boolean removeAll(Collection c) {
         if (c == null || this.getClass() != c.getClass()) {
@@ -381,7 +382,6 @@ public class DataBase implements Set {
         public boolean hasNext() {
             return current != null;
         }
-
 
 
         //метод возращает элемент коллекции и продвигает курсор к элементу, который будет возвращаен следующим вызовом

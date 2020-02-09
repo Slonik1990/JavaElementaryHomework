@@ -137,7 +137,6 @@ public class DemoContainer {
     }
 
     //переносит из начала принимаемой коллекции, столько элементов, на сколько есть свободных мест и выводит отчет
-    //TODO при передаче саму в себя зацикливается, в отличии от остальных методов копирования
     public void softAdding(DemoContainer donor){
         int elements=0;
         while (getRecordingSize()<arr.length&&donor.getRecordingSize()>0){
