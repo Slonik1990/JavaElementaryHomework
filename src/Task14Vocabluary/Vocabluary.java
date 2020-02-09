@@ -1,4 +1,4 @@
-package Task14JustVocabluary;
+package Task14Vocabluary;
 
 public class Vocabluary {
     private Entry[] data = new Entry[1000];
