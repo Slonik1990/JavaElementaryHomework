@@ -1,4 +1,4 @@
-package Task13treeset;
+package Task13Treeset;
 
 public class Bank {
     private String name;

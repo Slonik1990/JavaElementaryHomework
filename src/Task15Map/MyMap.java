@@ -1,4 +1,4 @@
-package Task15;
+package Task15Map;
 /**
  * Основан на массиве содержащем элементы ключ-значение
  * Не может содержать одинаковых ключей
@@ -100,6 +100,10 @@ public class MyMap implements Map {
         return null;
     }
 
+    //вычисляет будущий индекс в таблице
+    public int getIndex(Object key) {
+        return Math.abs(key.hashCode()) % capacity;
+    }
 
     //описывает добавление при трех стандартных ситуациях:
     //1) ячейка таблицы пуста
@@ -183,10 +187,7 @@ public class MyMap implements Map {
         this.records = buffer.records;
     }
 
-    //вычисляет будущий индекс в таблице
-    public int getIndex(Object key) {
-        return Math.abs(key.hashCode()) % capacity;
-    }
+
 
     //удаление по ключу с возвратом удаленного значения
     @Override
@@ -273,13 +274,7 @@ public class MyMap implements Map {
     }
 
 
-    private Entry[] getTable() {
-        return table;
-    }
 
-    public int getCapacity() {
-        return capacity;
-    }
 
     class Entry {
         private Object key;

@@ -1,4 +1,4 @@
-package Task13treeset;
+package Task13Treeset;
 
 import java.util.Scanner;
 

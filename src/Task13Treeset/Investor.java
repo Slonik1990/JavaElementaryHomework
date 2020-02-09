@@ -1,4 +1,4 @@
-package Task13treeset;
+package Task13Treeset;
 
 public class Investor implements Comparable{
 
