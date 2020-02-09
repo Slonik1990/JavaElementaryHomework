@@ -133,9 +133,6 @@ public class Vocabluary {
             return eng;
         }
 
-        public void setEng(String eng) {
-            this.eng = eng;
-        }
 
         public String getRus() {
             return rus;
