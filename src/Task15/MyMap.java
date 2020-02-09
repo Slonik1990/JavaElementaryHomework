@@ -41,18 +41,13 @@ public class MyMap implements Map {
         this.table = new Entry[this.capacity];
     }
 
-
-
-    public int getCapacity() {
-        return capacity;
-    }
-
     //количество записей
     @Override
     public int size() {
         return records;
     }
 
+    //true если нет записей
     @Override
     public boolean isEmpty() {
         return records == 0;
@@ -91,6 +86,7 @@ public class MyMap implements Map {
     }
 
 
+    //возвращает значение по ключу
     @Override
     public Object get(Object key) {
         for (Entry entry : table) {
@@ -105,8 +101,6 @@ public class MyMap implements Map {
     }
 
 
-
-
     //описывает добавление при трех стандартных ситуациях:
     //1) ячейка таблицы пуста
     //2) ячейска таблицы не пуста и в ней есть элемент с таким же ключем (перезапись значения)
@@ -116,7 +110,6 @@ public class MyMap implements Map {
         if (key == null) {
             throw new NullPointerException("NULL KEY NOT SUPPORTED");
         }
-
         int index = getIndex(key);
         Entry current = table[index];
         while (current != null) {
@@ -129,12 +122,11 @@ public class MyMap implements Map {
                 current = current.getNext();
             }
         }
-
         Entry created = new Entry(key, value);
         created.setNext(table[index]);
         table[index] = created;
         records++;
-        //проверка на перенасыщение
+
         if (needIncrease()){
             increase();
         }
@@ -147,7 +139,6 @@ public class MyMap implements Map {
         if (key == null) {
             throw new NullPointerException("NULL KEY NOT SUPPORTED");
         }
-
         int index = getIndex(key);
         Entry current = table[index];
         while (current != null) {
@@ -163,9 +154,6 @@ public class MyMap implements Map {
         created.setNext(table[index]);
         table[index] = created;
         records++;
-        while (needIncrease()){
-            increase();
-        }
         return null;
     }
 
@@ -180,8 +168,8 @@ public class MyMap implements Map {
     }
 
 
+    //увеличивает объем таблицы если  метод needIncrease() подтвердил необходимость этого
     public void increase() {
-        //создается мапа с увеличенной либо максимальной размерностью
         MyMap buffer;
         if(this.capacity*INCREASE_KOEF > MAX_POSSIBLE_CAPACITY){
             buffer = new MyMap(MAX_POSSIBLE_CAPACITY);
@@ -200,6 +188,7 @@ public class MyMap implements Map {
         return Math.abs(key.hashCode()) % capacity;
     }
 
+    //удаление по ключу с возвратом удаленного значения
     @Override
     public Object remove(Object key) {
         int index = getIndex(key);
@@ -207,7 +196,7 @@ public class MyMap implements Map {
             return null;
         }
         if(table[index].key.equals(key)){
-            Object toReturn = table[index];
+            Object toReturn = table[index].getValue();
             table[index] = table[index].next;
             records--;
             return toReturn;
@@ -248,7 +237,7 @@ public class MyMap implements Map {
 
     }
 
-    //методы просмотра
+    //методы просмотра и итерации
     @Override
     public Set keySet() {
         Set<Object> set = new TreeSet<>();
@@ -260,7 +249,6 @@ public class MyMap implements Map {
         }
         return set;
     }
-
     @Override
     public Collection values() {
         Collection col = new ArrayList();
@@ -272,7 +260,6 @@ public class MyMap implements Map {
         }
         return col;
     }
-
     @Override
     public Set<Entry> entrySet() {
         Set<Entry> set = new HashSet<>();
@@ -285,11 +272,14 @@ public class MyMap implements Map {
         return set;
     }
 
+
     private Entry[] getTable() {
         return table;
     }
 
-
+    public int getCapacity() {
+        return capacity;
+    }
 
     class Entry {
         private Object key;

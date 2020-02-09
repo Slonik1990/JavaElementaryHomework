@@ -25,7 +25,7 @@ public class Main {
         my.put("n", "рапрапр");
         my.put("o", "Двпрвом");
         my.put("p", null);
-        System.out.println(((MyMap) my).getCapacity());
+        System.out.println(((MyMap) my).size());
         System.out.println(my.keySet());
         System.out.println(my.entrySet());
         System.out.println(my.values());
@@ -34,6 +34,10 @@ public class Main {
         System.out.println(my.containsValue(null));
         System.out.println(my.containsValue("Привет"));
         System.out.println(my.get("z"));
+        System.out.println(my.remove("o"));
+        System.out.println(my.remove("p"));
+        System.out.println(((MyMap) my).size());
+
 
 
     }
