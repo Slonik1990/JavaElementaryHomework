@@ -202,6 +202,27 @@ public class MyMap implements Map {
 
     @Override
     public Object remove(Object key) {
+        int index = getIndex(key);
+        if(table[index] == null){
+            return null;
+        }
+        if(table[index].key.equals(key)){
+            Object toReturn = table[index];
+            table[index] = table[index].next;
+            records--;
+            return toReturn;
+        }
+        Entry current = table[index];
+        while (current.next!=null){
+            if(current.next.key.equals(key)){
+                Object toReturn = current.next.getValue();
+                current.setNext(current.next.next);
+                records--;
+                return toReturn;
+            } else {
+                current = current.getNext();
+            }
+        }
         return null;
     }
 
