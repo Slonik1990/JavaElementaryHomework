@@ -52,8 +52,8 @@ public class MyMapTest {
 
     }
 
-    //пока что не удалось придумать последовательность тестов, при которой не примелись бы непротестированные методы
-    //в проверке isEmpty() и size() применится не протестированный put, при содействии дебаггера
+    //пока что не удалось придумать последовательность тестов, при которой не применялись бы непротестированные методы
+    //в проверке isEmpty() и size() применится не протестированный put, при содействии дебагера
     @Test
     public void isEmptytest() {
         MyMap my = new MyMap();
@@ -169,7 +169,9 @@ public class MyMapTest {
     //циклическое увеличение должно прийти к максимально возможному размеру при любом исходном
     @Test
     public void increaseTest_loop() {
-        MyMap my = new MyMap(137);
+        int random = (int) (Math.random() * MyMap.maxCapacity()); //[0, maxCapacity)
+
+        MyMap my = new MyMap(random);
         for (int i = 1; i <= 30000; i++) {
             my.justPut(i, null);
         }
