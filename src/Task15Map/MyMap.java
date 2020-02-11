@@ -15,8 +15,8 @@ import java.util.*;
 public class MyMap implements Map {
     private final double LOAD_KOEF = 1.5;   //предельное соотношение записей к размеру таблицы
     private final int INCREASE_KOEF = 2;
-    private final int MIN_POSSIBLE_CAPACITY = 16;
-    private final int MAX_POSSIBLE_CAPACITY = 16384;
+    private static final int MIN_POSSIBLE_CAPACITY = 4;
+    private static final int MAX_POSSIBLE_CAPACITY = 16384;
     private Entry[] table;
     private int capacity;
     private int records;
@@ -53,9 +53,13 @@ public class MyMap implements Map {
         return records == 0;
     }
 
+
     //есть ли в таблице элемент с таким ключем
     @Override
     public boolean containsKey(Object key) {
+        if (key == null) {
+            throw new NullPointerException("NULL KEY NOT SUPPORTED");
+        }
         Set set = keySet();
         for(Object o: set){
             if(o.equals(key)){
@@ -89,6 +93,9 @@ public class MyMap implements Map {
     //возвращает значение по ключу
     @Override
     public Object get(Object key) {
+        if (key == null) {
+            throw new NullPointerException("NULL KEY NOT SUPPORTED");
+        }
         for (Entry entry : table) {
             while (entry != null) {
                 if (entry.key.equals(key)){
@@ -254,7 +261,21 @@ public class MyMap implements Map {
     }
 
 
+    public int getCapacity() {
+        return capacity;
+    }
 
+    public Entry[] getTable() {
+        return table;
+    }
+
+    public static int minCapacity() {
+        return MIN_POSSIBLE_CAPACITY;
+    }
+
+    public static int maxCapacity() {
+        return MAX_POSSIBLE_CAPACITY;
+    }
 
     class Entry {
         private Object key;
