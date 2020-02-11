@@ -14,12 +14,12 @@ import java.util.*;
 
 public class MyMap implements Map {
     private final double LOAD_KOEF = 1.5;   //предельное соотношение записей к размеру таблицы
-    private final int INCREASE_KOEF = 2; //коэффициент расширения
-    private final int MIN_POSSIBLE_CAPACITY = 10;
-    private final int MAX_POSSIBLE_CAPACITY = 10240; //пределы расширения колбасы
-    private Entry[] table;  //массив с entry
-    private int capacity;    // размер таблицы
-    private int records;     //количество записей
+    private final int INCREASE_KOEF = 2;
+    private final int MIN_POSSIBLE_CAPACITY = 16;
+    private final int MAX_POSSIBLE_CAPACITY = 16384;
+    private Entry[] table;
+    private int capacity;
+    private int records;
 
     //дефолтный конструктор
     public MyMap() {
@@ -105,41 +105,12 @@ public class MyMap implements Map {
         return Math.abs(key.hashCode()) % capacity;
     }
 
-    //описывает добавление при трех стандартных ситуациях:
-    //1) ячейка таблицы пуста
-    //2) ячейска таблицы не пуста и в ней есть элемент с таким же ключем (перезапись значения)
-    //3) ячейска таблицы не пуста и в ней нет элемента с таким же ключем (добавление в начало цепочки)
-    @Override
-    public Object put(Object key, Object value) {
-        if (key == null) {
-            throw new NullPointerException("NULL KEY NOT SUPPORTED");
-        }
-        int index = getIndex(key);
-        Entry current = table[index];
-        while (current != null) {
-            if (current.getKey().equals(key)) {
-                Object toReturn = current.getValue();
-                current.setValue(value);
-                System.out.println(" произошла перезапись ");
-                return toReturn;
-            } else {
-                current = current.getNext();
-            }
-        }
-        Entry created = new Entry(key, value);
-        created.setNext(table[index]);
-        table[index] = created;
-        records++;
 
-        if (needIncrease()){
-            increase();
-        }
-        return null;
-    }
-
-    //отличается от метода put отсутствием проверки на перенасыщение
-    //используется для добавления групп объектов, при которой проверка должна быть вызвана после
-    public Object putForGroup(Object key, Object value) {
+    //просто добавление, без проверки на перегрузку
+    //данный метод необходим для отделения процесса добавдения объекта от проверки таблицы на перегрузку
+    //это сделано для того, чтобы при добавлении группы объектов, проверка вызывалась после полного добавления
+    //а не после каждого
+    public Object justPut(Object key, Object value) {
         if (key == null) {
             throw new NullPointerException("NULL KEY NOT SUPPORTED");
         }
@@ -159,6 +130,27 @@ public class MyMap implements Map {
         table[index] = created;
         records++;
         return null;
+    }
+
+
+    @Override
+    public Object put(Object key, Object value) {
+        Object toReturn = justPut(key, value);
+        if (needIncrease()){
+            increase();
+        }
+        return toReturn;
+    }
+
+    @Override
+    public void putAll(Map m) {
+        Set buffer = m.entrySet();
+        for (Object k : buffer) {
+                justPut(((Entry) k).getKey(), ((Entry) k).getValue());
+        }
+        while (needIncrease()){
+            increase();
+        }
     }
 
     //true если нужно увеличить и размер еще не максимальный
@@ -214,18 +206,6 @@ public class MyMap implements Map {
             }
         }
         return null;
-    }
-
-    @Override
-    public void putAll(Map m) {
-        Set buffer = m.entrySet();
-        for (Object k : buffer) {
-                putForGroup(((Entry) k).getKey(), ((Entry) k).getValue());
-        }
-        //добавив группу объектов, можно перегрузить таблицу так, что ее придется расширять несколько раз
-        while (needIncrease()){
-            increase();
-        }
     }
 
 
