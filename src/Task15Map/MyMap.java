@@ -13,9 +13,9 @@ package Task15Map;
 import java.util.*;
 
 public class MyMap implements Map {
-    private final double LOAD_KOEF = 1.5;   //предельное соотношение записей к размеру таблицы
+    private final double LOAD_KOEF = 1.0;   //предельное соотношение записей к размеру таблицы
     private final int INCREASE_KOEF = 2;
-    private static final int MIN_POSSIBLE_CAPACITY = 4;
+    private static final int MIN_POSSIBLE_CAPACITY = 16;
     private static final int MAX_POSSIBLE_CAPACITY = 16384;
     private Entry[] table;
     private int capacity;
@@ -61,8 +61,8 @@ public class MyMap implements Map {
             throw new NullPointerException("NULL KEY NOT SUPPORTED");
         }
         Set set = keySet();
-        for(Object o: set){
-            if(o.equals(key)){
+        for (Object o : set) {
+            if (o.equals(key)) {
                 return true;
             }
         }
@@ -73,16 +73,16 @@ public class MyMap implements Map {
     @Override
     public boolean containsValue(Object value) {
         Collection col = values();
-        for(Object o: col){
-            if(o == null){
-                if(value == null){
+        for (Object o : col) {
+            if (o == null) {
+                if (value == null) {
                     return true;
-                }else{
+                } else {
                     continue;
                 }
             }
 
-            if(o.equals(value)){
+            if (o.equals(value)) {
                 return true;
             }
         }
@@ -96,13 +96,14 @@ public class MyMap implements Map {
         if (key == null) {
             throw new NullPointerException("NULL KEY NOT SUPPORTED");
         }
-        for (Entry entry : table) {
-            while (entry != null) {
-                if (entry.key.equals(key)){
-                    return entry.value;
-                }
-                entry = entry.getNext();
+        Entry current = table[getIndex(key)];
+        while (current != null) {
+            if (current.key.equals(key)) {
+                return current.value;
+            } else {
+                current = current.next;
             }
+
         }
         return null;
     }
@@ -143,7 +144,7 @@ public class MyMap implements Map {
     @Override
     public Object put(Object key, Object value) {
         Object toReturn = justPut(key, value);
-        if (needIncrease()){
+        if (needIncrease()) {
             increase();
         }
         return toReturn;
@@ -153,16 +154,16 @@ public class MyMap implements Map {
     public void putAll(Map m) {
         Set buffer = m.entrySet();
         for (Object k : buffer) {
-                justPut(((Entry) k).getKey(), ((Entry) k).getValue());
+            justPut(((Entry) k).getKey(), ((Entry) k).getValue());
         }
-        while (needIncrease()){
+        while (needIncrease()) {
             increase();
         }
     }
 
     //true если нужно увеличить и размер еще не максимальный
     //false если не нужно или достигнут максимальный размер
-    public boolean needIncrease(){
+    public boolean needIncrease() {
         if ((double) records / (double) capacity > LOAD_KOEF && capacity < MAX_POSSIBLE_CAPACITY) {
             return true;
         } else {
@@ -174,10 +175,10 @@ public class MyMap implements Map {
     //увеличивает объем таблицы если  метод needIncrease() подтвердил необходимость этого
     public void increase() {
         MyMap buffer;
-        if(this.capacity*INCREASE_KOEF > MAX_POSSIBLE_CAPACITY){
+        if (this.capacity * INCREASE_KOEF > MAX_POSSIBLE_CAPACITY) {
             buffer = new MyMap(MAX_POSSIBLE_CAPACITY);
         } else {
-            buffer = new MyMap(this.capacity*INCREASE_KOEF);
+            buffer = new MyMap(this.capacity * INCREASE_KOEF);
         }
 
         buffer.putAll(this);
@@ -187,23 +188,22 @@ public class MyMap implements Map {
     }
 
 
-
     //удаление по ключу с возвратом удаленного значения
     @Override
     public Object remove(Object key) {
         int index = getIndex(key);
-        if(table[index] == null){
+        if (table[index] == null) {
             return null;
         }
-        if(table[index].key.equals(key)){
+        if (table[index].key.equals(key)) {
             Object toReturn = table[index].getValue();
             table[index] = table[index].next;
             records--;
             return toReturn;
         }
         Entry current = table[index];
-        while (current.next!=null){
-            if(current.next.key.equals(key)){
+        while (current.next != null) {
+            if (current.next.key.equals(key)) {
                 Object toReturn = current.next.getValue();
                 current.setNext(current.next.next);
                 records--;
@@ -237,6 +237,7 @@ public class MyMap implements Map {
         }
         return set;
     }
+
     @Override
     public Collection values() {
         Collection col = new ArrayList();
@@ -248,13 +249,14 @@ public class MyMap implements Map {
         }
         return col;
     }
+
     @Override
     public Set<Entry> entrySet() {
         Set<Entry> set = new HashSet<>();
         for (Entry entry : table) {
-                while (entry != null) {
-                    set.add(entry);
-                    entry = entry.getNext();
+            while (entry != null) {
+                set.add(entry);
+                entry = entry.getNext();
             }
         }
         return set;
@@ -314,7 +316,7 @@ public class MyMap implements Map {
         @Override
         public String toString() {
             String s;
-            if(value == null){
+            if (value == null) {
                 s = null;
             } else {
                 s = value.toString();
