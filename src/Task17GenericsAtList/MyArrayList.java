@@ -3,18 +3,18 @@ package Task17GenericsAtList;
 import java.util.*;
 
 public class MyArrayList <E>implements List<E> {
-    private Object[] data;
+    private E[] data;
 
     public MyArrayList () {
-        this.data = new Object[0];
+        this.data = (E[])new Object[0];
     }
 
     //конструктор принимающий коллекцию и записывающий ее в создаваемую
     public MyArrayList(Collection<? extends E>  c) {
-        this.data = c.toArray();
+        this.data = (E[])c.toArray();
     }
 
-    public MyArrayList(Object[] obj) {
+    public MyArrayList(E[] obj) {
         if (obj == null) throw new NullPointerException();
         this.data = obj;
     }
@@ -51,12 +51,12 @@ public class MyArrayList <E>implements List<E> {
 
 
     @Override
-    public Object[] toArray() {
+    public E[] toArray() {
         Object[] obj = new Object[size()];
         for (int i = 0; i < size(); i++) {
             obj[i] = data[i];
         }
-        return obj;
+        return (E[])obj;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class MyArrayList <E>implements List<E> {
 
     @Override
     public boolean add(E o) {
-        Object[] newArr = new Object[data.length + 1];
+        E[] newArr = (E[])new Object[data.length + 1];
         for (int i = 0; i < data.length; i++) {
             newArr[i] = data[i];
         }
@@ -89,7 +89,7 @@ public class MyArrayList <E>implements List<E> {
         //сохранение элемента
         Object removed = data[index];
         //удаление элемента
-        Object[] assist = new Object[data.length - 1];
+        E[] assist = (E[])new Object[data.length - 1];
         for (int i = 0; i < index; i++) {
             assist[i] = data[i];
         }
@@ -115,7 +115,7 @@ public class MyArrayList <E>implements List<E> {
             }
         }
         //удаление элемента
-        Object[] newArr = new Object[data.length - 1];
+        E[] newArr = (E[])new Object[data.length - 1];
         for (int i = 0; i < index; i++) {
             newArr[i] = data[i];
         }
@@ -142,8 +142,8 @@ public class MyArrayList <E>implements List<E> {
     public boolean addAll(Collection<? extends E> c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) return false;
-        Object[] assist = new Object[data.length + c.size()];
-        Object[] input = c.toArray();
+        E[] assist = (E[])new Object[data.length + c.size()];
+        E[] input = (E[])c.toArray();
 
         for (int i = 0; i < data.length; i++) {
             assist[i] = data[i];
@@ -163,8 +163,8 @@ public class MyArrayList <E>implements List<E> {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) return false;
 
-        Object[] assist = new Object[data.length + c.size()];
-        Object[] input = c.toArray();
+        E[] assist = (E[])new Object[data.length + c.size()];
+        E[] input = (E[])c.toArray();
 
         //переносится часть исходного массива до ячейки вставки
         for (int i = 0; i < index; i++) {
@@ -192,7 +192,7 @@ public class MyArrayList <E>implements List<E> {
             return false;//не с чем сравнивать для удаления
         }
         int count = 0;
-        Object[] arr = new Object[data.length];
+        E[] arr = (E[])new Object[data.length];
         //каждый элемент масива data проверяется на отсутствие в c и переносится во вспомогательный массив
         for (int i = 0; i < data.length; i++) {
             if (!c.contains(data[i])) {
@@ -205,7 +205,7 @@ public class MyArrayList <E>implements List<E> {
             return false;
         }
         //перенос без пустого хвоста
-        Object[] assist = new Object[count];
+        E[] assist = (E[])new Object[count];
         for (int i = 0; i < count; i++) {
             assist[i] = arr[i];
         }
@@ -224,7 +224,7 @@ public class MyArrayList <E>implements List<E> {
             return true;
         }
         int count = 0;
-        Object[] arr = new Object[data.length];
+        E[] arr = (E[])new Object[data.length];
         for (int i = 0; i < data.length; i++) {
             if (c.contains(data[i])) {
                 arr[count] = data[i];
@@ -234,7 +234,7 @@ public class MyArrayList <E>implements List<E> {
         if (count == data.length) {
             return false;
         }
-        Object[] assist = new Object[count];
+        E[] assist =(E[]) new Object[count];
         for (int i = 0; i < count; i++) {
             assist[i] = arr[i];
         }
@@ -244,7 +244,7 @@ public class MyArrayList <E>implements List<E> {
 
     @Override
     public void clear() {
-        data = new Object[0];
+        data = (E[])new Object[0];
 
     }
 
@@ -271,7 +271,7 @@ public class MyArrayList <E>implements List<E> {
         if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size()) + "; Index:" + index);
         }
-        Object[] assist = new Object[data.length + 1];
+        E[] assist = (E[])new Object[data.length + 1];
 
         //переносится часть исходного массива до ячейки вставки
         for (int i = 0; i < index; i++) {
@@ -419,7 +419,7 @@ public class MyArrayList <E>implements List<E> {
             if(!status){
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
-            Object[] assist = new Object[data.length - 1];
+            E[] assist = (E[])new Object[data.length - 1];
             for (int i = 0; i < lastCalled; i++) {
                 assist[i] = data[i];
             }
@@ -437,7 +437,7 @@ public class MyArrayList <E>implements List<E> {
             if(!status){
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
-            data[lastCalled] = o;
+            data[lastCalled] = (E)o;
             status = false;
         }
 
@@ -450,14 +450,14 @@ public class MyArrayList <E>implements List<E> {
             if(!status){
                 throw new IllegalStateException("Please use next() or previous() before called this method");
             }
-            Object[] assist = new Object[data.length+1];
+            E[] assist = (E[]) new Object[data.length+1];
 
             //переносится часть исходного массива до ячейки вставки
             for (int i = 0; i <current; i++) {
                 assist[i] = data[i];
             }
             //вставка
-            assist[current] = o;
+            assist[current] = (E)o;
 
             //дозапись исходных данных после вставки
             for (int i = current; i < data.length; i++) {
