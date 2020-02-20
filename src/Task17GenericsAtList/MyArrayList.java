@@ -52,11 +52,11 @@ public class MyArrayList <E>implements List<E> {
 
     @Override
     public E[] toArray() {
-        Object[] obj = new Object[size()];
+        E[] obj = (E[]) new Object[size()];
         for (int i = 0; i < size(); i++) {
             obj[i] = data[i];
         }
-        return (E[])obj;
+        return obj;
     }
 
     @Override
@@ -314,13 +314,14 @@ public class MyArrayList <E>implements List<E> {
             throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1));
         }
         //новый массив необходимой длины
-        Object[] obj = new Object[toIndex - fromIndex];
+        E[] obj = (E[]) new Object[toIndex - fromIndex];
         //запись в массив нужного диапазона элементов
         for (int i = 0; i < obj.length; i++) {
             obj[i] = data[i + fromIndex];
         }
         //передача массива в конструктор
-        return new MyArrayList(obj);
+        List<E> list = new MyArrayList<>(obj);
+        return list;
     }
 
     //метод возвращающий итератор
