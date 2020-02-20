@@ -6,8 +6,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         MyArrayList<String> list = new MyArrayList<>();
-        list.add("");
-        Object a = list.get(0);
+        list.add("a");
+        String a = list.get(0);
         System.out.println(a);
 
     }
