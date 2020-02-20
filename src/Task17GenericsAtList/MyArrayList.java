@@ -60,12 +60,12 @@ public class MyArrayList <E>implements List<E> {
     }
 
     @Override
-    public Object[] toArray(Object[] arr) {
+    public <E> E[] toArray(E[] arr) {
         if (data.length >= arr.length) {
-            return arr = toArray();
+            return arr = (E[])toArray();
         } else {
             for (int i = 0; i < data.length; i++) {
-                arr[i] = data[i];
+                arr[i] = (E) data[i];
             }
             arr[data.length] = null;
         }
@@ -73,7 +73,7 @@ public class MyArrayList <E>implements List<E> {
     }
 
     @Override
-    public boolean add(Object o) {
+    public boolean add(E o) {
         Object[] newArr = new Object[data.length + 1];
         for (int i = 0; i < data.length; i++) {
             newArr[i] = data[i];
@@ -127,7 +127,7 @@ public class MyArrayList <E>implements List<E> {
     }
 
     @Override
-    public boolean containsAll(Collection c) {
+    public boolean containsAll(Collection<?> c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) return false;
         Object[] arr = c.toArray();
@@ -139,7 +139,7 @@ public class MyArrayList <E>implements List<E> {
 
 
     @Override
-    public boolean addAll(Collection c) {
+    public boolean addAll(Collection<? extends E> c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) return false;
         Object[] assist = new Object[data.length + c.size()];
@@ -158,7 +158,7 @@ public class MyArrayList <E>implements List<E> {
 
     //добавляет все элементы принимаемой коллекции в вызывающую со вставкой начиная с ячейки, обозначенной индексом
     @Override
-    public boolean addAll(int index, Collection c) {
+    public boolean addAll(int index, Collection<? extends E> c) {
         if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("WRONG INDEX");
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) return false;
@@ -186,7 +186,7 @@ public class MyArrayList <E>implements List<E> {
     //если в  коллекции несколько элементов соответствуют одному из элементов вызывающей - удаляет все
     //метод возвращает true если коллекция изменилась
     @Override
-    public boolean removeAll(Collection c) {
+    public boolean removeAll(Collection<?> c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0){
             return false;//не с чем сравнивать для удаления
@@ -217,7 +217,7 @@ public class MyArrayList <E>implements List<E> {
 
 
     @Override
-    public boolean retainAll(Collection c) {
+    public boolean retainAll(Collection<?> c) {
         if (c == null) throw new NullPointerException("SPECIFIED COLLECTION IS NULL");
         if (c.size() == 0) {
             clear();
