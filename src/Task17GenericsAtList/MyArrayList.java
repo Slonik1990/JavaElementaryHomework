@@ -1,21 +1,20 @@
-package Task11;
+package Task17GenericsAtList;
 
 import java.util.*;
 
-public class ArrList implements List {
+public class MyArrayList <E>implements List<E> {
     private Object[] data;
 
-    public ArrList() {
+    public MyArrayList () {
         this.data = new Object[0];
     }
 
     //конструктор принимающий коллекцию и записывающий ее в создаваемую
-    public ArrList(Collection c) {
+    public MyArrayList(Collection<? extends E>  c) {
         this.data = c.toArray();
     }
 
-    //т.к. данная коллекция основана на массиве, считаю необходимой возможность создавать коллекцию передавая массив
-    public ArrList(Object[] obj) {
+    public MyArrayList(Object[] obj) {
         if (obj == null) throw new NullPointerException();
         this.data = obj;
     }
@@ -85,8 +84,8 @@ public class ArrList implements List {
     }
 
     @Override
-    public Object remove(int index) {
-        if (index < 0 || index >= size()) return "WRONG INDEX";
+    public E remove(int index) {
+        if (index < 0 || index >= size()) throw new IndexOutOfBoundsException("WRONG INDEX") ;
         //сохранение элемента
         Object removed = data[index];
         //удаление элемента
@@ -99,7 +98,7 @@ public class ArrList implements List {
         }
         data = assist;
 
-        return removed;
+        return (E)removed;
     }
 
 
@@ -250,25 +249,25 @@ public class ArrList implements List {
     }
 
     @Override
-    public Object get(int index) {
+    public E get(int index) {
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1) + "; Index:" + index);
         }
-        return data[index];
+        return (E)data[index];
     }
 
     @Override
-    public Object set(int index, Object element) {
+    public E set(int index, E element) {
         if (index < 0 || index >= size()) {
             throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1) + "; Index:" + index);
         }
         Object old = data[index];
         data[index] = element;
-        return old;
+        return (E)old;
     }
 
     @Override
-    public void add(int index, Object element) {
+    public void add(int index, E element) {
         if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size()) + "; Index:" + index);
         }
@@ -309,7 +308,7 @@ public class ArrList implements List {
     }
 
     @Override
-    public List subList(int fromIndex, int toIndex) {
+    public List<E> subList(int fromIndex, int toIndex) {
         //проверка индексов
         if (fromIndex < 0 || fromIndex >= size() || toIndex < 0 || toIndex >= size()) {
             throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1));
@@ -321,32 +320,32 @@ public class ArrList implements List {
             obj[i] = data[i + fromIndex];
         }
         //передача массива в конструктор
-        return new ArrList(obj);
+        return new MyArrayList(obj);
     }
 
     //метод возвращающий итератор
     @Override
     public Iterator iterator() {
-        return new ArrIterator();
+        return new MyArrIterator();
     }
 
     //метод возвращает листИтератор
     @Override
     public ListIterator listIterator() {
-        return new ArrListIterator();
+        return new MyArrListIterator();
     }
 
     ////метод возвращает листИтератор и устанавливает его курсор на принимаемый индекс
     @Override
     public ListIterator listIterator(int index) {
-        return new ArrListIterator(index);
+        return new MyArrListIterator(index);
     }
 
 
 
 
 
-    private class ArrIterator implements Iterator {
+    private class MyArrIterator implements Iterator {
         int current = 0;//элемент на который указывает итератор
         int lastCalled = -1;//
         boolean  status = false;//индикатор возможности вызвать remove, set, add (modification operation)
@@ -358,25 +357,25 @@ public class ArrList implements List {
         }
 
         @Override
-        public Object next() {
+        public E next() {
             if (current >= size()) {
                 throw new NoSuchElementException("END_OF_LIST");
             } else {
                 lastCalled = current;
                 current = ++current;
                 status=true;
-                return data[lastCalled];
+                return (E)data[lastCalled];
             }
         }
     }
 
-    private class ArrListIterator extends ArrIterator implements ListIterator {
+    private class MyArrListIterator extends MyArrIterator implements ListIterator {
 
 
-        public ArrListIterator() {
+        public MyArrListIterator() {
             super();
         }
-        public ArrListIterator(int index) {
+        public MyArrListIterator(int index) {
             super();
             this.current = index;
         }
@@ -389,14 +388,14 @@ public class ArrList implements List {
         //возвращает элемент находящийся перед курсором
         //если вызвать next и previous подряд, вернет тот же элемент
         @Override
-        public Object previous() {
+        public E previous() {
             if (current <= 0) {
                 throw new NoSuchElementException("NO_ELEMENTS_BEFORE");
             } else {
                 lastCalled = current-1;
                 current = --current;
                 status=true;
-                return data[lastCalled];
+                return (E)data[lastCalled];
             }
         }
 
@@ -470,6 +469,5 @@ public class ArrList implements List {
         }
 
     }
-
 
 }
