@@ -468,7 +468,5 @@ public class MyArrayList <E>implements List<E> {
             current++;
             status=false;
         }
-
     }
-
 }
