@@ -10,6 +10,7 @@ public class Bank {
         this.name = name;
         this.accounts = new DataBase();
         this.foundationYear = foundationYear;
+
     }
 
 

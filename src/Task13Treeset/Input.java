@@ -47,13 +47,9 @@ public class Input {
                     String s = scan.next();
                     bank.removeInvestor(s);
                     break;
-
                     default:
-                        System.out.println("Команда не поддерживается");
+                        throw new UnsupportedOperationException();
             }
         }
     }
-
-
-
 }
