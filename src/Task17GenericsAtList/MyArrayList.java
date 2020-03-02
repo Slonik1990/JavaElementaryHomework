@@ -326,19 +326,19 @@ public class MyArrayList <E>implements List<E> {
 
     //метод возвращающий итератор
     @Override
-    public Iterator iterator() {
+    public Iterator <E>iterator() {
         return new MyArrIterator();
     }
 
     //метод возвращает листИтератор
     @Override
-    public ListIterator listIterator() {
+    public ListIterator <E>listIterator() {
         return new MyArrListIterator();
     }
 
     ////метод возвращает листИтератор и устанавливает его курсор на принимаемый индекс
     @Override
-    public ListIterator listIterator(int index) {
+    public ListIterator <E>listIterator(int index) {
         return new MyArrListIterator(index);
     }
 
@@ -346,7 +346,7 @@ public class MyArrayList <E>implements List<E> {
 
 
 
-    private class MyArrIterator implements Iterator {
+    private class MyArrIterator implements Iterator <E>{
         int current = 0;//элемент на который указывает итератор
         int lastCalled = -1;//
         boolean  status = false;//индикатор возможности вызвать remove, set, add (modification operation)
@@ -365,12 +365,12 @@ public class MyArrayList <E>implements List<E> {
                 lastCalled = current;
                 current = ++current;
                 status=true;
-                return (E)data[lastCalled];
+                return data[lastCalled];
             }
         }
     }
 
-    private class MyArrListIterator extends MyArrIterator implements ListIterator {
+    private class MyArrListIterator extends MyArrIterator implements ListIterator <E>{
 
 
         public MyArrListIterator() {
