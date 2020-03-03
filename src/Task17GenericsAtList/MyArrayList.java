@@ -1,5 +1,7 @@
 package Task17GenericsAtList;
 
+import com.sun.istack.internal.NotNull;
+
 import java.util.*;
 
 public class MyArrayList <E>implements List<E> {
@@ -10,11 +12,11 @@ public class MyArrayList <E>implements List<E> {
     }
 
     //конструктор принимающий коллекцию и записывающий ее в создаваемую
-    public MyArrayList(Collection<? extends E>  c) {
+    public MyArrayList( Collection<? extends E>  c) {
         this.data = (E[])c.toArray();
     }
 
-    public MyArrayList(E[] obj) {
+    public MyArrayList(@NotNull E[] obj) {
         if (obj == null) throw new NullPointerException();
         this.data = obj;
     }
