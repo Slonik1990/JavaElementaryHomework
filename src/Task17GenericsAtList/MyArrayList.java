@@ -13,11 +13,12 @@ public class MyArrayList <E>implements List<E> {
 
     //конструктор принимающий коллекцию и записывающий ее в создаваемую
     public MyArrayList( Collection<? extends E>  c) {
+        if(c == null) throw new NullPointerException("Specified collection is NULL");
         this.data = (E[])c.toArray();
     }
 
-    public MyArrayList(@NotNull E[] obj) {
-        if (obj == null) throw new NullPointerException();
+    public MyArrayList( E[] obj) {
+        if (obj == null) throw new NullPointerException("Specified array is NULL");
         this.data = obj;
     }
 
@@ -341,6 +342,8 @@ public class MyArrayList <E>implements List<E> {
     ////метод возвращает листИтератор и устанавливает его курсор на принимаемый индекс
     @Override
     public ListIterator <E>listIterator(int index) {
+        if (index >= size())
+            throw new IndexOutOfBoundsException("MinIndex:0; " + "MaxIndex:" + (size() - 1));
         return new MyArrListIterator(index);
     }
 
@@ -378,6 +381,8 @@ public class MyArrayList <E>implements List<E> {
         public MyArrListIterator() {
             super();
         }
+
+        //проверка индекса на корректность производится в вызывающем методе, поэтому здесь ее нет
         public MyArrListIterator(int index) {
             super();
             this.current = index;

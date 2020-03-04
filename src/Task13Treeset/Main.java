@@ -8,8 +8,6 @@ public class Main {
                 Input.run(privat);
             } catch (UnsupportedOperationException e) {
                 System.out.println("команда не поддерживается");
-            } finally {
-                Input.run(privat);
             }
         }
 
