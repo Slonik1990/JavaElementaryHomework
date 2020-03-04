@@ -449,9 +449,6 @@ public class MyArrayList <E>implements List<E> {
             status = false;
         }
 
-        //добавляет элемент на место курсора
-        //метод next() после данного метода вернет следующий после добавленного элемент
-        //метод previous() после данного метода вернет добавленный элемент
         @Override
         public void add(Object o) {
 
