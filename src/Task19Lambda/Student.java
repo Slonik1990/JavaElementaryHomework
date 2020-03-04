@@ -39,3 +39,11 @@ public class Student implements Comparable<Student>{
     }
 
 }
+
+class SuperStudent extends Student{
+    private boolean goodStudent;
+    public SuperStudent(String lastName, String firstName, double averageMark) {
+        super(lastName, firstName, averageMark);
+        this.goodStudent = true;
+    }
+}
