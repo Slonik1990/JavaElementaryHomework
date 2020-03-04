@@ -1,7 +1,7 @@
 package Task19Lambda;
 
 public class Student implements Comparable<Student>{
-    private Integer id;
+    private Integer id;//поле для натурального сравнения
     private String lastName;
     private String firstName;
     private double averageMark;
@@ -26,10 +26,6 @@ public class Student implements Comparable<Student>{
         return this.id.compareTo(s.id);
     }
 
-    public Integer getId() {
-        return id;
-    }
-
     public String getLastName() {
         return lastName;
     }
@@ -42,7 +38,4 @@ public class Student implements Comparable<Student>{
         return averageMark;
     }
 
-    public static int getIdCounter() {
-        return idCounter;
-    }
 }

@@ -12,31 +12,23 @@ import java.util.function.UnaryOperator;
 public class Main {
     public static void main(String[] args) {
 
-        TreeSet<Student> students = new TreeSet<>();
+        StudentGroup<Student> students = new StudentGroup<>();
 
         students.add(new Student("Andrey", "Petrov", 9.3));
         students.add(new Student("Victor", "Sidorov", 7));
-        students.add(new Student("Anna", "Zayceva", 8.4));
+        students.add(new SuperStudent("Anna", "Zayceva", 8.4));
         students.add(new Student("Zahar", "Berkut", 5.9));
-        students.add(new Student("Nikolay", "Boyko", 4.3));
-
-
+        students.add(new SuperStudent("Nikolay", "Boyko", 4.3));
 
         Comparator<Student> byLastName = Comparator.comparing(Student::getLastName) ;
         Comparator<Student> byName = Comparator.comparing(Student::getFirstName) ;
         Comparator<Student> byMarks = Comparator.comparing(Student::getAverageMark) ;
 
+        students.print();
+        students.printSorted(byLastName);
+        students.printSorted(byName);
+        students.printSorted(byMarks);
 
-        printSorted(students, byLastName);
-        printSorted(students, byName);
-        printSorted(students, byMarks);
-
-    }
-
-    public static void printSorted (TreeSet<Student> students, Comparator<Student> comparator){
-        TreeSet<Student> toPrint = new TreeSet<>(comparator);
-        toPrint.addAll(students);
-        System.out.println(toPrint);
 
     }
 }
