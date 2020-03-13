@@ -7,9 +7,9 @@ public class Student implements Comparable<Student>{
     private double averageMark;
     private static  int idCounter = 0;
 
-    public Student(String lastName, String firstName, double averageMark) {
-        this.lastName = lastName;
+    public Student(String firstName, String lastName, double averageMark) {
         this.firstName = firstName;
+        this.lastName = lastName;
         this.averageMark = averageMark;
         this.id = ++idCounter;
 
@@ -17,7 +17,12 @@ public class Student implements Comparable<Student>{
 
     @Override
     public String toString() {
-        return "\nStudent: " + lastName + " " + firstName + ". Average mark: " + averageMark;
+        String result = lastName;
+        while (result.length()<15) result = result.concat(" ");
+        result = result.concat(firstName);
+        while (result.length()<30) result = result.concat(" ");
+        result = result.concat(String.valueOf(averageMark));
+        return result;
     }
 
     //натуральная сортировка будет выполняться по id, т.к. только это поле всегда уникально
@@ -42,8 +47,8 @@ public class Student implements Comparable<Student>{
 
 class SuperStudent extends Student{
     private boolean goodStudent;
-    public SuperStudent(String lastName, String firstName, double averageMark) {
-        super(lastName, firstName, averageMark);
+    public SuperStudent(String firstName, String lastName, double averageMark) {
+        super(firstName, lastName, averageMark);
         this.goodStudent = true;
     }
 }

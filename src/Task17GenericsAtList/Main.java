@@ -11,9 +11,5 @@ public class Main {
         Object a = list.get(0);
         System.out.println(a);
 
-        list.toArray(obj);
-        System.out.println(list.contains(null));
-        System.out.println(obj);
-
     }
 }

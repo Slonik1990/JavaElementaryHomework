@@ -20,14 +20,15 @@ public class Main {
         students.add(new Student("Zahar", "Berkut", 5.9));
         students.add(new SuperStudent("Nikolay", "Boyko", 4.3));
 
-        Comparator<Student> byLastName = Comparator.comparing(Student::getLastName) ;
-        Comparator<Student> byName = Comparator.comparing(Student::getFirstName) ;
-        Comparator<Student> byMarks = Comparator.comparing(Student::getAverageMark) ;
+        Comparator<Student> byLastName = Comparator.comparing(Student::getLastName);
+        Comparator<Student> byName = Comparator.comparing(Student::getFirstName);
+        Comparator<Student> byMarks = Comparator.comparing(Student::getAverageMark);
 
-        students.print();
-        students.printSorted(byLastName);
-        students.printSorted(byName);
-        students.printSorted(byMarks);
+
+        students.saveToTxt();
+        students.sortAndSave(byMarks);
+        students.sortAndSave(byLastName);
+
 
 
     }
