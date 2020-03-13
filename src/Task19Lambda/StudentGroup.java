@@ -20,7 +20,7 @@ public class StudentGroup <T extends Student>{
         int n = 0;
         String text = "\n                STUDENTS                ";
         text = text.concat("\n Last Name        Name       Average Mark");
-        text = text.concat("\n_________________________________________");
+        text = text.concat("\n__________________________________________");
         for (Student s: group) {
             text = text.concat("\n" + ++n + ")");
             text = text.concat(s.toString());
