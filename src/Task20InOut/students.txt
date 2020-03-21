@@ -1,7 +1,7 @@
 
                 STUDENTS                
  Last Name        Name       Average Mark
-_________________________________________
+__________________________________________
 1)Berkut         Zahar          5.9
 2)Boyko          Nikolay        4.3
 3)Petrov         Andrey         9.3

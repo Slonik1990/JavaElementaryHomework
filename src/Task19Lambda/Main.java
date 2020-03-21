@@ -28,6 +28,8 @@ public class Main {
         students.saveToTxt();
         students.sortAndSave(byMarks);
         students.sortAndSave(byLastName);
+        System.out.println("1");
+
 
 
 
