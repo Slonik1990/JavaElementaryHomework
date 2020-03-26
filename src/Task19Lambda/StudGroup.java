@@ -4,10 +4,10 @@ import java.io.*;
 import java.util.Comparator;
 import java.util.TreeSet;
 
-public class StudentGroup <T extends Student>{
+public class StudGroup<T extends Stud>{
     private TreeSet<T> group;
 
-    public StudentGroup() {
+    public StudGroup() {
         this.group = new TreeSet<>();
     }
 
@@ -21,7 +21,7 @@ public class StudentGroup <T extends Student>{
         String text = "\n                STUDENTS                ";
         text = text.concat("\n Last Name        Name       Average Mark");
         text = text.concat("\n__________________________________________");
-        for (Student s: group) {
+        for (Stud s: group) {
             text = text.concat("\n" + ++n + ")");
             text = text.concat(s.toString());
 

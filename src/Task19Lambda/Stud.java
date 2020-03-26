@@ -1,13 +1,13 @@
 package Task19Lambda;
 
-public class Student implements Comparable<Student>{
+public class Stud implements Comparable<Stud>{
     private Integer id;//поле для натурального сравнения
     private String lastName;
     private String firstName;
     private double averageMark;
     private static  int idCounter = 0;
 
-    public Student(String firstName, String lastName, double averageMark) {
+    public Stud(String firstName, String lastName, double averageMark) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.averageMark = averageMark;
@@ -27,7 +27,7 @@ public class Student implements Comparable<Student>{
 
     //натуральная сортировка будет выполняться по id, т.к. только это поле всегда уникально
     @Override
-    public int compareTo(Student s) {
+    public int compareTo(Stud s) {
         return this.id.compareTo(s.id);
     }
 
@@ -45,9 +45,9 @@ public class Student implements Comparable<Student>{
 
 }
 
-class SuperStudent extends Student{
+class SuperStud extends Stud {
     private boolean goodStudent;
-    public SuperStudent(String firstName, String lastName, double averageMark) {
+    public SuperStud(String firstName, String lastName, double averageMark) {
         super(firstName, lastName, averageMark);
         this.goodStudent = true;
     }

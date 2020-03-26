@@ -1,34 +1,27 @@
 package Task19Lambda;
 
 import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.function.BinaryOperator;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-import java.util.function.UnaryOperator;
 
 public class Main {
     public static void main(String[] args) {
 
-        StudentGroup<Student> students = new StudentGroup<>();
+        StudGroup<Stud> students = new StudGroup<>();
 
-        students.add(new Student("Andrey", "Petrov", 9.3));
-        students.add(new Student("Victor", "Sidorov", 7));
-        students.add(new SuperStudent("Anna", "Zayceva", 8.4));
-        students.add(new Student("Zahar", "Berkut", 5.9));
-        students.add(new SuperStudent("Nikolay", "Boyko", 4.3));
+        students.add(new Stud("Andrey", "Petrov", 9.3));
+        students.add(new Stud("Victor", "Sidorov", 7));
+        students.add(new SuperStud("Anna", "Zayceva", 8.4));
+        students.add(new Stud("Zahar", "Berkut", 5.9));
+        students.add(new SuperStud("Nikolay", "Boyko", 4.3));
 
-        Comparator<Student> byLastName = Comparator.comparing(Student::getLastName);
-        Comparator<Student> byName = Comparator.comparing(Student::getFirstName);
-        Comparator<Student> byMarks = Comparator.comparing(Student::getAverageMark);
+        Comparator<Stud> byLastName = Comparator.comparing(Stud::getLastName);
+        Comparator<Stud> byName = Comparator.comparing(Stud::getFirstName);
+        Comparator<Stud> byMarks = Comparator.comparing(Stud::getAverageMark);
 
 
         students.saveToTxt();
         students.sortAndSave(byMarks);
         students.sortAndSave(byLastName);
-        System.out.println("1");
+        System.out.println(args.length);
 
 
 
