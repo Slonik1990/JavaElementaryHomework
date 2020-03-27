@@ -13,9 +13,9 @@ public class Main {
 
         students.feelMarks();
 
-        students.saveAsTxt("src\\Task202122InOut", "group_as_csv.txt");
-        students.groupAsCSV("src\\Task202122InOut", "group_as_csv.csv");
-        StudentGroup<Student> fromCSV = students.restoreFromCSV("src\\Task202122InOut\\group_as_csv.csv");
+        students.saveAsTxt("src\\Task2021InOut", "group_as_csv.txt");
+        students.groupAsCSV("src\\Task2021InOut", "group_as_csv.csv");
+        StudentGroup<Student> fromCSV = students.restoreFromCSV("src\\Task2021InOut\\group_as_csv.csv");
         System.out.println(students);
         System.out.println(fromCSV);
 

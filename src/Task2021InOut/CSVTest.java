@@ -22,21 +22,21 @@ public class CSVTest {
         students.add(new Student("Nikolay", "Boyko"));
 
         students.feelMarks();
-        students.groupAsCSV("src\\Task202122InOut", "group_as_csv.csv");
+        students.groupAsCSV("src\\Task2021InOut", "group_as_csv.csv");
     }
 
 
     //сравнение количества студентов оригинальной группы и группы дессериализованной из формата CSV
     @Test
     public void sizeTest() {
-        StudentGroup<Student> fromCSV = students.restoreFromCSV("src\\Task202122InOut\\group_as_csv.csv");
+        StudentGroup<Student> fromCSV = students.restoreFromCSV("src\\Task2021InOut\\group_as_csv.csv");
         Assert.assertEquals(students.getSize(), fromCSV.getSize());
     }
 
     //сравнение строкового представления групп
     @Test
     public void toStringTest(){
-        StudentGroup<Student> fromCSV = students.restoreFromCSV("src\\Task202122InOut\\group_as_csv.csv");
+        StudentGroup<Student> fromCSV = students.restoreFromCSV("src\\Task2021InOut\\group_as_csv.csv");
         String x = students.toString();
         String y = fromCSV.toString();
         Assert.assertEquals(x,y);
