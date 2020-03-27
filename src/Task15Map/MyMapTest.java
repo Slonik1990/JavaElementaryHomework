@@ -1,6 +1,5 @@
 package Task15Map;
 
-import junit.framework.AssertionFailedError;
 import org.junit.*;
 
 import java.lang.reflect.Array;
