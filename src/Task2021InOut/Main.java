@@ -10,7 +10,6 @@ public class Main {
         students.add(new Student("Zayceva", "Irina"));
         students.add(new Student("Berkut", "Zahar"));
         students.add(new Student("Boyko", "Nykolay"));
-
         students.feelMarks();
 
         students.saveAsTxt("src\\Task2021InOut", "group_as_csv.txt");
