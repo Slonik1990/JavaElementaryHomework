@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class MyMD5 {
-    private char[] symbols = new String("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ").toCharArray();
+    private char[] symbols = new String("abcdefghijklmnopqrstuvwxyz").toCharArray();
 
     public MyMD5() {
     }
@@ -13,41 +13,45 @@ public class MyMD5 {
         this.symbols = symbols.toCharArray();
     }
 
-//    public  String decoderMD5(String hash) {
-//        for (int i = 0; i < symbols.length; i++) {
-//            for (int j = 0; j < symbols.length; j++) {
-//                for (int k = 0; k < symbols.length; k++) {
-//                    for (int l = 0; l < symbols.length; l++) {
-//                        char[] w = {symbols[i], symbols[j], symbols[k], symbols[l]};
-//                        String word = new String(w);
-//                        String wordHash = coderMD5(word);
-//                        if (wordHash.equals(hash)) {
-//                            System.out.println(word);
-//                            return word;
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        System.out.println("не нашел");
-//        return null;
-//    }
-
-    public  String decoderMD5(String hash) {
-
+    public String decoderMD5(String hash) {
 //        генерация слова
         for (int i = 0; i < symbols.length; i++) {
             for (int j = 0; j < symbols.length; j++) {
                 for (int k = 0; k < symbols.length; k++) {
                     for (int l = 0; l < symbols.length; l++) {
-                        char[] w = {symbols[i], symbols[j], symbols[k], symbols[l]};
-                        String word = new String(w);
+                        for (int m = 0; m < symbols.length; m++) {
+                            for (int n = 0; n < symbols.length; n++) {
 
-                        //сравнение хэш кода
-                        String wordHash = coderMD5(word);
-                        if (wordHash.equals(hash)) {
-                            System.out.println(word);
-                            return word;
+
+                                if (i == 0 & j == 0) {
+                                    char[] letters = {symbols[k], symbols[l], symbols[m], symbols[n]};
+                                    String word = new String(letters);
+                                    //сравнение хэш кода
+                                    String wordHash = coderMD5(word);
+                                    if (wordHash.equals(hash)) {
+                                        return word;
+                                    }
+                                }
+
+                                if (i == 0) {
+                                    char[] letters = {symbols[j], symbols[k], symbols[l], symbols[m], symbols[n]};
+                                    String word = new String(letters);
+                                    //сравнение хэш кода
+                                    String wordHash = coderMD5(word);
+                                    if (wordHash.equals(hash)) {
+                                        return word;
+                                    }
+                                }
+
+                                char[] letters = {symbols[i], symbols[j], symbols[k], symbols[l], symbols[m], symbols[n]};
+                                String word = new String(letters);
+                                //сравнение хэш кода
+                                String wordHash = coderMD5(word);
+                                if (wordHash.equals(hash)) {
+                                    return word;
+                                }
+
+                            }
                         }
                     }
                 }
@@ -58,9 +62,7 @@ public class MyMD5 {
     }
 
 
-
-
-    public  String coderMD5(String text) {
+    public String coderMD5(String text) {
         StringBuilder sb = new StringBuilder();
 
         try {
