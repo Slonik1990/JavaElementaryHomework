@@ -46,13 +46,13 @@ public class Comparison {
     public static void jsonTest(StudentGroup<Student> students){
         System.out.println("JSON " + students.size() + " студентов:");
         long start = System.currentTimeMillis();
-        students.saveAsJSON("src\\Task20InOut", "test_json.json");
+        students.saveAsJSON("src\\Task20InOut\\BigData", "test_json.json");
         long outTime = System.currentTimeMillis();
-        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\test_json.json");
+        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\BigData\\test_json.json");
         long inTime = System.currentTimeMillis();
         System.out.println("Время сериализации: " + (double)(outTime-start)/1000 + " сек");
         System.out.println("Время десериализации: " + (double)(inTime-outTime)/1000 + " сек");
-        try(FileInputStream f = new FileInputStream("src\\Task20InOut\\test_json.json")){
+        try(FileInputStream f = new FileInputStream("src\\Task20InOut\\BigData\\test_json.json")){
             System.out.println("Объем файла:" + f.available()/1024 + " КБ");
         }catch (IOException e){
             e.printStackTrace();
@@ -63,13 +63,13 @@ public class Comparison {
     public static void csvTest(StudentGroup<Student> students){
         System.out.println("CSV " + students.size() + " студентов:");
         long start = System.currentTimeMillis();
-        students.saveAsJSON("src\\Task20InOut", "test_csv.csv");
+        students.saveAsJSON("src\\Task20InOut\\BigData", "test_csv.csv");
         long outTime = System.currentTimeMillis();
-        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\test_csv.csv");
+        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\BigData\\test_csv.csv");
         long inTime = System.currentTimeMillis();
         System.out.println("Время сериализации: " + (double)(outTime-start)/1000 + " сек");
         System.out.println("Время десериализации: " + (double)(inTime-outTime)/1000 + " сек");
-        try(FileInputStream f = new FileInputStream("src\\Task20InOut\\test_csv.csv")){
+        try(FileInputStream f = new FileInputStream("src\\Task20InOut\\BigData\\test_csv.csv")){
             System.out.println("Объем файла:" + f.available()/1024 + " КБ");
         }catch (IOException e){
             e.printStackTrace();
@@ -80,13 +80,13 @@ public class Comparison {
     public static void serTest(StudentGroup<Student> students){
         System.out.println("SERIALIZATION " + students.size() + " студентов:");
         long start = System.currentTimeMillis();
-        students.saveAsJSON("src\\Task20InOut", "test_serialization.stg");
+        students.saveAsJSON("src\\Task20InOut\\BigData", "test_serialization.stg");
         long outTime = System.currentTimeMillis();
-        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\test_serialization.stg");
+        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\BigData\\test_serialization.stg");
         long inTime = System.currentTimeMillis();
         System.out.println("Время сериализации: " + (double)(outTime-start)/1000 + " сек");
         System.out.println("Время десериализации: " + (double)(inTime-outTime)/1000 + " сек");
-        try(FileInputStream f = new FileInputStream("src\\Task20InOut\\test_serialization.stg")){
+        try(FileInputStream f = new FileInputStream("src\\Task20InOut\\BigData\\test_serialization.stg")){
             System.out.println("Объем файла:" + f.available()/1024 + " КБ");
         }catch (IOException e){
             e.printStackTrace();
