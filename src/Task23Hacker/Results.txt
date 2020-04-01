@@ -1,0 +1,137 @@
+
+На каждой итерации цикла алгоритм дешефровки состоит из следующих основных блоков:
+1) генератор слова
+2) преобразование полученного слова  в хэш код
+3) сравнение с ключем
+
+Временные затраты для алгоритма перебирающего пятисимвольные слова из 26 маленьких английских букв
+в котором часть операций не производится
+
+           Операции                                                                    Время, мс
+1)  Прокрутка с формированием массива символов на каждой итерации                           25-50
+2)  + создание строки из этого массива на каждой итерации                                   250 - 500
+3)  Псевдоалгоритм в котором блок хэширования сгенерированного слова
+    просто возвращает его не кодируя                                                        250 - 900
+4)  Полноценный алгоритм                                                                    180000
+ (с использованием java.security.MessageDigest для хэширования )
+
+
+Замеры показывают, что подавляющую долю затрат(97%) времени занимает хэширование сгенерированных слов, на фоне которого
+все остальные процессы происходящие в алгоритме дешифровки имеет не существенный затраты времени.
+
+Из этого следуют выводы:
+- искать способ ускорить код нужно именно в блоке хэширования;
+- применять многопоточность для разбиения каждой итерации на блоки для параллельного выполнения не имеет смысла, т.к.
+все потоки будут ожидать поток выполняющий хэширование;
+- правильным применением многопоточности для решения данной задачи будет разделение между потоками всего спектра возможных комбинаций
+для их параллельного перебора
+
+
+Алгоритм в котором хэширование производится с использованием сторонних библиотек для 5 символьных слов из 26 букв:
+
+import org.apache.commons.codec.digest.DigestUtils   -   6000; 4780; 6580; 7450; 6436; мс
+javax.xml.bind.DatatypeConverter                     -   10200; 11850; 12287; 11312;  11757; мс
+google.guava                                         -   8000; 8668; 7281; 7553; 7698; мс
+
+Промежуточный вывод: сторонние библиотеки ускорили алгоритм в 18 - 30 раз.
+Самую высокую производительность показала библиотека Apache.commons. Кроме того не бросает checked exception.
+
+
+
+Перебор 6 символьного слова из 26 возможных символов: 150000 мс
+
+Расшифровка на данном этапе, мс:
+4-character combinations finished - time: 540
+5-character combinations finished - time: 6234
+DECRYPTED WORD: secret
+TOTAL TIME 127045
+
+На данном этапе достигнута производительность 2 млн проверок в секунду. Далее многопоточность:
+
+Замеры для заведома необнаруживаемого хэша с целью полной прокрутки цикла
+
+2 ПОТОКА:
+
+4-character combinations finished - time: 378
+4-character combinations finished - time: 375
+5-character combinations finished - time: 5836
+5-character combinations finished - time: 5925
+6-character combinations finished - time: 111332
+6-character combinations finished - time: 111473
+
+4 ПОТОКА:
+
+4-character combinations finished - time: 654
+4-character combinations finished - time: 644
+4-character combinations finished - time: 655
+4-character combinations finished - time: 651
+5-character combinations finished - time: 4734
+5-character combinations finished - time: 4740
+5-character combinations finished - time: 4822
+5-character combinations finished - time: 4881
+6-character combinations finished - time: 99377
+6-character combinations finished - time: 100360
+6-character combinations finished - time: 100738
+6-character combinations finished - time: 100939
+
+8 - ПОТОКОВ:
+
+4-character combinations finished - time: 200
+4-character combinations finished - time: 194
+4-character combinations finished - time: 226
+4-character combinations finished - time: 240
+4-character combinations finished - time: 241
+4-character combinations finished - time: 261
+4-character combinations finished - time: 287
+4-character combinations finished - time: 305
+5-character combinations finished - time: 4923
+5-character combinations finished - time: 5081
+5-character combinations finished - time: 5086
+5-character combinations finished - time: 5107
+5-character combinations finished - time: 5084
+5-character combinations finished - time: 5178
+5-character combinations finished - time: 5457
+5-character combinations finished - time: 6646
+6-character combinations finished - time: 122198
+6-character combinations finished - time: 124862
+6-character combinations finished - time: 125674
+6-character combinations finished - time: 127477
+6-character combinations finished - time: 127993
+6-character combinations finished - time: 128534
+6-character combinations finished - time: 127989
+6-character combinations finished - time: 167015
+
+
+Эффект многопоточности вообще не впечатлил. Многократные замеры показали значительное замедление быстродействия каждого отдельного
+потока независимо от способа их организации - созданием пула потоков или созданием отдельных потоков через new Thread.
+Плюсом является то, что при решении данной задачи имея много потоков получаем шанс быстрее наткнуться на верное слово.
+Именно восьмипоточный вариант разгадал слово secret за 13 секунд, т.к. буква s находится в самом начале одного из его потоков.
+В качестве оптимального варианта 4 потока меня вполне устраивают.
+
+ВЫВОДЫ:
+Увеличение потоков с 1 до 4 ускорило работу данной программы в полтора раза, с 2 млн проверок/сек до 3.1
+
+Имея данные показатели можно расчитать время подбора паролей разной длины и сложности:
+
+7 значный пароль только из маленьких букв                                                     - 43 мин
+7 значный пароль из маленьких, больших букв, цифр и символов                                  - 37.4 дней
+
+8 значный пароль только из маленьких букв                                                     - 18.7 часов
+8 значный пароль из маленьких, больших букв, цифр и символов                                  - 7.33 года
+
+10 символьный пароль только из маленьких букв                                                 - 1.45 года
+10 значный пароль из маленьких, больших букв, цифр и символов                                 - 38296 лет
+
+
+Это все объясняет почему довольно часто, например для wi-fi минимальный пароль 8 символов.
+
+
+
+
+
+
+
+
+
+
+
