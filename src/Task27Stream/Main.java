@@ -22,6 +22,8 @@ public class Main {
                         map(Student::getLastname).
                         map(String::toUpperCase).
                         collect(Collectors.toList());
+
+
         System.out.println(result);//[BOYKO, SIDOROV, ZAYCEVA]
 
 
@@ -54,15 +56,4 @@ public class Main {
             students.add(new Student("Franko", "Ivan"));
         return students;
     }
-
-
-
-
-
-
-
-
-
-
-
 }
