@@ -1,12 +1,13 @@
 package Task19Lambda;
 
+import javax.swing.tree.RowMapper;
 import java.util.Comparator;
+import java.util.function.Function;
 
 public class Main {
     public static void main(String[] args) {
 
         StudGroup<Stud> students = new StudGroup<>();
-
         students.add(new Stud("Andrey", "Petrov", 9.3));
         students.add(new Stud("Victor", "Sidorov", 7));
         students.add(new SuperStud("Anna", "Zayceva", 8.4));

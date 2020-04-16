@@ -29,7 +29,7 @@ public class Comparison {
         StudentGroup<Student> group = new StudentGroup<>();
         while (group.size()<numberOfStudents) {
             group.add(new Student("Petrov", "Andrey" ));
-            group.add(new Student("Sidorov", "Victor" ));
+            group.add(new Student("Sidorova", "Inna" ));
             group.add(new Student("Zayceva", "Irina"));
             group.add(new Student("Berkut", "Zahar"));
             group.add(new Student("Boyko", "Nykolay"));
@@ -63,9 +63,9 @@ public class Comparison {
     public static void csvTest(StudentGroup<Student> students){
         System.out.println("CSV " + students.size() + " студентов:");
         long start = System.currentTimeMillis();
-        students.saveAsJSON("src\\Task20InOut\\BigData", "test_csv.csv");
+        students.saveAsCSV("src\\Task20InOut\\BigData", "test_csv.csv");
         long outTime = System.currentTimeMillis();
-        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\BigData\\test_csv.csv");
+        StudentGroup<Student> fromJSON = StudentGroup.restoreFromCSV("src\\Task20InOut\\BigData\\test_csv.csv");
         long inTime = System.currentTimeMillis();
         System.out.println("Время сериализации: " + (double)(outTime-start)/1000 + " сек");
         System.out.println("Время десериализации: " + (double)(inTime-outTime)/1000 + " сек");
@@ -80,9 +80,9 @@ public class Comparison {
     public static void serTest(StudentGroup<Student> students){
         System.out.println("SERIALIZATION " + students.size() + " студентов:");
         long start = System.currentTimeMillis();
-        students.saveAsJSON("src\\Task20InOut\\BigData", "test_serialization.stg");
+        students.saveAsSerialized("src\\Task20InOut\\BigData", "test_serialization.stg");
         long outTime = System.currentTimeMillis();
-        StudentGroup<Student> fromJSON = StudentGroup.restoreFromJSON("src\\Task20InOut\\BigData\\test_serialization.stg");
+        StudentGroup<Student> fromJSON = StudentGroup.restoreSerialized("src\\Task20InOut\\BigData\\test_serialization.stg");
         long inTime = System.currentTimeMillis();
         System.out.println("Время сериализации: " + (double)(outTime-start)/1000 + " сек");
         System.out.println("Время десериализации: " + (double)(inTime-outTime)/1000 + " сек");

@@ -1,18 +1,17 @@
 package Task23Hacker;
 
-import com.google.common.hash.HashCode;
-import com.google.common.hash.HashFunction;
-import com.google.common.hash.Hashing;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.w3c.dom.ls.LSOutput;
 
-import javax.xml.bind.DatatypeConverter;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.Callable;
 
-public class MyMD5 implements Runnable{
+public class MyMD5 implements Runnable {
     private char[] symbols;
     private int from;
     private int to;
@@ -50,7 +49,8 @@ public class MyMD5 implements Runnable{
         if(!status){
             status = decoder8(hash, from, to);
         }
-        System.out.println(Thread.currentThread().getName() +" finished. TOTAL TIME " + (System.currentTimeMillis() - start));
+        System.out.println(Thread.currentThread().getName() +"." +
+                "; TOTAL TIME " + (System.currentTimeMillis() - start));
         System.exit(0);
     }
 
@@ -189,23 +189,7 @@ public class MyMD5 implements Runnable{
         return DigestUtils.md5Hex(text);
     }
 
-    //одна из реализаций статическая, для использования кодировщика как утилиты для пользователя
-    public static String getHashCode(String text) {
-        HashFunction hashFunction = Hashing.md5();
-        HashCode hash = hashFunction.hashString(text, StandardCharsets.UTF_8);
-        return hash.toString();
-    }
 
-    public String coderDataConvertor(String text) {
-        try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] bytes = md5.digest(text.getBytes());
-            return DatatypeConverter.printHexBinary(bytes).toLowerCase();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 
 
