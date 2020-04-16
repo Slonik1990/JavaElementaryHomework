@@ -18,7 +18,7 @@ public class Main {
         List<String> result =
                         list.stream().
                         sorted(Comparator.comparing(Student::getLastname)).
-                        filter(Main::vowelsCounter).
+                        filter(student -> vowelsCounter(student)>=3).
                         map(Student::getLastname).
                         map(String::toUpperCase).
                         collect(Collectors.toList());
@@ -28,7 +28,7 @@ public class Main {
     }
 
 
-    public static boolean vowelsCounter(Student student){
+    public static int vowelsCounter(Student student){
         int counter = 0;
         char[]name = student.getFirstname().toCharArray();
         List<Character>vowels = Arrays.asList('A', 'E', 'I', 'O', 'U', 'a', 'e', 'i', 'o', 'u' );
@@ -37,7 +37,7 @@ public class Main {
                 counter++;
             }
         }
-        return counter>=3;
+        return counter;
     }
 
     public static ArrayList<Student> creatingGroup(){
